@@ -1,0 +1,12 @@
+{
+    "presets": [
+        "react",
+        ["env", {
+            "targets": {
+                "chrome": 54
+            },
+            "useBuiltIns": true,
+            "loose": true
+        }]
+    ]
+}
