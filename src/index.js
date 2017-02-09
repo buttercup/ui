@@ -1,3 +1,1 @@
-console.log('HEY!');
-
-console.log(<h1>Hello</h1>);
+export { default as Button } from './components/button';
