@@ -9,7 +9,8 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
