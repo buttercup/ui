@@ -35,6 +35,3 @@ jspm_packages
 
 # Dist
 dist
-
-# Yarn
-yarn.lock

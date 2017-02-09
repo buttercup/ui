@@ -1,4 +1,4 @@
-# Buttercup UI Component
+# Buttercup UI Components
 
 ## Preview Components
 
