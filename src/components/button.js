@@ -121,5 +121,4 @@ export default styled(Button)`
     border-radius: 50%;
     padding: 6px 0;
   }
-
 `;

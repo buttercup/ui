@@ -19,12 +19,15 @@
     "babel-plugin-transform-class-properties": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
     "babel-preset-env": "^1.1.8",
-    "babel-preset-react": "^6.22.0"
+    "babel-preset-react": "^6.22.0",
+    "react-icons": "^2.2.3"
   },
   "dependencies": {
+    "buttercup-generator": "^0.0.2",
     "classnames": "^2.2.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-popover": "^0.4.4",
     "styled-components": "^1.4.3"
   }
 }
