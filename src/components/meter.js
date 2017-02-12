@@ -20,8 +20,8 @@ class Meter extends Component {
     const { input, className } = this.props;
     const result = zxcvbn(input);
     return (
-      <div onClick={() => this.setState({ details: !this.state.details })}>
-        <div className={className}>
+      <div onClick={() => this.setState({ details: !this.state.details })} className={className}>
+        <div className="wrapper">
           <div
             className={cx('barContent', `level${result.score}`)}
             style={{
@@ -45,13 +45,15 @@ class Meter extends Component {
 }
 
 export default styled(Meter)`
-  width: 100%;
-  height: 5px;
-  border-radius: 5px;
-  position: relative;
-  margin-top: 5px;
-  background-color: ${colors.GRAY};
-  cursor: pointer;
+  .wrapper {
+    width: 100%;
+    height: 5px;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 5px;
+    background-color: ${colors.GRAY};
+    cursor: pointer;
+  }
 
   .barContent {
     position: absolute;
