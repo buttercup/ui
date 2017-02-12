@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import { Button } from '../src';
 import GeneratorTrigger from './generator';
+import MeterStory from './meter';
 
 storiesOf('Button', module)
   .add('styles', () => (
@@ -39,4 +40,9 @@ storiesOf('Generator', module)
         <GeneratorTrigger />
       </div>
     </div>
+  ));
+
+storiesOf('Strength Meter', module)
+  .add('default', () => (
+    <MeterStory/>
   ));
