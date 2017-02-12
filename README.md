@@ -1,4 +1,7 @@
-# Buttercup UI Components
+# Buttercup UI Components 
+[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) 
+
+React UI Components used in [Buttercup](https://buttercup.pw) product series.
 
 ## Preview Components
 
@@ -25,5 +28,7 @@ const MyComponent = () => (
 
 ## List of Components
 
-- Button
-- ...
+- `Button`
+- Password Generator Popup (`Generator`)
+- Password Strength Indicator (`Meter`)
+
