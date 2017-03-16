@@ -5,28 +5,34 @@ import { colors } from '../variables';
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.string,
     children: PropTypes.node,
-    icon: PropTypes.node,
+    type: PropTypes.string,
+    disabled: PropTypes.bool,
+    className: PropTypes.any,
     full: PropTypes.bool,
     primary: PropTypes.bool,
     danger: PropTypes.bool,
     dark: PropTypes.bool,
-    disabled: PropTypes.bool,
-    className: PropTypes.any
+    transparent: PropTypes.bool,
+    icon: PropTypes.node
   }
 
   render() {
     const {
+      // Properties
       children,
       type,
+      disabled,
+      className,
+      // Styles:
       full,
       primary,
       danger,
-      disabled,
       dark,
-      className,
+      transparent,
+      // Icon Object:
       icon,
+      // Etc.
       ...rest
     } = this.props;
     return (
@@ -37,6 +43,7 @@ class Button extends Component {
           primary && 'primary',
           danger && 'danger',
           dark && 'dark',
+          transparent && 'transparent',
           !children && 'icon'
         )}
         type={type || 'button'}
@@ -115,10 +122,21 @@ export default styled(Button)`
     }
   }
 
+  &.transparent {
+    background-color: rgba(0,0,0,0);
+  }
+
   &.icon {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     padding: 6px 0;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 0;
+      vertical-align: -4px !important;
+    }
   }
 `;

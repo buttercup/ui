@@ -1,4 +1,4 @@
 #!/bin/bash
 
 npm run build-storybook
-rsync -az --force --delete --progress -e "ssh -p22" ./storybook-static/ root@buttercup.pw:/usr/share/nginx/html/buttercup/styleguide
+rsync -az --force --delete --progress -e "ssh -p22" ./storybook-static/ root@buttercup.pw:/usr/share/nginx/html/styleguide

@@ -16,6 +16,13 @@ storiesOf('Button', module)
       <Button onClick={action('clicked')} dark>Dark</Button>
       <hr/>
       <Button onClick={action('clicked')} full dark>Full Dark</Button>
+      <hr/>
+      <Button
+        onClick={action('clicked')}
+        danger
+        icon={
+          <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="1em" width="1em" viewBox="0 0 40 40"><g><path d="m5 21.6v-3.2h20v3.2h-20z m0-11.6h30v3.4h-30v-3.4z m0 20v-3.4h10v3.4h-10z"></path></g></svg>
+        }></Button> Icon Only
     </div>
   ));
 
