@@ -31,4 +31,5 @@ const MyComponent = () => (
 - `Button`
 - Password Generator Popup (`Generator`)
 - Password Strength Indicator (`Meter`)
-
+- `Input`
+- `Center`, `SmallType`
