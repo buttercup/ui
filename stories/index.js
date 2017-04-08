@@ -17,6 +17,8 @@ storiesOf('Button', module)
       <hr/>
       <Button onClick={action('clicked')} full dark>Full Dark</Button>
       <hr/>
+      <Button onClick={action('clicked')} large>Large Button</Button>
+      <hr/>
       <Button
         onClick={action('clicked')}
         danger

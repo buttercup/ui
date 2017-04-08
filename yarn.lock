@@ -1874,6 +1874,10 @@ fill-range@^2.1.0:
     repeat-element "^1.1.2"
     repeat-string "^1.5.2"
 
+filter-react-dom-props@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/filter-react-dom-props/-/filter-react-dom-props-0.0.2.tgz#d5c1e5a89c13534cebe3930a22afa9ae3238813b"
+
 finalhandler@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-0.5.1.tgz#2c400d8d4530935bc232549c5fa385ec07de6fcd"
@@ -3096,6 +3100,10 @@ podda@^1.2.1:
   dependencies:
     babel-runtime "^6.11.6"
     immutable "^3.8.1"
+
+polished@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-1.0.2.tgz#8adb00d57c4be81ddd03e0aaa3bafb8a9bdb4057"
 
 postcss-calc@^5.2.0:
   version "5.3.1"
