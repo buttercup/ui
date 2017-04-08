@@ -1,77 +1,88 @@
 import React, { PropTypes, Component } from 'react';
 import styled from 'styled-components';
-import cx from 'classnames';
+import filterReactDomProps from 'filter-react-dom-props';
+import { darken } from 'polished';
 import { colors } from '../variables';
 
-class Button extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    type: PropTypes.string,
-    disabled: PropTypes.bool,
-    className: PropTypes.any,
-    full: PropTypes.bool,
-    primary: PropTypes.bool,
-    danger: PropTypes.bool,
-    dark: PropTypes.bool,
-    transparent: PropTypes.bool,
-    icon: PropTypes.node
+function getBackgroundColor(props) {
+  if (props.danger) {
+    return colors.RED;
+  } else if (props.primary) {
+    return colors.BRAND_PRIMARY;
+  } else if (props.dark) {
+    return colors.BLACK_25;
+  } else if (props.transparent) {
+    return 'rgba(0,0,0,0)';
   }
-
-  render() {
-    const {
-      // Properties
-      children,
-      type,
-      disabled,
-      className,
-      // Styles:
-      full,
-      primary,
-      danger,
-      dark,
-      transparent,
-      // Icon Object:
-      icon,
-      // Etc.
-      ...rest
-    } = this.props;
-    return (
-      <button
-        className={cx(
-          className,
-          full && 'full',
-          primary && 'primary',
-          danger && 'danger',
-          dark && 'dark',
-          transparent && 'transparent',
-          !children && 'icon'
-        )}
-        type={type || 'button'}
-        {...rest}
-        disabled={disabled}
-        >
-        {icon}{children}
-      </button>
-    );
-  }
+  return colors.GRAY_LIGHT;
 }
 
-export default styled(Button)`
+function getHoverColor(props) {
+  if (props.dark) {
+    return colors.BLACK_35;
+  } else if (props.transparent) {
+    return colors.GRAY_LIGHT;
+  }
+  return darken(0.05, getBackgroundColor(props))
+}
+
+function getTextColor(props) {
+  if (props.danger || props.primary || props.dark) {
+    return '#fff';
+  }
+  return 'buttontext';
+}
+
+function getSizes(props) {
+  if (props.icon && !props.children) {
+    return `
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      padding: 6px 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        margin-right: 0;
+        vertical-align: -4px !important;
+      }
+    `
+  }
+  return `
+    border-radius: 20px;
+    padding: ${props.large ? '8px' : '6px'} 12px;
+    width: ${props.full ? '100%' : 'auto'};
+
+    svg {
+      font-size: ${props.large ? '16px' : '14px'};
+      vertical-align: -3px !important;
+      margin-right: 2px;
+      cursor: pointer !important;
+    }
+  `;
+}
+
+const BaseButton = props => (
+  <button {...filterReactDomProps(props)}>{props.icon}{props.children}</button>
+);
+
+export const Button = styled(BaseButton)`
   display: inline-block;
-  border-radius: 20px;
-  font-size: .75rem;
+  ${props => getSizes(props)}
+  font-size: ${props => props.large ? '.85rem' : '.75rem'};
   font-weight: 400;
   text-transform: uppercase;
-  padding: 6px 12px;
   border: 0;
   cursor: pointer !important;
   outline: none;
   transition: background-color .2s ease;
-  background-color: ${colors.GRAY_LIGHT};
+  background-color: ${props => getBackgroundColor(props)};
+  color: ${props => getTextColor(props)};
   box-sizing: border-box;
 
   &:hover {
-    background-color: ${colors.GRAY_LIGHT_DARKER};
+    background-color: ${props => getHoverColor(props)};
   }
 
   &:active {
@@ -79,64 +90,34 @@ export default styled(Button)`
     top: 1px;
   }
 
-  svg {
-    font-size: 14px;
-    vertical-align: -3px !important;
-    margin-right: 2px;
-    cursor: pointer !important;
-  }
-
   &[disabled] {
     opacity: .5;
     cursor: default;
   }
+`;
 
-  &.full {
-    width: 100%;
-  }
+Button.propTypes = {
+  children: PropTypes.node,
+  type: PropTypes.string,
+  disabled: PropTypes.bool,
+  className: PropTypes.any,
+  full: PropTypes.bool,
+  primary: PropTypes.bool,
+  danger: PropTypes.bool,
+  dark: PropTypes.bool,
+  transparent: PropTypes.bool,
+  icon: PropTypes.node
+};
 
-  &.primary {
-    background-color: ${colors.BRAND_PRIMARY};
-    color: #fff;
+export const ButtonRow = styled.div`
+  display: inline-block;
+  white-space: nowrap;
 
-    &:hover {
-      background-color: ${colors.BRAND_PRIMARY_DARKER};
-    }
-  }
+  > button, a {
+    margin-right: 6px;
 
-  &.dark {
-    background-color: ${colors.BLACK_25};
-    color: #fff;
-
-    &:hover {
-      background-color: ${colors.BLACK_35};
-    }
-  }
-
-  &.danger {
-    background-color: ${colors.RED};
-    color: #fff;
-
-    &:hover {
-      background-color: ${colors.RED_DARKER};
-    }
-  }
-
-  &.transparent {
-    background-color: rgba(0,0,0,0);
-  }
-
-  &.icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    padding: 6px 0;
-
-    svg {
-      width: 16px;
-      height: 16px;
+    &:last-child {
       margin-right: 0;
-      vertical-align: -4px !important;
     }
   }
 `;
