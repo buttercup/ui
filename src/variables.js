@@ -1,3 +1,9 @@
+export const spacing = {
+  HALF: '6px',
+  ONE: '12px',
+  INPUT_HEIGHT: '35px'
+};
+
 export const colors = {
   DARK_PRIMARY: '#292C33',
   DARK_SECONDARY: '#31353D',
