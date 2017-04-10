@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { generate, generateWords } from 'buttercup-generator';
 import Popover from 'react-popover';
-import Button from './button';
+import { Button } from './button';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
 
-class Generator extends Component {
+export class GeneratorBase extends Component {
   static propTypes = {
     onGenerate: PropTypes.func.isRequired
   }
@@ -153,7 +153,7 @@ class Generator extends Component {
   }
 }
 
-export default styled(Generator)`
+export const Generator = styled(GeneratorBase)`
   width: 300px;
   background: ${colors.DARK_SECONDARY};
   padding: 12px;

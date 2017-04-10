@@ -21,7 +21,7 @@ function getHoverColor(props) {
   if (props.dark) {
     return colors.BLACK_35;
   } else if (props.transparent) {
-    return colors.GRAY_LIGHT;
+    return 'transparent';
   }
   return darken(0.05, getBackgroundColor(props))
 }

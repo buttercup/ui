@@ -4,6 +4,8 @@ import MagicIcon from 'react-icons/lib/fa/magic';
 import { Button, Generator } from '../src';
 import styled from 'styled-components';
 
+console.log(Generator);
+
 const View = styled.div`
   width: 100px;
   margin: 10px;
