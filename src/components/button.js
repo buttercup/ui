@@ -64,7 +64,7 @@ function getSizes(props) {
 }
 
 const BaseButton = props => (
-  <button {...filterReactDomProps(props)}>{props.icon}{props.children}</button>
+  <button type={props.type || 'button'} {...filterReactDomProps(props)}>{props.icon}{props.children}</button>
 );
 
 export const Button = styled(BaseButton)`
