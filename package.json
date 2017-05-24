@@ -3,7 +3,7 @@
   "version": "0.5.1",
   "description": "Buttercup UI Components in React",
   "main": "dist/index.js",
-  "repository": "git@github.com:buttercup-pw/buttercup-ui.git",
+  "repository": "git@github.com:buttercup/buttercup-ui.git",
   "author": "Sallar Kaboli <sallar.kaboli@gmail.com>",
   "license": "GPL-3.0",
   "scripts": {

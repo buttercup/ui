@@ -6,6 +6,18 @@ import { Button } from './button';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
 
+const StyledPopover = styled(Popover)`
+  .Popover-tip {
+    fill: ${colors.DARK_SECONDARY};
+  }
+
+  .Popover-body {
+    display: inline-flex;
+    padding: 0;
+    flex-direction: column;
+  }
+`;
+
 export class GeneratorBase extends Component {
   static propTypes = {
     onGenerate: PropTypes.func.isRequired
@@ -146,9 +158,9 @@ export class GeneratorBase extends Component {
   render() {
     const { children, isOpen, className, ...rest } = this.props;
     return (
-      <Popover isOpen={isOpen} body={this.renderBody()} {...rest}>
+      <StyledPopover isOpen={isOpen} body={this.renderBody()} {...rest}>
         {children}
-      </Popover>
+      </StyledPopover>
     );
   }
 }
@@ -232,5 +244,4 @@ export const Generator = styled(GeneratorBase)`
       color: ${colors.GRAY_DARK};
     }
   }
-
 `;
