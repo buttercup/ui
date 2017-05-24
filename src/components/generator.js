@@ -1,10 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { generate, generateWords } from 'buttercup-generator';
-import Popover from 'react-popover';
-import { Button } from './button';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
+import Popover from 'react-popover';
+import { Button } from './button';
+import { ColoredDigits } from './colored-digits';
+
+const StyledPopover = styled(Popover)`
+  .Popover-tip {
+    fill: ${colors.DARK_SECONDARY};
+  }
+
+  .Popover-body {
+    display: inline-flex;
+    padding: 0;
+    flex-direction: column;
+  }
+`;
+
+const Password = styled(ColoredDigits)`
+  .num {
+    color: ${colors.BRAND_PRIMARY}
+  }
+`;
 
 export class GeneratorBase extends Component {
   static propTypes = {
@@ -70,11 +89,9 @@ export class GeneratorBase extends Component {
   renderBody() {
     return (
       <div className={this.props.className}>
-        <pre
-          className="password"
-          role="content"
-          onClick={e => selectElementContents(e.target)}
-        >{this.state.currentPassword}</pre>
+        <pre className="password" role="content" onClick={e => selectElementContents(e.target)}>
+          <Password value={this.state.currentPassword} />
+        </pre>
         <div className="types">
           <label>
             <input
@@ -146,9 +163,9 @@ export class GeneratorBase extends Component {
   render() {
     const { children, isOpen, className, ...rest } = this.props;
     return (
-      <Popover isOpen={isOpen} body={this.renderBody()} {...rest}>
+      <StyledPopover isOpen={isOpen} body={this.renderBody()} {...rest}>
         {children}
-      </Popover>
+      </StyledPopover>
     );
   }
 }
@@ -232,5 +249,4 @@ export const Generator = styled(GeneratorBase)`
       color: ${colors.GRAY_DARK};
     }
   }
-
 `;
