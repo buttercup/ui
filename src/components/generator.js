@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import { generate, generateWords } from 'buttercup-generator';
-import Popover from 'react-popover';
-import { Button } from './button';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
+import Popover from 'react-popover';
+import { Button } from './button';
+import { ColoredDigits } from './colored-digits';
 
 const StyledPopover = styled(Popover)`
   .Popover-tip {
@@ -15,6 +16,12 @@ const StyledPopover = styled(Popover)`
     display: inline-flex;
     padding: 0;
     flex-direction: column;
+  }
+`;
+
+const Password = styled(ColoredDigits)`
+  .num {
+    color: ${colors.BRAND_PRIMARY}
   }
 `;
 
@@ -82,11 +89,9 @@ export class GeneratorBase extends Component {
   renderBody() {
     return (
       <div className={this.props.className}>
-        <pre
-          className="password"
-          role="content"
-          onClick={e => selectElementContents(e.target)}
-        >{this.state.currentPassword}</pre>
+        <pre className="password" role="content" onClick={e => selectElementContents(e.target)}>
+          <Password value={this.state.currentPassword} />
+        </pre>
         <div className="types">
           <label>
             <input
