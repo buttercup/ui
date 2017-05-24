@@ -1,8 +1,15 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import { Button } from '../src';
+import styled from 'styled-components';
+import { Button, ColoredDigits } from '../src';
 import GeneratorTrigger from './generator';
 import MeterStory from './meter';
+
+const Digits = styled(ColoredDigits)`
+  .num {
+    color: red;
+  }
+`;
 
 storiesOf('Button', module)
   .add('styles', () => (
@@ -54,4 +61,12 @@ storiesOf('Generator', module)
 storiesOf('Strength Meter', module)
   .add('default', () => (
     <MeterStory/>
+  ));
+
+storiesOf('Colored Digits', module)
+  .add('styled digits', () => (
+    <Digits value="Hello123HowAre1You" />
+  ))
+  .add('concealed digits', () => (
+    <Digits value="Hello123HowAre1You" concealed />
   ));
