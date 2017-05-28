@@ -5,21 +5,23 @@ React UI Components used in [Buttercup](https://buttercup.pw) product series.
 
 ## Preview Components
 
-``` bash
-$ yarn install
-$ yarn storybook
+```shell
+yarn install
+yarn storybook
 ```
 
 Then head to [http://localhost:6006/](http://localhost:6006/).
 
 ## Use Components
 
-``` bash
-$ yarn add buttercup-ui
+```shell
+yarn add @buttercup/ui
+# or
+npm install @buttercup/ui --save
 ```
 
-``` js
-import { Button } from 'buttercup-ui';
+```javascript
+import { Button } from '@buttercup/ui';
 
 const MyComponent = () => (
   <Button danger>Delete</Button>
