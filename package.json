@@ -1,6 +1,6 @@
 {
   "name": "@buttercup/ui",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Buttercup UI Components in React",
   "main": "dist/index.js",
   "repository": "git@github.com:buttercup/buttercup-ui.git",
@@ -14,7 +14,7 @@
     "deploy": "./deploy"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook": "^2.35.3",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -27,10 +27,11 @@
     "classnames": "^2.2.5",
     "filter-react-dom-props": "^0.0.2",
     "polished": "^1.0.2",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-icons": "^2.2.3",
-    "react-popover": "^0.4.8",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-icons": "^2.2.5",
+    "react-popover": "^0.4.14",
     "styled-components": "^1.4.4",
     "zxcvbn": "^4.4.2"
   }
