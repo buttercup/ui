@@ -24,7 +24,7 @@ function getHoverColor(props) {
   } else if (props.transparent) {
     return 'transparent';
   }
-  return darken(0.05, getBackgroundColor(props))
+  return darken(0.05, getBackgroundColor(props));
 }
 
 function getTextColor(props) {
@@ -48,7 +48,7 @@ function getSizes(props) {
         margin-right: 0;
         vertical-align: -4px !important;
       }
-    `
+    `;
   }
   return `
     border-radius: 20px;
@@ -65,19 +65,22 @@ function getSizes(props) {
 }
 
 const BaseButton = props => (
-  <button type={props.type || 'button'} {...filterReactDomProps(props)}>{props.icon}{props.children}</button>
+  <button type={props.type || 'button'} {...filterReactDomProps(props)}>
+    {props.icon}
+    {props.children}
+  </button>
 );
 
 export const Button = styled(BaseButton)`
   display: inline-block;
-  ${props => getSizes(props)}
-  font-size: ${props => props.large ? '.85rem' : '.75rem'};
+  ${props => getSizes(props)} font-size: ${props =>
+      props.large ? '.85rem' : '.75rem'};
   font-weight: 400;
   text-transform: uppercase;
   border: 0;
   cursor: pointer !important;
   outline: none;
-  transition: background-color .2s ease;
+  transition: background-color 0.2s ease;
   background-color: ${props => getBackgroundColor(props)};
   color: ${props => getTextColor(props)};
   box-sizing: border-box;
@@ -92,7 +95,7 @@ export const Button = styled(BaseButton)`
   }
 
   &[disabled] {
-    opacity: .5;
+    opacity: 0.5;
     cursor: default;
   }
 `;
@@ -114,7 +117,8 @@ export const ButtonRow = styled.div`
   display: inline-block;
   white-space: nowrap;
 
-  > button, a {
+  > button,
+  a {
     margin-right: 6px;
 
     &:last-child {

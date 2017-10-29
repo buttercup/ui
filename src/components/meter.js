@@ -11,34 +11,49 @@ class Meter extends Component {
   static propTypes = {
     input: PropTypes.string,
     className: PropTypes.string
-  }
+  };
 
   state = {
     details: true
-  }
+  };
 
   render() {
     const { input, className } = this.props;
     const result = zxcvbn(input);
     return (
-      <div onClick={() => this.setState({ details: !this.state.details })} className={className}>
+      <div
+        onClick={() => this.setState({ details: !this.state.details })}
+        className={className}
+      >
         <div className="wrapper">
           <div
             className={cx('barContent', `level${result.score}`)}
             style={{
-              right: `${100 - (result.score * 25)}%`
+              right: `${100 - result.score * 25}%`
             }}
           />
         </div>
         <div
           className="suggestions"
           style={{
-            display: (this.state.details && (result.feedback.warning || result.feedback.suggestions.length > 0)) ?
-              'block' : 'none'
+            display:
+              this.state.details &&
+              (result.feedback.warning ||
+                result.feedback.suggestions.length > 0)
+                ? 'block'
+                : 'none'
           }}
         >
-          {result.feedback.warning && <p><WarningIcon /> {result.feedback.warning}</p>}
-          {result.feedback.suggestions.length > 0 && <p><InfoIcon /> {result.feedback.suggestions.join(' ')}</p>}
+          {result.feedback.warning && (
+            <p>
+              <WarningIcon /> {result.feedback.warning}
+            </p>
+          )}
+          {result.feedback.suggestions.length > 0 && (
+            <p>
+              <InfoIcon /> {result.feedback.suggestions.join(' ')}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -66,16 +81,25 @@ export default styled(Meter)`
     cursor: pointer;
   }
 
-  .level0 {}
-  .level1 { background-color: ${colors.LEVEL_1} } 
-  .level2 { background-color: ${colors.LEVEL_2} } 
-  .level3 { background-color: ${colors.LEVEL_3} } 
-  .level4 { background-color: ${colors.LEVEL_4} } 
+  .level0 {
+  }
+  .level1 {
+    background-color: ${colors.LEVEL_1};
+  }
+  .level2 {
+    background-color: ${colors.LEVEL_2};
+  }
+  .level3 {
+    background-color: ${colors.LEVEL_3};
+  }
+  .level4 {
+    background-color: ${colors.LEVEL_4};
+  }
 
   .suggestions {
     padding-top: 6px;
     line-height: 1.5em;
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: 300;
 
     > p {

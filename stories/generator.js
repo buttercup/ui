@@ -16,24 +16,35 @@ const View = styled.div`
 export default class GeneratorTrigger extends Component {
   state = {
     isOpen: false
-  }
+  };
 
   handleClick = () => {
-    this.setState({isOpen: !this.state.isOpen});
-  }
+    this.setState({ isOpen: !this.state.isOpen });
+  };
 
   handleGenerated = (...args) => {
     this.setState({ isOpen: false });
     action('generated')(...args);
-  }
+  };
 
   render() {
     return (
-      <Generator onGenerate={this.handleGenerated} isOpen={this.state.isOpen} {...this.props}>
+      <Generator
+        onGenerate={this.handleGenerated}
+        isOpen={this.state.isOpen}
+        {...this.props}
+      >
         <View>
-          <Button primary danger={this.state.isOpen} icon={<MagicIcon />} onClick={this.handleClick}>Magic</Button>
+          <Button
+            primary
+            danger={this.state.isOpen}
+            icon={<MagicIcon />}
+            onClick={this.handleClick}
+          >
+            Magic
+          </Button>
         </View>
       </Generator>
-    )
+    );
   }
 }

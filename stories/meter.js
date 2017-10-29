@@ -20,20 +20,24 @@ const Input = styled.input`
 export default class MeterStory extends Component {
   state = {
     input: ''
-  }
+  };
 
   handleChange = e => {
     this.setState({
       input: e.target.value
     });
-  }
+  };
 
   render() {
     return (
       <View>
-        <Input placeholder="Type here..." onChange={this.handleChange} value={this.state.value}/>
-        <Meter input={this.state.input}/>
+        <Input
+          placeholder="Type here..."
+          onChange={this.handleChange}
+          value={this.state.value}
+        />
+        <Meter input={this.state.input} />
       </View>
-    )
+    );
   }
 }
