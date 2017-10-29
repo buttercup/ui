@@ -12,7 +12,11 @@
     "build-storybook": "build-storybook",
     "prepublish": "npm run build",
     "format": "prettier --write '{src,stories}/**/*.js'",
+    "precommit": "lint-staged",
     "deploy": "./deploy"
+  },
+  "lint-staged": {
+    "{src,stories}/**/*.js": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
