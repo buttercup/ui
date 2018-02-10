@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import { action } from '@kadira/storybook';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { action } from '@storybook/react';
 import { Meter } from '../src';
 import styled from 'styled-components';
 
