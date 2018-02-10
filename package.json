@@ -32,7 +32,15 @@
     "lint-staged": "^4.3.0",
     "prettier": "^1.7.4",
     "@storybook/react": "^3.3.12",
-    "@storybook/addons": "^3.3.12"
+    "@storybook/addons": "^3.3.12",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "styled-components": "^3.1.6"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "styled-components": "^3.1.6"
   },
   "dependencies": {
     "@buttercup/generator": "0.0.3",
@@ -40,11 +48,8 @@
     "filter-react-dom-props": "^0.0.2",
     "polished": "^1.0.2",
     "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "react-icons": "^2.2.7",
     "react-popover": "^0.5.4",
-    "styled-components": "^3.1.6",
     "zxcvbn": "^4.4.2"
   }
 }
