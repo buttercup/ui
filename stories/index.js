@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
+import { storiesOf, action, linkTo } from '@storybook/react';
 import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import GeneratorTrigger from './generator';
