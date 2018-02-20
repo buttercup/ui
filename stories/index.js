@@ -53,6 +53,13 @@ storiesOf('Button', module).add('styles', () => (
       }
     />{' '}
     Icon Only
+    <hr />
+    <Button loading large>
+      Loading Button
+    </Button>{' '}
+    <Button loading primary>
+      Loading Button
+    </Button>
   </div>
 ));
 
