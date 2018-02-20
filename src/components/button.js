@@ -29,7 +29,7 @@ function getHoverColor(props) {
 
 function getTextColor(props) {
   if (props.danger || props.primary || props.dark) {
-    return '#fff';
+    return 'white';
   }
   return 'buttontext';
 }
@@ -64,6 +64,29 @@ function getSizes(props) {
   `;
 }
 
+function getLoadingState(props) {
+  const size = props.large ? 30 : 24;
+  const color = getTextColor(props);
+  if (!props.loading) {
+    return;
+  }
+  return `
+    color: transparent;
+
+    &:after {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="${color}" d="M54.782 27.503c-12.423-2.64-24.639 5.293-27.28 17.715s5.294 24.639 17.716 27.28m.81-3.815c-10.27-2.183-16.914-12.286-14.71-22.654S43.7 29.134 53.97 31.317"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/></path></svg>');
+      display: block;
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: ${size}px;
+      width: ${size}px;
+      transform: translate(-50%, -50%);
+    }
+  `;
+}
+
 const BaseButton = props => (
   <button type={props.type || 'button'} {...filterReactDomProps(props)}>
     {props.icon}
@@ -73,8 +96,8 @@ const BaseButton = props => (
 
 export const Button = styled(BaseButton)`
   display: inline-block;
-  ${props => getSizes(props)} font-size: ${props =>
-      props.large ? '.85rem' : '.75rem'};
+  ${props => getSizes(props)};
+  font-size: ${props => (props.large ? '.85rem' : '.75rem')};
   font-weight: 400;
   text-transform: uppercase;
   border: 0;
@@ -84,6 +107,7 @@ export const Button = styled(BaseButton)`
   background-color: ${props => getBackgroundColor(props)};
   color: ${props => getTextColor(props)};
   box-sizing: border-box;
+  position: relative;
 
   &:hover {
     background-color: ${props => getHoverColor(props)};
@@ -98,6 +122,8 @@ export const Button = styled(BaseButton)`
     opacity: 0.5;
     cursor: default;
   }
+
+  ${props => getLoadingState(props)};
 `;
 
 Button.propTypes = {
