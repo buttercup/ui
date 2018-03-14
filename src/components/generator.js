@@ -8,6 +8,8 @@ import Popover from 'react-popover';
 import { Button } from './button';
 import { ColoredDigits } from './colored-digits';
 
+const NOOP = () => {};
+
 const StyledPopover = styled(Popover)`
   .Popover-tip {
     fill: ${colors.DARK_SECONDARY};
@@ -19,7 +21,6 @@ const StyledPopover = styled(Popover)`
     flex-direction: column;
   }
 `;
-
 const Password = styled(ColoredDigits)`
   .num {
     color: ${colors.BRAND_PRIMARY};
@@ -29,6 +30,10 @@ const Password = styled(ColoredDigits)`
 export class GeneratorBase extends Component {
   static propTypes = {
     onGenerate: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    onGenerate: NOOP
   };
 
   state = {
