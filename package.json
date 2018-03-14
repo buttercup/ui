@@ -10,16 +10,17 @@
     "build": "babel src --out-dir dist",
     "build-storybook": "build-storybook",
     "deploy": "./deploy",
-    "format": "prettier --write '{src,stories}/**/*.js'",
+    "format": "prettier --write '{src,stories,__tests__}/**/*.js'",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
     "storybook": "start-storybook -p 6006",
-    "test": "npm run test:unit",
+    "test": "run-s test:unit test:format",
+    "test:format": "prettier-check '{src,stories,__tests__}/**/*.js'",
     "test:unit": "jest",
     "test:updateSnapshots": "jest -u"
   },
   "lint-staged": {
-    "{src,stories}/**/*.js": [
+    "{src,stories,__tests__}/**/*.js": [
       "prettier --write",
       "git add"
     ]
@@ -52,7 +53,9 @@
     "jest": "^22.4.2",
     "jsx-control-statements": "^3.2.8",
     "lint-staged": "^4.3.0",
-    "prettier": "^1.7.4",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.11.1",
+    "prettier-check": "^2.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "styled-components": "^3.2.1"
