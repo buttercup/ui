@@ -1,0 +1,625 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generator initial render remains consistent 1`] = `
+<Styled(GeneratorBase)
+  isOpen={true}
+>
+  <GeneratorBase
+    className="sc-bZQynM kjFXFP"
+    isOpen={true}
+    onGenerate={[Function]}
+  >
+    <Styled(Popover)
+      body={
+        <div
+          className="sc-bZQynM kjFXFP"
+        >
+          <pre
+            className="password"
+            onClick={[Function]}
+            role="content"
+          >
+            <Styled(ColoredDigits)
+              value=""
+            />
+          </pre>
+          <div
+            className="types"
+          >
+            <label>
+              <input
+                checked={true}
+                onChange={[Function]}
+                type="radio"
+              />
+               
+              Characters
+            </label>
+            <label>
+              <input
+                checked={false}
+                onChange={[Function]}
+                type="radio"
+              />
+               
+              Words
+            </label>
+          </div>
+          <fieldset
+            className="set"
+          >
+            <legend>
+              Options
+            </legend>
+            <label
+              className="rangeLabel"
+            >
+              <input
+                max="50"
+                min="10"
+                onChange={[Function]}
+                type="range"
+                value={20}
+              />
+              <span />
+            </label>
+            <label>
+              <input
+                checked={true}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Uppercase Letters
+            </label>
+            <label>
+              <input
+                checked={true}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Lowercase Letters
+            </label>
+            <label>
+              <input
+                checked={true}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Digits
+            </label>
+            <label>
+              <input
+                checked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Space
+            </label>
+            <label>
+              <input
+                checked={true}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Underscore & Dash
+            </label>
+            <label>
+              <input
+                checked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+               
+              Symbols
+            </label>
+          </fieldset>
+          <div
+            className="buttons"
+          >
+            <Styled(BaseButton)
+              onClick={[Function]}
+              primary={true}
+            >
+              Generate
+            </Styled(BaseButton)>
+            <Styled(BaseButton)
+              dark={true}
+              onClick={[Function]}
+            >
+              Use This
+            </Styled(BaseButton)>
+          </div>
+        </div>
+      }
+      isOpen={true}
+      onGenerate={[Function]}
+    >
+      <Popover
+        appendTarget={
+          <body>
+            <div
+              class="Popover Popover-above sc-ifAKCX dhJhqC"
+              style="position: absolute; top: -4px; left: -25px; display: flex; opacity: 1;"
+            >
+              <div
+                class="Popover-body"
+              >
+                <div
+                  class="sc-bZQynM kjFXFP"
+                >
+                  <pre
+                    class="password"
+                    role="content"
+                  >
+                    <span
+                      class="sc-EHOje jFNwUJ"
+                    >
+                      <span
+                        class="str"
+                      />
+                    </span>
+                  </pre>
+                  <div
+                    class="types"
+                  >
+                    <label>
+                      <input
+                        type="radio"
+                        value="on"
+                      />
+                       
+                      Characters
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="on"
+                      />
+                       
+                      Words
+                    </label>
+                  </div>
+                  <fieldset
+                    class="set"
+                  >
+                    <legend>
+                      Options
+                    </legend>
+                    <label
+                      class="rangeLabel"
+                    >
+                      <input
+                        max="50"
+                        min="10"
+                        type="range"
+                        value="20"
+                      />
+                      <span />
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Uppercase Letters
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Lowercase Letters
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Digits
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Space
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Underscore & Dash
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        value="on"
+                      />
+                       
+                      Symbols
+                    </label>
+                  </fieldset>
+                  <div
+                    class="buttons"
+                  >
+                    <button
+                      class="sc-bdVaJa cuAuCI"
+                      type="button"
+                    >
+                      Generate
+                    </button>
+                    <button
+                      class="sc-bdVaJa ihgpPH"
+                      type="button"
+                    >
+                      Use This
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <svg
+                class="Popover-tip"
+                height="7"
+                width="14"
+              >
+                <polygon
+                  class="Popover-tipShape"
+                  points="0,0 7,7, 14,0"
+                />
+              </svg>
+              <object
+                class="resize-sensor"
+                data="about:blank"
+                style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+                type="text/html"
+              />
+            </div>
+          </body>
+        }
+        body={
+          <div
+            className="sc-bZQynM kjFXFP"
+          >
+            <pre
+              className="password"
+              onClick={[Function]}
+              role="content"
+            >
+              <Styled(ColoredDigits)
+                value=""
+              />
+            </pre>
+            <div
+              className="types"
+            >
+              <label>
+                <input
+                  checked={true}
+                  onChange={[Function]}
+                  type="radio"
+                />
+                 
+                Characters
+              </label>
+              <label>
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="radio"
+                />
+                 
+                Words
+              </label>
+            </div>
+            <fieldset
+              className="set"
+            >
+              <legend>
+                Options
+              </legend>
+              <label
+                className="rangeLabel"
+              >
+                <input
+                  max="50"
+                  min="10"
+                  onChange={[Function]}
+                  type="range"
+                  value={20}
+                />
+                <span />
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Uppercase Letters
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Lowercase Letters
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Digits
+              </label>
+              <label>
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Space
+              </label>
+              <label>
+                <input
+                  checked={true}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Underscore & Dash
+              </label>
+              <label>
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                 
+                Symbols
+              </label>
+            </fieldset>
+            <div
+              className="buttons"
+            >
+              <Styled(BaseButton)
+                onClick={[Function]}
+                primary={true}
+              >
+                Generate
+              </Styled(BaseButton)>
+              <Styled(BaseButton)
+                dark={true}
+                onClick={[Function]}
+              >
+                Use This
+              </Styled(BaseButton)>
+            </div>
+          </div>
+        }
+        className="sc-ifAKCX dhJhqC"
+        enterExitTransitionDurationMs={500}
+        isOpen={true}
+        offset={4}
+        onGenerate={[Function]}
+        onOuterAction={[Function]}
+        place={null}
+        preferPlace={null}
+        refreshIntervalMs={200}
+        tipSize={7}
+      >
+        <a />
+        <div
+          className="Popover Popover-above sc-ifAKCX dhJhqC"
+          style={
+            Object {
+              "display": "flex",
+              "left": 0,
+              "position": "absolute",
+              "top": 0,
+            }
+          }
+        >
+          <div
+            className="Popover-body"
+          >
+            <div
+              className="sc-bZQynM kjFXFP"
+            >
+              <pre
+                className="password"
+                onClick={[Function]}
+                role="content"
+              >
+                <Styled(ColoredDigits)
+                  value=""
+                >
+                  <ColoredDigits
+                    className="sc-EHOje jFNwUJ"
+                    value=""
+                  >
+                    <span
+                      className="sc-EHOje jFNwUJ"
+                    >
+                      <span
+                        className="str"
+                        key="0"
+                      />
+                    </span>
+                  </ColoredDigits>
+                </Styled(ColoredDigits)>
+              </pre>
+              <div
+                className="types"
+              >
+                <label>
+                  <input
+                    checked={true}
+                    onChange={[Function]}
+                    type="radio"
+                  />
+                   
+                  Characters
+                </label>
+                <label>
+                  <input
+                    checked={false}
+                    onChange={[Function]}
+                    type="radio"
+                  />
+                   
+                  Words
+                </label>
+              </div>
+              <fieldset
+                className="set"
+              >
+                <legend>
+                  Options
+                </legend>
+                <label
+                  className="rangeLabel"
+                >
+                  <input
+                    max="50"
+                    min="10"
+                    onChange={[Function]}
+                    type="range"
+                    value={20}
+                  />
+                  <span />
+                </label>
+                <label>
+                  <input
+                    checked={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Uppercase Letters
+                </label>
+                <label>
+                  <input
+                    checked={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Lowercase Letters
+                </label>
+                <label>
+                  <input
+                    checked={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Digits
+                </label>
+                <label>
+                  <input
+                    checked={false}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Space
+                </label>
+                <label>
+                  <input
+                    checked={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Underscore & Dash
+                </label>
+                <label>
+                  <input
+                    checked={false}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                   
+                  Symbols
+                </label>
+              </fieldset>
+              <div
+                className="buttons"
+              >
+                <Styled(BaseButton)
+                  onClick={[Function]}
+                  primary={true}
+                >
+                  <BaseButton
+                    className="sc-bdVaJa cuAuCI"
+                    onClick={[Function]}
+                    primary={true}
+                  >
+                    <button
+                      className="sc-bdVaJa cuAuCI"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Generate
+                    </button>
+                  </BaseButton>
+                </Styled(BaseButton)>
+                <Styled(BaseButton)
+                  dark={true}
+                  onClick={[Function]}
+                >
+                  <BaseButton
+                    className="sc-bdVaJa ihgpPH"
+                    dark={true}
+                    onClick={[Function]}
+                  >
+                    <button
+                      className="sc-bdVaJa ihgpPH"
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Use This
+                    </button>
+                  </BaseButton>
+                </Styled(BaseButton)>
+              </div>
+            </div>
+          </div>
+          <Tip
+            direction="down"
+            size={7}
+          >
+            <svg
+              className="Popover-tip"
+              height={7}
+              width={14}
+            >
+              <polygon
+                className="Popover-tipShape"
+                points="0,0 7,7, 14,0"
+              />
+            </svg>
+          </Tip>
+        </div>
+      </Popover>
+    </Styled(Popover)>
+  </GeneratorBase>
+</Styled(GeneratorBase)>
+`;
