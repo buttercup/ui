@@ -49,11 +49,21 @@ export class GeneratorBase extends Component {
   }
 
   generatePassword() {
-    generatePassword(this.state.config).then(password => {
-      this.setState({
-        password
+    generatePassword(this.state.config)
+      .then(password => {
+        this.setState({
+          password
+        });
+      })
+      .catch(err => {
+        // Errors for no selected character sets and max retries exceeded occur
+        // when the user selects too-restrictive options - we don't really care
+        // about the error, we just don't generate a password:
+        if (err.code !== 'NO_CHARSETS' && err.code !== 'MAX_RETRIES') {
+          // If it's some other error, throw it again
+          throw err;
+        }
       });
-    });
   }
 
   toggleCharacterSet(setName) {
