@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { generate, generateWords } from '@buttercup/generator';
+import { generatePassword, getConfig } from '@buttercup/generator';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
 import Popover from 'react-popover';
@@ -32,58 +32,91 @@ export class GeneratorBase extends Component {
   };
 
   state = {
-    type: 'characters',
-    length: 30,
-    symbols: true,
-    numbers: true,
-    letters: true,
-    memorable: false,
-    currentPassword: ''
+    config: getConfig(),
+    password: ''
   };
+
+  characterSetEnabled(setName) {
+    return (
+      this.state.config.randomCharacters.enabledCharacterSets.indexOf(
+        setName
+      ) >= 0
+    );
+  }
 
   componentDidMount() {
     this.generatePassword();
   }
 
   generatePassword() {
-    let password;
-    if (this.state.type === 'words') {
-      password = generateWords();
-    } else {
-      password = generate(this.state.length, {
-        symbols: this.state.symbols,
-        letters: this.state.letters,
-        numbers: this.state.numbers,
-        memorable: this.state.memorable
+    generatePassword(this.state.config).then(password => {
+      this.setState({
+        password
       });
-    }
-    this.setState({
-      currentPassword: password
     });
   }
 
-  toggleOption(propName) {
-    this.setState({ [propName]: !this.state[propName] }, () => {
-      this.generatePassword();
-    });
+  toggleCharacterSet(setName) {
+    const currentCharacterSets = [
+      ...this.state.config.randomCharacters.enabledCharacterSets
+    ];
+    const charsetIndex = currentCharacterSets.indexOf(setName);
+    if (charsetIndex >= 0) {
+      currentCharacterSets.splice(charsetIndex, 1);
+    } else {
+      currentCharacterSets.push(setName);
+    }
+    this.setState(
+      {
+        config: {
+          ...this.state.config,
+          randomCharacters: {
+            ...this.state.config.randomCharacters,
+            enabledCharacterSets: currentCharacterSets
+          }
+        }
+      },
+      () => {
+        this.generatePassword();
+      }
+    );
   }
 
   changeLength(e) {
-    this.setState({ length: parseInt(e.target.value, 10) }, () => {
-      this.generatePassword();
-    });
+    this.setState(
+      {
+        config: {
+          ...this.state.config,
+          randomCharacters: {
+            ...this.state.config.randomCharacters,
+            length: parseInt(e.target.value, 10)
+          }
+        }
+      },
+      () => {
+        this.generatePassword();
+      }
+    );
   }
 
-  changeType(type) {
-    this.setState({ type }, () => {
-      this.generatePassword();
-    });
+  changeType(mode) {
+    this.setState(
+      {
+        config: {
+          ...this.state.config,
+          mode
+        }
+      },
+      () => {
+        this.generatePassword();
+      }
+    );
   }
 
   onGenerate() {
     const { onGenerate } = this.props;
     if (onGenerate) {
-      onGenerate(this.state.currentPassword);
+      onGenerate(this.state.password);
     }
   }
 
@@ -95,33 +128,33 @@ export class GeneratorBase extends Component {
           role="content"
           onClick={e => selectElementContents(e.target)}
         >
-          <Password value={this.state.currentPassword} />
+          <Password value={this.state.password} />
         </pre>
         <div className="types">
           <label>
             <input
               type="radio"
-              checked={this.state.type === 'characters'}
+              checked={this.state.config.mode === 'characters'}
               onChange={() => this.changeType('characters')}
             />{' '}
-            Characters <small>(Recommended)</small>
+            Characters
           </label>
           <label>
             <input
               type="radio"
-              checked={this.state.type === 'words'}
+              checked={this.state.config.mode === 'words'}
               onChange={() => this.changeType('words')}
             />{' '}
             Words
           </label>
         </div>
-        {this.state.type === 'characters' && (
+        <If condition={this.state.config.mode === 'characters'}>
           <fieldset className="set">
             <legend>Options</legend>
             <label className="rangeLabel">
               <input
                 type="range"
-                value={this.state.length}
+                value={this.state.config.randomCharacters.length}
                 min="10"
                 max="50"
                 onChange={e => this.changeLength(e)}
@@ -131,40 +164,53 @@ export class GeneratorBase extends Component {
             <label>
               <input
                 type="checkbox"
-                disabled={this.state.memorable}
-                checked={this.state.letters}
-                onChange={() => this.toggleOption('letters')}
+                checked={this.characterSetEnabled('UPPERCASE')}
+                onChange={() => this.toggleCharacterSet('UPPERCASE')}
               />{' '}
-              Letters
+              Uppercase Letters
             </label>
             <label>
               <input
                 type="checkbox"
-                disabled={this.state.memorable}
-                checked={this.state.numbers}
-                onChange={() => this.toggleOption('numbers')}
+                checked={this.characterSetEnabled('LOWERCASE')}
+                onChange={() => this.toggleCharacterSet('LOWERCASE')}
               />{' '}
-              Numbers
+              Lowercase Letters
             </label>
             <label>
               <input
                 type="checkbox"
-                disabled={this.state.memorable}
-                checked={this.state.symbols}
-                onChange={() => this.toggleOption('symbols')}
+                checked={this.characterSetEnabled('DIGITS')}
+                onChange={() => this.toggleCharacterSet('DIGITS')}
+              />{' '}
+              Digits
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={this.characterSetEnabled('SPACE')}
+                onChange={() => this.toggleCharacterSet('SPACE')}
+              />{' '}
+              Space
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={this.characterSetEnabled('UNDERSCORE_DASH')}
+                onChange={() => this.toggleCharacterSet('UNDERSCORE_DASH')}
+              />{' '}
+              Underscore &amp; Dash
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={this.characterSetEnabled('SYMBOLS')}
+                onChange={() => this.toggleCharacterSet('SYMBOLS')}
               />{' '}
               Symbols
             </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={this.state.memorable}
-                onChange={() => this.toggleOption('memorable')}
-              />{' '}
-              Memorable
-            </label>
           </fieldset>
-        )}
+        </If>
         <div className="buttons">
           <Button onClick={() => this.generatePassword()} primary>
             Generate
