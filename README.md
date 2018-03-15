@@ -1,5 +1,5 @@
 # Buttercup UI Components 
-[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) 
+[![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![Build Status](https://travis-ci.org/buttercup/buttercup-ui.svg?branch=master)](https://travis-ci.org/buttercup/buttercup-ui)
 
 React UI Components used in [Buttercup](https://buttercup.pw) product series.
 
@@ -35,3 +35,8 @@ const MyComponent = () => (
 - Password Strength Indicator (`Meter`)
 - `Input`
 - `Center`, `SmallType`
+
+## Testing
+Run `npm t` to execute the tests.
+
+To update component snapshots run `npm run test:updateSnapshots`.
