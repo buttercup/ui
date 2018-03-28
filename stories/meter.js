@@ -32,11 +32,7 @@ export default class MeterStory extends Component {
   render() {
     return (
       <View>
-        <Input
-          placeholder="Type here..."
-          onChange={this.handleChange}
-          value={this.state.value}
-        />
+        <Input placeholder="Type here..." onChange={this.handleChange} value={this.state.value} />
         <Meter input={this.state.input} />
       </View>
     );
