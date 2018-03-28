@@ -28,13 +28,58 @@ const MyComponent = () => (
 );
 ```
 
-## List of Components
+## Available Components
 
-- `Button`
-- Password Generator Popup (`Generator`)
-- Password Strength Indicator (`Meter`)
-- `Input`
-- `Center`, `SmallType`
+### Password generator
+The password generator comes bundled in a popover, which can be used like so:
+
+```javascript
+import { Generator } from "@buttercup/ui";
+
+const Comp = () => (
+  <Generator
+    onGenerate={handleGenerated}
+    isOpen={isOpen}
+  >
+    <div>
+      <Button onClick={toggleGenerator}>
+        Generate Password
+      </Button>
+    </div>
+  </Generator>
+);
+```
+
+### Password Strength Indicator
+The indicator can be used like so:
+
+```javascript
+import { Meter } from "@buttercup/ui";
+
+const Comp = () => (
+  <Meter input={inputValue} />
+);
+```
+
+### Button
+Available as `Button`.
+
+TBA.
+
+### Input
+Available as `Input`.
+
+TBA.
+
+### Center
+Available as `Center`.
+
+TBA.
+
+### SmallType
+Available as `SmallType`.
+
+TBA.
 
 ## Testing
 Run `npm t` to execute the tests.
