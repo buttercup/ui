@@ -207,7 +207,7 @@ export class GeneratorUserInterface extends Component {
 
   render() {
     return (
-      <Body>
+      <Body className={this.props.className}>
         <PasswordContainer role="content" onClick={e => selectElementContents(e.target)}>
           <Password value={this.state.password} />
         </PasswordContainer>
@@ -314,7 +314,7 @@ export class Generator extends GeneratorUserInterface {
   render() {
     const { children, isOpen, className, ...rest } = this.props;
     return (
-      <StyledPopover isOpen={isOpen} body={super.render()} {...rest}>
+      <StyledPopover isOpen={isOpen} body={super.render()} className={className} {...rest}>
         {children}
       </StyledPopover>
     );
