@@ -10,6 +10,9 @@ const Digits = styled(ColoredDigits)`
     color: red;
   }
 `;
+const GeneratorUserInterfaceNoCorners = styled(GeneratorUserInterface)`
+  border-radius: 0;
+`;
 
 storiesOf('Button', module).add('styles', () => (
   <div>
@@ -88,6 +91,11 @@ storiesOf('Generator', module)
   .add('body only', () => (
     <div>
       <GeneratorUserInterface />
+    </div>
+  ))
+  .add('body only, no corners', () => (
+    <div>
+      <GeneratorUserInterfaceNoCorners />
     </div>
   ));
 

@@ -7,7 +7,9 @@ exports[`generator initial render remains consistent 1`] = `
 >
   <Styled(Popover)
     body={
-      <styled.div>
+      <styled.div
+        className={undefined}
+      >
         <styled.pre
           onClick={[Function]}
           role="content"
@@ -291,7 +293,9 @@ exports[`generator initial render remains consistent 1`] = `
         </body>
       }
       body={
-        <styled.div>
+        <styled.div
+          className={undefined}
+        >
           <styled.pre
             onClick={[Function]}
             role="content"
