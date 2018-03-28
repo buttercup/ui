@@ -21,10 +21,7 @@ class Meter extends Component {
     const { input, className } = this.props;
     const result = zxcvbn(input);
     return (
-      <div
-        onClick={() => this.setState({ details: !this.state.details })}
-        className={className}
-      >
+      <div onClick={() => this.setState({ details: !this.state.details })} className={className}>
         <div className="wrapper">
           <div
             className={cx('barContent', `level${result.score}`)}
@@ -38,8 +35,7 @@ class Meter extends Component {
           style={{
             display:
               this.state.details &&
-              (result.feedback.warning ||
-                result.feedback.suggestions.length > 0)
+              (result.feedback.warning || result.feedback.suggestions.length > 0)
                 ? 'block'
                 : 'none'
           }}

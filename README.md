@@ -50,6 +50,8 @@ const Comp = () => (
 );
 ```
 
+If you just require the _body_ of the generator, you can import `GeneratorUserInterface` instead.
+
 ### Password Strength Indicator
 The indicator can be used like so:
 
