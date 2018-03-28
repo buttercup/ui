@@ -1,5 +1,6 @@
 .vscode
 .history
+.DS_Store
 dist
 storybook-static
 node_modules
