@@ -27,7 +27,7 @@ const Password = styled(ColoredDigits)`
   }
 `;
 
-export class GeneratorBase extends Component {
+export class GeneratorUserInterface extends Component {
   static propTypes = {
     onGenerate: PropTypes.func.isRequired
   };
@@ -135,7 +135,7 @@ export class GeneratorBase extends Component {
     }
   }
 
-  renderBody() {
+  render() {
     return (
       <div className={this.props.className}>
         <pre
@@ -237,18 +237,20 @@ export class GeneratorBase extends Component {
       </div>
     );
   }
+}
 
+class GeneratorWithPopover extends GeneratorUserInterface {
   render() {
     const { children, isOpen, className, ...rest } = this.props;
     return (
-      <StyledPopover isOpen={isOpen} body={this.renderBody()} {...rest}>
+      <StyledPopover isOpen={isOpen} body={super.render()} {...rest}>
         {children}
       </StyledPopover>
     );
   }
 }
 
-export const Generator = styled(GeneratorBase)`
+export const Generator = styled(GeneratorWithPopover)`
   width: 300px;
   background: ${colors.DARK_SECONDARY};
   padding: 12px;
