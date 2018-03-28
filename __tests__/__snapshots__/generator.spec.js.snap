@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`generator initial render remains consistent 1`] = `
-<Styled(GeneratorBase)
+<Styled(GeneratorWithPopover)
   isOpen={true}
 >
-  <GeneratorBase
+  <GeneratorWithPopover
     className="sc-bZQynM kjFXFP"
     isOpen={true}
     onGenerate={[Function]}
@@ -620,6 +620,6 @@ exports[`generator initial render remains consistent 1`] = `
         </div>
       </Popover>
     </Styled(Popover)>
-  </GeneratorBase>
-</Styled(GeneratorBase)>
+  </GeneratorWithPopover>
+</Styled(GeneratorWithPopover)>
 `;
