@@ -1,32 +1,307 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`generator initial render remains consistent 1`] = `
-<Styled(GeneratorWithPopover)
+<Generator
   isOpen={true}
+  onGenerate={[Function]}
 >
-  <GeneratorWithPopover
-    className="sc-bZQynM kjFXFP"
+  <Styled(Popover)
+    body={
+      <styled.div>
+        <styled.pre
+          onClick={[Function]}
+          role="content"
+        >
+          <Styled(ColoredDigits)
+            value=""
+          />
+        </styled.pre>
+        <styled.div>
+          <styled.div>
+            <input
+              checked={true}
+              onChange={[Function]}
+              type="radio"
+            />
+             
+            Characters
+          </styled.div>
+          <styled.div>
+            <input
+              checked={false}
+              onChange={[Function]}
+              type="radio"
+            />
+             
+            Words
+          </styled.div>
+        </styled.div>
+        <styled.fieldset>
+          <styled.legend>
+            Options
+          </styled.legend>
+          <styled.div>
+            <input
+              max="50"
+              min="10"
+              onChange={[Function]}
+              type="range"
+              value={20}
+            />
+            <span />
+          </styled.div>
+          <styled.div>
+            <input
+              checked={true}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Uppercase Letters
+          </styled.div>
+          <styled.div>
+            <input
+              checked={true}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Lowercase Letters
+          </styled.div>
+          <styled.div>
+            <input
+              checked={true}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Digits
+          </styled.div>
+          <styled.div>
+            <input
+              checked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Space
+          </styled.div>
+          <styled.div>
+            <input
+              checked={true}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Underscore & Dash
+          </styled.div>
+          <styled.div>
+            <input
+              checked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+             
+            Symbols
+          </styled.div>
+        </styled.fieldset>
+        <styled.div>
+          <Styled(BaseButton)
+            onClick={[Function]}
+            primary={true}
+          >
+            Generate
+          </Styled(BaseButton)>
+          <Styled(BaseButton)
+            dark={true}
+            onClick={[Function]}
+          >
+            Use This
+          </Styled(BaseButton)>
+        </styled.div>
+      </styled.div>
+    }
     isOpen={true}
     onGenerate={[Function]}
   >
-    <Styled(Popover)
+    <Popover
+      appendTarget={
+        <body>
+          <div
+            class="Popover Popover-above sc-ifAKCX bhoBrh"
+            style="position: absolute; top: -4px; left: -25px; display: flex; opacity: 1;"
+          >
+            <div
+              class="Popover-body"
+            >
+              <div
+                class="sc-bZQynM dHqpWy"
+              >
+                <pre
+                  class="sc-gzVnrw hYukHf"
+                  role="content"
+                >
+                  <span
+                    class="sc-EHOje jFNwUJ"
+                  >
+                    <span
+                      class="str"
+                    />
+                  </span>
+                </pre>
+                <div
+                  class="sc-htoDjs bcFUFu"
+                >
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="radio"
+                      value="on"
+                    />
+                     
+                    Characters
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="radio"
+                      value="on"
+                    />
+                     
+                    Words
+                  </div>
+                </div>
+                <fieldset
+                  class="sc-gZMcBi eQdbrd"
+                >
+                  <legend
+                    class="sc-gqjmRU hyAZFF"
+                  >
+                    Options
+                  </legend>
+                  <div
+                    class="sc-iwsKbI cPIsdT"
+                  >
+                    <input
+                      max="50"
+                      min="10"
+                      type="range"
+                      value="20"
+                    />
+                    <span />
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Uppercase Letters
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Lowercase Letters
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Digits
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Space
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Underscore & Dash
+                  </div>
+                  <div
+                    class="sc-dnqmqq jPiRWc"
+                  >
+                    <input
+                      type="checkbox"
+                      value="on"
+                    />
+                     
+                    Symbols
+                  </div>
+                </fieldset>
+                <div
+                  class="sc-VigVT dpurnc"
+                >
+                  <button
+                    class="sc-bdVaJa cuAuCI"
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                  <button
+                    class="sc-bdVaJa ihgpPH"
+                    type="button"
+                  >
+                    Use This
+                  </button>
+                </div>
+              </div>
+            </div>
+            <svg
+              class="Popover-tip"
+              height="7"
+              width="14"
+            >
+              <polygon
+                class="Popover-tipShape"
+                points="0,0 7,7, 14,0"
+              />
+            </svg>
+            <object
+              class="resize-sensor"
+              data="about:blank"
+              style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+              type="text/html"
+            />
+          </div>
+        </body>
+      }
       body={
-        <div
-          className="sc-bZQynM kjFXFP"
-        >
-          <pre
-            className="password"
+        <styled.div>
+          <styled.pre
             onClick={[Function]}
             role="content"
           >
             <Styled(ColoredDigits)
               value=""
             />
-          </pre>
-          <div
-            className="types"
-          >
-            <label>
+          </styled.pre>
+          <styled.div>
+            <styled.div>
               <input
                 checked={true}
                 onChange={[Function]}
@@ -34,8 +309,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Characters
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={false}
                 onChange={[Function]}
@@ -43,17 +318,13 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Words
-            </label>
-          </div>
-          <fieldset
-            className="set"
-          >
-            <legend>
+            </styled.div>
+          </styled.div>
+          <styled.fieldset>
+            <styled.legend>
               Options
-            </legend>
-            <label
-              className="rangeLabel"
-            >
+            </styled.legend>
+            <styled.div>
               <input
                 max="50"
                 min="10"
@@ -62,8 +333,8 @@ exports[`generator initial render remains consistent 1`] = `
                 value={20}
               />
               <span />
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={true}
                 onChange={[Function]}
@@ -71,8 +342,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Uppercase Letters
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={true}
                 onChange={[Function]}
@@ -80,8 +351,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Lowercase Letters
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={true}
                 onChange={[Function]}
@@ -89,8 +360,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Digits
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={false}
                 onChange={[Function]}
@@ -98,8 +369,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Space
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={true}
                 onChange={[Function]}
@@ -107,8 +378,8 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Underscore & Dash
-            </label>
-            <label>
+            </styled.div>
+            <styled.div>
               <input
                 checked={false}
                 onChange={[Function]}
@@ -116,11 +387,9 @@ exports[`generator initial render remains consistent 1`] = `
               />
                
               Symbols
-            </label>
-          </fieldset>
-          <div
-            className="buttons"
-          >
+            </styled.div>
+          </styled.fieldset>
+          <styled.div>
             <Styled(BaseButton)
               onClick={[Function]}
               primary={true}
@@ -133,493 +402,266 @@ exports[`generator initial render remains consistent 1`] = `
             >
               Use This
             </Styled(BaseButton)>
-          </div>
-        </div>
+          </styled.div>
+        </styled.div>
       }
+      className="sc-ifAKCX bhoBrh"
+      enterExitTransitionDurationMs={500}
       isOpen={true}
+      offset={4}
       onGenerate={[Function]}
+      onOuterAction={[Function]}
+      place={null}
+      preferPlace={null}
+      refreshIntervalMs={200}
+      tipSize={7}
     >
-      <Popover
-        appendTarget={
-          <body>
+      <a />
+      <div
+        className="Popover Popover-above sc-ifAKCX bhoBrh"
+        style={
+          Object {
+            "display": "flex",
+            "left": 0,
+            "position": "absolute",
+            "top": 0,
+          }
+        }
+      >
+        <div
+          className="Popover-body"
+        >
+          <styled.div>
             <div
-              class="Popover Popover-above sc-ifAKCX dhJhqC"
-              style="position: absolute; top: -4px; left: -25px; display: flex; opacity: 1;"
+              className="sc-bZQynM dHqpWy"
             >
-              <div
-                class="Popover-body"
+              <styled.pre
+                onClick={[Function]}
+                role="content"
               >
-                <div
-                  class="sc-bZQynM kjFXFP"
+                <pre
+                  className="sc-gzVnrw hYukHf"
+                  onClick={[Function]}
+                  role="content"
                 >
-                  <pre
-                    class="password"
-                    role="content"
+                  <Styled(ColoredDigits)
+                    value=""
                   >
-                    <span
-                      class="sc-EHOje jFNwUJ"
+                    <ColoredDigits
+                      className="sc-EHOje jFNwUJ"
+                      value=""
                     >
                       <span
-                        class="str"
-                      />
-                    </span>
-                  </pre>
-                  <div
-                    class="types"
-                  >
-                    <label>
+                        className="sc-EHOje jFNwUJ"
+                      >
+                        <span
+                          className="str"
+                          key="0"
+                        />
+                      </span>
+                    </ColoredDigits>
+                  </Styled(ColoredDigits)>
+                </pre>
+              </styled.pre>
+              <styled.div>
+                <div
+                  className="sc-htoDjs bcFUFu"
+                >
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={true}
+                        onChange={[Function]}
                         type="radio"
-                        value="on"
                       />
                        
                       Characters
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={false}
+                        onChange={[Function]}
                         type="radio"
-                        value="on"
                       />
                        
                       Words
-                    </label>
-                  </div>
-                  <fieldset
-                    class="set"
-                  >
-                    <legend>
+                    </div>
+                  </styled.div>
+                </div>
+              </styled.div>
+              <styled.fieldset>
+                <fieldset
+                  className="sc-gZMcBi eQdbrd"
+                >
+                  <styled.legend>
+                    <legend
+                      className="sc-gqjmRU hyAZFF"
+                    >
                       Options
                     </legend>
-                    <label
-                      class="rangeLabel"
+                  </styled.legend>
+                  <styled.div>
+                    <div
+                      className="sc-iwsKbI cPIsdT"
                     >
                       <input
                         max="50"
                         min="10"
+                        onChange={[Function]}
                         type="range"
-                        value="20"
+                        value={20}
                       />
                       <span />
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={true}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Uppercase Letters
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={true}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Lowercase Letters
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={true}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Digits
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={false}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Space
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={true}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Underscore & Dash
-                    </label>
-                    <label>
+                    </div>
+                  </styled.div>
+                  <styled.div>
+                    <div
+                      className="sc-dnqmqq jPiRWc"
+                    >
                       <input
+                        checked={false}
+                        onChange={[Function]}
                         type="checkbox"
-                        value="on"
                       />
                        
                       Symbols
-                    </label>
-                  </fieldset>
-                  <div
-                    class="buttons"
-                  >
-                    <button
-                      class="sc-bdVaJa cuAuCI"
-                      type="button"
-                    >
-                      Generate
-                    </button>
-                    <button
-                      class="sc-bdVaJa ihgpPH"
-                      type="button"
-                    >
-                      Use This
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <svg
-                class="Popover-tip"
-                height="7"
-                width="14"
-              >
-                <polygon
-                  class="Popover-tipShape"
-                  points="0,0 7,7, 14,0"
-                />
-              </svg>
-              <object
-                class="resize-sensor"
-                data="about:blank"
-                style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
-                type="text/html"
-              />
-            </div>
-          </body>
-        }
-        body={
-          <div
-            className="sc-bZQynM kjFXFP"
-          >
-            <pre
-              className="password"
-              onClick={[Function]}
-              role="content"
-            >
-              <Styled(ColoredDigits)
-                value=""
-              />
-            </pre>
-            <div
-              className="types"
-            >
-              <label>
-                <input
-                  checked={true}
-                  onChange={[Function]}
-                  type="radio"
-                />
-                 
-                Characters
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  onChange={[Function]}
-                  type="radio"
-                />
-                 
-                Words
-              </label>
-            </div>
-            <fieldset
-              className="set"
-            >
-              <legend>
-                Options
-              </legend>
-              <label
-                className="rangeLabel"
-              >
-                <input
-                  max="50"
-                  min="10"
-                  onChange={[Function]}
-                  type="range"
-                  value={20}
-                />
-                <span />
-              </label>
-              <label>
-                <input
-                  checked={true}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Uppercase Letters
-              </label>
-              <label>
-                <input
-                  checked={true}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Lowercase Letters
-              </label>
-              <label>
-                <input
-                  checked={true}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Digits
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Space
-              </label>
-              <label>
-                <input
-                  checked={true}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Underscore & Dash
-              </label>
-              <label>
-                <input
-                  checked={false}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                 
-                Symbols
-              </label>
-            </fieldset>
-            <div
-              className="buttons"
-            >
-              <Styled(BaseButton)
-                onClick={[Function]}
-                primary={true}
-              >
-                Generate
-              </Styled(BaseButton)>
-              <Styled(BaseButton)
-                dark={true}
-                onClick={[Function]}
-              >
-                Use This
-              </Styled(BaseButton)>
-            </div>
-          </div>
-        }
-        className="sc-ifAKCX dhJhqC"
-        enterExitTransitionDurationMs={500}
-        isOpen={true}
-        offset={4}
-        onGenerate={[Function]}
-        onOuterAction={[Function]}
-        place={null}
-        preferPlace={null}
-        refreshIntervalMs={200}
-        tipSize={7}
-      >
-        <a />
-        <div
-          className="Popover Popover-above sc-ifAKCX dhJhqC"
-          style={
-            Object {
-              "display": "flex",
-              "left": 0,
-              "position": "absolute",
-              "top": 0,
-            }
-          }
-        >
-          <div
-            className="Popover-body"
-          >
-            <div
-              className="sc-bZQynM kjFXFP"
-            >
-              <pre
-                className="password"
-                onClick={[Function]}
-                role="content"
-              >
-                <Styled(ColoredDigits)
-                  value=""
+                    </div>
+                  </styled.div>
+                </fieldset>
+              </styled.fieldset>
+              <styled.div>
+                <div
+                  className="sc-VigVT dpurnc"
                 >
-                  <ColoredDigits
-                    className="sc-EHOje jFNwUJ"
-                    value=""
-                  >
-                    <span
-                      className="sc-EHOje jFNwUJ"
-                    >
-                      <span
-                        className="str"
-                        key="0"
-                      />
-                    </span>
-                  </ColoredDigits>
-                </Styled(ColoredDigits)>
-              </pre>
-              <div
-                className="types"
-              >
-                <label>
-                  <input
-                    checked={true}
-                    onChange={[Function]}
-                    type="radio"
-                  />
-                   
-                  Characters
-                </label>
-                <label>
-                  <input
-                    checked={false}
-                    onChange={[Function]}
-                    type="radio"
-                  />
-                   
-                  Words
-                </label>
-              </div>
-              <fieldset
-                className="set"
-              >
-                <legend>
-                  Options
-                </legend>
-                <label
-                  className="rangeLabel"
-                >
-                  <input
-                    max="50"
-                    min="10"
-                    onChange={[Function]}
-                    type="range"
-                    value={20}
-                  />
-                  <span />
-                </label>
-                <label>
-                  <input
-                    checked={true}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Uppercase Letters
-                </label>
-                <label>
-                  <input
-                    checked={true}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Lowercase Letters
-                </label>
-                <label>
-                  <input
-                    checked={true}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Digits
-                </label>
-                <label>
-                  <input
-                    checked={false}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Space
-                </label>
-                <label>
-                  <input
-                    checked={true}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Underscore & Dash
-                </label>
-                <label>
-                  <input
-                    checked={false}
-                    onChange={[Function]}
-                    type="checkbox"
-                  />
-                   
-                  Symbols
-                </label>
-              </fieldset>
-              <div
-                className="buttons"
-              >
-                <Styled(BaseButton)
-                  onClick={[Function]}
-                  primary={true}
-                >
-                  <BaseButton
-                    className="sc-bdVaJa cuAuCI"
+                  <Styled(BaseButton)
                     onClick={[Function]}
                     primary={true}
                   >
-                    <button
+                    <BaseButton
                       className="sc-bdVaJa cuAuCI"
                       onClick={[Function]}
-                      type="button"
+                      primary={true}
                     >
-                      Generate
-                    </button>
-                  </BaseButton>
-                </Styled(BaseButton)>
-                <Styled(BaseButton)
-                  dark={true}
-                  onClick={[Function]}
-                >
-                  <BaseButton
-                    className="sc-bdVaJa ihgpPH"
+                      <button
+                        className="sc-bdVaJa cuAuCI"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Generate
+                      </button>
+                    </BaseButton>
+                  </Styled(BaseButton)>
+                  <Styled(BaseButton)
                     dark={true}
                     onClick={[Function]}
                   >
-                    <button
+                    <BaseButton
                       className="sc-bdVaJa ihgpPH"
+                      dark={true}
                       onClick={[Function]}
-                      type="button"
                     >
-                      Use This
-                    </button>
-                  </BaseButton>
-                </Styled(BaseButton)>
-              </div>
+                      <button
+                        className="sc-bdVaJa ihgpPH"
+                        onClick={[Function]}
+                        type="button"
+                      >
+                        Use This
+                      </button>
+                    </BaseButton>
+                  </Styled(BaseButton)>
+                </div>
+              </styled.div>
             </div>
-          </div>
-          <Tip
-            direction="down"
-            size={7}
-          >
-            <svg
-              className="Popover-tip"
-              height={7}
-              width={14}
-            >
-              <polygon
-                className="Popover-tipShape"
-                points="0,0 7,7, 14,0"
-              />
-            </svg>
-          </Tip>
+          </styled.div>
         </div>
-      </Popover>
-    </Styled(Popover)>
-  </GeneratorWithPopover>
-</Styled(GeneratorWithPopover)>
+        <Tip
+          direction="down"
+          size={7}
+        >
+          <svg
+            className="Popover-tip"
+            height={7}
+            width={14}
+          >
+            <polygon
+              className="Popover-tipShape"
+              points="0,0 7,7, 14,0"
+            />
+          </svg>
+        </Tip>
+      </div>
+    </Popover>
+  </Styled(Popover)>
+</Generator>
 `;
