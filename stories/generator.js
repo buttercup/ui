@@ -14,7 +14,7 @@ const View = styled.div`
   text-align: center;
 `;
 
-export default class GeneratorTrigger extends Component {
+export class GeneratorTrigger extends Component {
   state = {
     isOpen: false
   };
@@ -30,11 +30,7 @@ export default class GeneratorTrigger extends Component {
 
   render() {
     return (
-      <Generator
-        onGenerate={this.handleGenerated}
-        isOpen={this.state.isOpen}
-        {...this.props}
-      >
+      <Generator onGenerate={this.handleGenerated} isOpen={this.state.isOpen} {...this.props}>
         <View>
           <Button
             primary
@@ -49,3 +45,5 @@ export default class GeneratorTrigger extends Component {
     );
   }
 }
+
+export { GeneratorUserInterface } from '../src';

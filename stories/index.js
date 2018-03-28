@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, action, linkTo } from '@storybook/react';
 import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
-import GeneratorTrigger from './generator';
+import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
 
 const Digits = styled(ColoredDigits)`
@@ -84,12 +84,15 @@ storiesOf('Generator', module)
         <GeneratorTrigger />
       </div>
     </div>
+  ))
+  .add('body only', () => (
+    <div>
+      <GeneratorUserInterface />
+    </div>
   ));
 
 storiesOf('Strength Meter', module).add('default', () => <MeterStory />);
 
 storiesOf('Colored Digits', module)
   .add('styled digits', () => <Digits value="Hello123HowAre1You" />)
-  .add('concealed digits', () => (
-    <Digits value="Hello123HowAre1You" concealed />
-  ));
+  .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
