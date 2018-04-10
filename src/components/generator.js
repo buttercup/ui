@@ -240,7 +240,7 @@ export class GeneratorUserInterface extends Component {
                 max="50"
                 onChange={e => this.changeLength(e)}
               />
-              <span>{this.state.length}</span>
+              <span>{this.state.config.randomCharacters.length}</span>
             </GeneratorRangeLabel>
             <GeneratorLabel>
               <input
