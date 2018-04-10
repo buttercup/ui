@@ -50,7 +50,9 @@ exports[`generator initial render remains consistent 1`] = `
               type="range"
               value={20}
             />
-            <span />
+            <span>
+              20
+            </span>
           </styled.div>
           <styled.div>
             <input
@@ -192,7 +194,9 @@ exports[`generator initial render remains consistent 1`] = `
                       type="range"
                       value="20"
                     />
-                    <span />
+                    <span>
+                      20
+                    </span>
                   </div>
                   <div
                     class="sc-dnqmqq jPiRWc"
@@ -336,7 +340,9 @@ exports[`generator initial render remains consistent 1`] = `
                 type="range"
                 value={20}
               />
-              <span />
+              <span>
+                20
+              </span>
             </styled.div>
             <styled.div>
               <input
@@ -521,7 +527,9 @@ exports[`generator initial render remains consistent 1`] = `
                         type="range"
                         value={20}
                       />
-                      <span />
+                      <span>
+                        20
+                      </span>
                     </div>
                   </styled.div>
                   <styled.div>
