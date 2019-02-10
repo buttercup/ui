@@ -4,3 +4,4 @@ export * from './components/generator';
 export * from './components/form';
 export { default as Meter } from './components/meter';
 export * from './components/colored-digits';
+export { default as Vault } from './components/vault/Vault';
