@@ -12,7 +12,7 @@ export const EntryFacadeField = PropTypes.shape({
   title: PropTypes.string.isRequired,
   field: PropTypes.oneOf(['property', 'attribute']),
   property: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   secret: PropTypes.bool,
   multiline: PropTypes.bool,
   formatting: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),

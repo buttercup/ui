@@ -51,10 +51,7 @@ export default class EntriesList extends Component {
           <Entry
             key={entry.id}
             onClick={() => this.handleEntryClick(entry.id)}
-            selected={
-              this.state.selectedEntryID === entry.id ||
-              (!this.state.selectedEntryID && entryIndex === 0)
-            }
+            selected={this.state.selectedEntryID === entry.id}
           >
             {title(entry)}
           </Entry>
