@@ -24,6 +24,7 @@ function createArchive() {
 }
 
 const View = styled.div`
+  height: 500px;
   width: 100%;
 `;
 

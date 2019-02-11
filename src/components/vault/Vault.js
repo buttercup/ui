@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import GroupsList from './GroupsList';
 import EntriesList from './EntriesList';
@@ -9,6 +10,7 @@ const EntryDetails = styled(EntryDetailsView)`
   flex-grow: 2;
 `;
 const VaultContainer = styled.div`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -23,7 +25,8 @@ export default class Vault extends Component {
 
   state = {
     currentEntries: [],
-    selectedEntryID: null
+    selectedEntryID: null,
+    selectedGroupID: null
   };
 
   componentDidMount() {
@@ -36,6 +39,11 @@ export default class Vault extends Component {
       : null;
   }
 
+  handleAddEntry(type) {
+    const facade = createEntryFacade();
+    facade.parentID = this.state.selectedGroupID;
+  }
+
   handleEntryChange(entryID) {
     this.setState({
       selectedEntryID: entryID
@@ -45,7 +53,8 @@ export default class Vault extends Component {
   handleGroupChange(groupID) {
     const targetGroupID = groupID ? groupID : this.props.vault.groups[0].id;
     this.setState({
-      currentEntries: this.props.vault.entries.filter(entry => entry.parentID === targetGroupID)
+      currentEntries: this.props.vault.entries.filter(entry => entry.parentID === targetGroupID),
+      selectedGroupID: targetGroupID
     });
   }
 
@@ -53,7 +62,11 @@ export default class Vault extends Component {
     return (
       <VaultContainer>
         <GroupsList groups={this.props.vault.groups} onSelectGroup={::this.handleGroupChange} />
-        <EntriesList entries={this.state.currentEntries} onSelectEntry={::this.handleEntryChange} />
+        <EntriesList
+          entries={this.state.currentEntries}
+          onAddEntry={::this.handleAddEntry}
+          onSelectEntry={::this.handleEntryChange}
+        />
         <EntryDetails entry={this.getSelectedEntry()} />
       </VaultContainer>
     );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { EntryFacade } from './props';
+import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -13,9 +14,15 @@ function title(entry) {
 const EntriesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: stretch;
   min-width: 25%;
+`;
+const Entries = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 `;
 const Entry = styled.div`
   padding: 6px 10px;
@@ -23,20 +30,34 @@ const Entry = styled.div`
   cursor: pointer;
   background-color: ${props => (props.selected ? '#ccc' : '#fff')};
 `;
+const Controls = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`;
 
 export default class EntriesList extends Component {
   static propTypes = {
     entries: PropTypes.arrayOf(EntryFacade),
+    onAddEntry: PropTypes.func.isRequired,
     onSelectEntry: PropTypes.func.isRequired
   };
 
   static defaultProps = {
+    onAddEntry: () => {},
     onSelectEntry: () => {}
   };
 
   state = {
     selectedEntryID: null
   };
+
+  handleAddEntryClick(event, type = defaultEntryType) {
+    event.preventDefault();
+    this.props.onAddEntry(type);
+  }
 
   handleEntryClick(entryID) {
     this.setState({
@@ -48,15 +69,28 @@ export default class EntriesList extends Component {
   render() {
     return (
       <EntriesContainer>
-        <For each="entry" of={this.props.entries} index="entryIndex">
-          <Entry
-            key={entry.id}
-            onClick={() => this.handleEntryClick(entry.id)}
-            selected={this.state.selectedEntryID === entry.id}
-          >
-            {title(entry)}
-          </Entry>
-        </For>
+        <Entries>
+          <For each="entry" of={this.props.entries} index="entryIndex">
+            <Entry
+              key={entry.id}
+              onClick={() => this.handleEntryClick(entry.id)}
+              selected={this.state.selectedEntryID === entry.id}
+            >
+              {title(entry)}
+            </Entry>
+          </For>
+        </Entries>
+        <Controls>
+          <button onClick={::this.handleAddEntryClick}>Add Entry</button>
+          <With entryType={entryTypes.find(item => item.type === 'note')}>
+            <button
+              onClick={event => this.handleAddEntryClick(event, entryTypes.type)}
+              title={entryTypes.description}
+            >
+              Add '{entryType.title}'
+            </button>
+          </With>
+        </Controls>
       </EntriesContainer>
     );
   }
