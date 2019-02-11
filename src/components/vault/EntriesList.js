@@ -15,6 +15,7 @@ const EntriesContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  min-width: 25%;
 `;
 const Entry = styled.div`
   padding: 6px 10px;
