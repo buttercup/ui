@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { PureComponent } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
 import { generatePassword, getConfig } from '@buttercup/generator';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
@@ -10,7 +10,7 @@ import { ColoredDigits } from './colored-digits';
 
 const NOOP = () => {};
 
-const StyledPopover = styled(Popover)`
+const PopoverStyles = createGlobalStyle`
   .Popover-tip {
     fill: ${colors.DARK_SECONDARY};
   }
@@ -103,7 +103,7 @@ const GeneratorControls = styled.div`
 /**
  * Generator component
  */
-export class GeneratorUserInterface extends Component {
+export class GeneratorUserInterface extends PureComponent {
   static propTypes = {
     onGenerate: PropTypes.func.isRequired
   };
@@ -310,13 +310,14 @@ export class GeneratorUserInterface extends Component {
  * @augments GeneratorUserInterface
  * @see GeneratorUserInterface
  */
-export class Generator extends GeneratorUserInterface {
-  render() {
-    const { children, isOpen, className, ...rest } = this.props;
-    return (
-      <StyledPopover isOpen={isOpen} body={super.render()} className={className} {...rest}>
+export const Generator = ({ children, isOpen, className, ...rest }) => {
+  const View = <GeneratorUserInterface {...rest} />;
+  return (
+    <>
+      <PopoverStyles />
+      <Popover isOpen={isOpen} body={View} className={className}>
         {children}
-      </StyledPopover>
-    );
-  }
-}
+      </Popover>
+    </>
+  );
+};
