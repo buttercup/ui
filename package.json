@@ -9,7 +9,6 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "build-storybook": "build-storybook",
-    "deploy": "./deploy",
     "format": "prettier --write '{src,stories,__tests__}/**/*.js'",
     "precommit": "lint-staged",
     "prepublish": "npm run build",
