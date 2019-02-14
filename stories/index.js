@@ -1,5 +1,6 @@
 import React from 'react';
-import { storiesOf, action, linkTo } from '@storybook/react';
+import { storiesOf, linkTo } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
