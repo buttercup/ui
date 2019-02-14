@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
+import FormattedInput from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
 
 function title(entry) {
@@ -52,8 +53,32 @@ export default class EntryDetails extends Component {
   };
 
   state = {
-    editing: false
+    editing: false,
+    editingValues: {}
   };
+
+  cancelEditing() {
+    this.setState({
+      editing: false,
+      editingValues: []
+    });
+  }
+
+  saveEditing() {
+    this.props.entry.fields = this.state.editingValues;
+    this.setState({
+      editing: false,
+      editingValues: []
+    });
+  }
+
+  startEditing() {
+    const clonedFields = JSON.parse(JSON.stringify(this.props.entry.fields));
+    this.setState({
+      editing: true,
+      editingValues: clonedFields
+    });
+  }
 
   render() {
     return (
@@ -76,7 +101,7 @@ export default class EntryDetails extends Component {
           <With
             fields={
               this.state.editing
-                ? this.props.entry.fields
+                ? this.state.editingValues
                 : this.props.entry.fields.filter(
                     item => item.field === 'property' && item.property !== 'title'
                   )
@@ -87,15 +112,42 @@ export default class EntryDetails extends Component {
                 <EntryProperty>{field.title}</EntryProperty>
                 <EntryPropertyValue>
                   <Choose>
-                    <When condition={field.multiline}>
-                      <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                    <When condition={this.state.editing}>
+                      <Choose>
+                        <When condition={field.multiline}>
+                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                        </When>
+                        <Otherwise>
+                          <FormattedInput
+                            value={field.value}
+                            onChange={(formattedValue, raw) => {
+                              field.value = raw;
+                            }}
+                            placeholder={field.title}
+                          />
+                        </Otherwise>
+                      </Choose>
                     </When>
-                    <Otherwise>{field.value}</Otherwise>
+                    <Otherwise>
+                      <Choose>
+                        <When condition={field.multiline}>
+                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                        </When>
+                        <Otherwise>{field.value}</Otherwise>
+                      </Choose>
+                    </Otherwise>
                   </Choose>
                 </EntryPropertyValue>
               </EntryPropertyRow>
             </For>
           </With>
+          <If condition={!this.state.editing}>
+            <button onClick={::this.startEditing}>Edit</button>
+          </If>
+          <If condition={this.state.editing}>
+            <button onClick={::this.saveEditing}>Save</button>
+            <button onClick={::this.cancelEditing}>Cancel</button>
+          </If>
         </EntryPropertiesList>
       </div>
     );
