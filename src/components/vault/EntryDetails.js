@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
 import FormattedInput from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
+import { withEntry } from './Vault';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -49,7 +50,7 @@ const ValueWithNewLines = styled.span`
   white-space: pre-line;
 `;
 
-export default class EntryDetails extends Component {
+class EntryDetails extends Component {
   static propTypes = {
     entry: EntryFacade,
     editing: PropTypes.bool.isRequired,
@@ -146,3 +147,5 @@ export default class EntryDetails extends Component {
     );
   }
 }
+
+export default withEntry(EntryDetails);

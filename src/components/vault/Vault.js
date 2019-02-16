@@ -1,27 +1,14 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+
 import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
 import equals from 'fast-deep-equal';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
-import GroupsList from './GroupsList';
-import EntriesList from './EntriesList';
-import EntryDetailsView from './EntryDetails';
 
-const EntryDetails = styled(EntryDetailsView)`
-  flex-grow: 2;
-`;
-const VaultContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
-`;
+export const VaultContext = React.createContext();
 
-export default class Vault extends Component {
+export class VaultProvider extends Component {
   static propTypes = {
     onUpdate: PropTypes.func.isRequired,
     vault: VaultFacade.isRequired
@@ -47,19 +34,19 @@ export default class Vault extends Component {
       : [];
   }
 
-  addEntry(type) {
+  addEntry = type => {
     const facade = createEntryFacade(null, { type });
     facade.parentID = this.state.selectedGroupID;
     this.setState({
       editingEntry: facade
     });
-  }
+  };
 
-  cancelEntryChanges() {
+  cancelEntryChanges = () => {
     this.setState({
       editingEntry: null
     });
-  }
+  };
 
   componentDidMount() {
     this.selectGroup(this.state.vault.groups[0].id);
@@ -73,33 +60,28 @@ export default class Vault extends Component {
     }
   }
 
-  getSelectedEntry() {
+  get selectedEntry() {
     return this.state.selectedEntryID
       ? this.state.vault.entries.find(entry => entry.id === this.state.selectedEntryID)
       : null;
   }
 
   render() {
-    return (
-      <VaultContainer>
-        <GroupsList groups={this.state.vault.groups} onSelectGroup={::this.selectGroup} />
-        <EntriesList
-          entries={this.currentEntries}
-          onAddEntry={::this.addEntry}
-          onSelectEntry={::this.selectEntry}
-        />
-        <EntryDetails
-          entry={this.state.editingEntry || this.getSelectedEntry()}
-          editing={!!this.state.editingEntry}
-          onCancelEdit={::this.cancelEntryChanges}
-          onEdit={::this.startEditingEntry}
-          onSaveEdit={::this.saveEntryChanges}
-        />
-      </VaultContainer>
-    );
+    const context = {
+      ...this.state,
+      currentEntries: this.currentEntries,
+      onSelectGroup: this.selectGroup,
+      onAddEntry: this.addEntry,
+      onSelectEntry: this.selectEntry,
+      selectedEntry: this.selectedEntry,
+      onCancelEdit: this.cancelEntryChanges,
+      onEdit: this.startEditingEntry,
+      onSaveEdit: this.saveEntryChanges
+    };
+    return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
   }
 
-  saveEntryChanges() {
+  saveEntryChanges = () => {
     const newEntry = this.state.editingEntry;
     if (newEntry.id) {
       const targetIndex = this.state.vault.entries.findIndex(entry => entry.id === newEntry.id);
@@ -113,6 +95,7 @@ export default class Vault extends Component {
       newEntry.id = uuid();
       this.setState(
         ({ vault }) => ({
+          selectedEntryID: newEntry.id,
           vault: {
             ...vault,
             entries: [...vault.entries, newEntry]
@@ -126,28 +109,83 @@ export default class Vault extends Component {
     this.setState({
       editingEntry: null
     });
-  }
+  };
 
-  selectEntry(entryID) {
+  selectEntry = entryID => {
     this.setState({
       selectedEntryID: entryID
     });
-  }
+  };
 
-  selectGroup(groupID) {
+  selectGroup = groupID => {
     const targetGroupID = groupID ? groupID : this.state.vault.groups[0].id;
     this.setState({
-      selectedGroupID: targetGroupID
+      selectedGroupID: targetGroupID,
+      selectedEntryID: null
     });
-  }
+  };
 
-  startEditingEntry() {
-    const currentEntry = this.getSelectedEntry();
+  startEditingEntry = () => {
+    const currentEntry = this.selectedEntry;
     if (!currentEntry) {
       throw new Error('Cannot edit entry: No currently selected entry');
     }
     this.setState({
       editingEntry: currentEntry
     });
-  }
+  };
 }
+
+export const withGroups = Component => {
+  return function ConnectedGroupsComponent(props) {
+    return (
+      <VaultContext.Consumer>
+        {({ vault, onSelectGroup, selectedGroupID }) => (
+          <Component
+            {...props}
+            groups={vault.groups}
+            selectedGroupID={selectedGroupID}
+            onSelectGroup={onSelectGroup}
+          />
+        )}
+      </VaultContext.Consumer>
+    );
+  };
+};
+
+export const withEntries = Component => {
+  return function ConnectedEntriesComponent(props) {
+    return (
+      <VaultContext.Consumer>
+        {({ currentEntries, onAddEntry, onSelectEntry, selectedEntryID }) => (
+          <Component
+            {...props}
+            entries={currentEntries}
+            onAddEntry={onAddEntry}
+            onSelectEntry={onSelectEntry}
+            selectedEntryID={selectedEntryID}
+          />
+        )}
+      </VaultContext.Consumer>
+    );
+  };
+};
+
+export const withEntry = Component => {
+  return function ConnectedEntryComponent(props) {
+    return (
+      <VaultContext.Consumer>
+        {({ editingEntry, selectedEntry, onCancelEdit, onEdit, onSaveEdit }) => (
+          <Component
+            {...props}
+            entry={editingEntry || selectedEntry}
+            editing={!!editingEntry}
+            onCancelEdit={onCancelEdit}
+            onEdit={onEdit}
+            onSaveEdit={onSaveEdit}
+          />
+        )}
+      </VaultContext.Consumer>
+    );
+  };
+};

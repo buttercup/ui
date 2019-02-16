@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { GroupFacade } from './props';
+import { withGroups } from './Vault';
 
 const GroupsContainer = styled.div`
   display: flex;
@@ -17,9 +18,10 @@ const Group = styled.div`
   background-color: ${props => (props.selected ? '#ccc' : '#fff')};
 `;
 
-export default class GroupsList extends Component {
+class GroupsList extends Component {
   static propTypes = {
     groups: PropTypes.arrayOf(GroupFacade),
+    selectedGroupID: PropTypes.string,
     onSelectGroup: PropTypes.func.isRequired
   };
 
@@ -27,28 +29,14 @@ export default class GroupsList extends Component {
     onSelectGroup: () => {}
   };
 
-  state = {
-    selectedGroupID: null
-  };
-
-  handleGroupClick(groupID) {
-    this.setState({
-      selectedGroupID: groupID
-    });
-    this.props.onSelectGroup(groupID);
-  }
-
   render() {
     return (
       <GroupsContainer>
         <For each="group" of={this.props.groups} index="groupIndex">
           <Group
             key={group.id}
-            onClick={() => this.handleGroupClick(group.id)}
-            selected={
-              this.state.selectedGroupID === group.id ||
-              (!this.state.selectedGroupID && groupIndex === 0)
-            }
+            onClick={() => this.props.onSelectGroup(group.id)}
+            selected={this.props.selectedGroupID === group.id}
           >
             {group.title}
           </Group>
@@ -57,3 +45,5 @@ export default class GroupsList extends Component {
     );
   }
 }
+
+export default withGroups(GroupsList);
