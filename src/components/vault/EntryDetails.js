@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
-import FormattedInput from '@buttercup/react-formatted-input';
+import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
 import { withEntry } from './Vault';
 
@@ -82,7 +82,7 @@ class EntryDetails extends PureComponent {
           <With
             fields={
               this.props.editing
-                ? this.props.entry.fields
+                ? this.props.entry.fields.filter(item => item.field === 'property')
                 : this.props.entry.fields.filter(
                     item => item.field === 'property' && item.property !== 'title'
                   )
@@ -92,19 +92,17 @@ class EntryDetails extends PureComponent {
               <EntryPropertyRow key={field.property}>
                 <EntryProperty>{field.title}</EntryProperty>
                 <EntryPropertyValue>
-                  <Choose>
-                    <When condition={this.props.editing}>
-                      <Choose>
-                        <When condition={field.multiline}>
-                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
-                        </When>
-                        <Otherwise>
-                          <With
-                            format={field.formatting ? field.formatting.format : undefined}
-                            placeholder={
-                              field.formatting ? field.formatting.placeholder : field.title
-                            }
-                          >
+                  <With
+                    format={field.formatting ? field.formatting.format : undefined}
+                    placeholder={field.formatting ? field.formatting.placeholder : field.title}
+                  >
+                    <Choose>
+                      <When condition={this.props.editing}>
+                        <Choose>
+                          <When condition={field.multiline}>
+                            <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                          </When>
+                          <Otherwise>
                             <FormattedInput
                               value={field.value}
                               onChange={(formattedValue, raw) => {
@@ -113,19 +111,21 @@ class EntryDetails extends PureComponent {
                               placeholder={placeholder}
                               format={format}
                             />
-                          </With>
-                        </Otherwise>
-                      </Choose>
-                    </When>
-                    <Otherwise>
-                      <Choose>
-                        <When condition={field.multiline}>
-                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
-                        </When>
-                        <Otherwise>{field.value}</Otherwise>
-                      </Choose>
-                    </Otherwise>
-                  </Choose>
+                          </Otherwise>
+                        </Choose>
+                      </When>
+                      <Otherwise>
+                        <Choose>
+                          <When condition={field.multiline}>
+                            <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                          </When>
+                          <Otherwise>
+                            <FormattedText format={format} value={field.value} />
+                          </Otherwise>
+                        </Choose>
+                      </Otherwise>
+                    </Choose>
+                  </With>
                 </EntryPropertyValue>
               </EntryPropertyRow>
             </For>
