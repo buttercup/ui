@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
@@ -15,12 +15,7 @@ function title(entry) {
 
 const NOOP = () => {};
 
-const DetailsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-`;
+const DetailsContainer = styled.div``;
 const EntryPropertiesList = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,7 +45,7 @@ const ValueWithNewLines = styled.span`
   white-space: pre-line;
 `;
 
-class EntryDetails extends Component {
+class EntryDetails extends PureComponent {
   static propTypes = {
     entry: EntryFacade,
     editing: PropTypes.bool.isRequired,
@@ -81,7 +76,7 @@ class EntryDetails extends Component {
 
   renderEntryDetails() {
     return (
-      <div>
+      <>
         <h2>{title(this.props.entry)}</h2>
         <EntryPropertiesList>
           <With
@@ -143,7 +138,7 @@ class EntryDetails extends Component {
             <button onClick={::this.props.onCancelEdit}>Cancel</button>
           </If>
         </EntryPropertiesList>
-      </div>
+      </>
     );
   }
 }

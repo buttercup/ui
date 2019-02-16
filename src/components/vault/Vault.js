@@ -157,11 +157,10 @@ export const withEntries = Component => {
   return function ConnectedEntriesComponent(props) {
     return (
       <VaultContext.Consumer>
-        {({ currentEntries, onAddEntry, onSelectEntry, selectedEntryID }) => (
+        {({ currentEntries, onSelectEntry, selectedEntryID }) => (
           <Component
             {...props}
             entries={currentEntries}
-            onAddEntry={onAddEntry}
             onSelectEntry={onSelectEntry}
             selectedEntryID={selectedEntryID}
           />
@@ -185,6 +184,16 @@ export const withEntry = Component => {
             onSaveEdit={onSaveEdit}
           />
         )}
+      </VaultContext.Consumer>
+    );
+  };
+};
+
+export const withGlobalActions = Component => {
+  return function ConnectedActionsComponent(props) {
+    return (
+      <VaultContext.Consumer>
+        {({ onAddEntry }) => <Component {...props} onAddEntry={onAddEntry} />}
       </VaultContext.Consumer>
     );
   };

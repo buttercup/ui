@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { EntryFacade } from './props';
-import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
 import { withEntries } from './Vault';
 
 function title(entry) {
@@ -31,13 +30,6 @@ const Entry = styled.div`
   cursor: pointer;
   background-color: ${props => (props.selected ? '#ccc' : '#fff')};
 `;
-const Controls = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-`;
 
 class EntriesList extends Component {
   static propTypes = {
@@ -51,11 +43,6 @@ class EntriesList extends Component {
     onAddEntry: () => {},
     onSelectEntry: () => {}
   };
-
-  handleAddEntryClick(event, type = defaultEntryType) {
-    event.preventDefault();
-    this.props.onAddEntry(type);
-  }
 
   handleEntryClick(entryID) {
     this.setState({
@@ -78,18 +65,6 @@ class EntriesList extends Component {
             </Entry>
           </For>
         </Entries>
-        <Controls>
-          <button onClick={::this.handleAddEntryClick}>Add Entry</button>
-          <For each="entryType" of={entryTypes}>
-            <button
-              key={entryType.type}
-              onClick={event => this.handleAddEntryClick(event, entryType.type)}
-              title={entryType.description}
-            >
-              Add '{entryType.title}'
-            </button>
-          </For>
-        </Controls>
       </EntriesContainer>
     );
   }

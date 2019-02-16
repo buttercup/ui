@@ -1,19 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
-import GroupsList from './GroupsList';
-import EntriesList from './EntriesList';
+import GroupsListView from './GroupsList';
+import EntriesListView from './EntriesList';
 import EntryDetailsView from './EntryDetails';
+import AddEntry from './AddEntry';
+
+const VaultContainer = styled.div`
+  width: 100vw;
+  height: 90vh;
+  display: grid;
+  grid-template-columns: 300px 300px 1fr;
+  grid-column-gap: 1rem;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    'groups   entries   entry'
+    '.        actions   .';
+`;
 
 const EntryDetails = styled(EntryDetailsView)`
-  flex-grow: 2;
+  grid-area: entry;
 `;
-const VaultContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
+
+const GroupsList = styled(GroupsListView)`
+  grid-area: groups;
+`;
+
+const EntriesList = styled(EntriesListView)`
+  grid-area: entries;
+`;
+
+const Actions = styled.div`
+  grid-area: actions;
 `;
 
 export default () => {
@@ -22,6 +39,9 @@ export default () => {
       <GroupsList />
       <EntriesList />
       <EntryDetails />
+      <Actions>
+        <AddEntry />
+      </Actions>
     </VaultContainer>
   );
 };
