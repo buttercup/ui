@@ -82,14 +82,15 @@ export default class EntriesList extends Component {
         </Entries>
         <Controls>
           <button onClick={::this.handleAddEntryClick}>Add Entry</button>
-          <With entryType={entryTypes.find(item => item.type === 'note')}>
+          <For each="entryType" of={entryTypes}>
             <button
-              onClick={event => this.handleAddEntryClick(event, entryTypes.type)}
-              title={entryTypes.description}
+              key={entryType.type}
+              onClick={event => this.handleAddEntryClick(event, entryType.type)}
+              title={entryType.description}
             >
               Add '{entryType.title}'
             </button>
-          </With>
+          </For>
         </Controls>
       </EntriesContainer>
     );

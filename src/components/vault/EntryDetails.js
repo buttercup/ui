@@ -103,13 +103,21 @@ export default class EntryDetails extends Component {
                           <ValueWithNewLines>{field.value}</ValueWithNewLines>
                         </When>
                         <Otherwise>
-                          <FormattedInput
-                            value={field.value}
-                            onChange={(formattedValue, raw) => {
-                              field.value = raw;
-                            }}
-                            placeholder={field.title}
-                          />
+                          <With
+                            format={field.formatting ? field.formatting.format : undefined}
+                            placeholder={
+                              field.formatting ? field.formatting.placeholder : field.title
+                            }
+                          >
+                            <FormattedInput
+                              value={field.value}
+                              onChange={(formattedValue, raw) => {
+                                field.value = raw;
+                              }}
+                              placeholder={placeholder}
+                              format={format}
+                            />
+                          </With>
                         </Otherwise>
                       </Choose>
                     </When>

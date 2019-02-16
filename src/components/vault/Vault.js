@@ -48,7 +48,7 @@ export default class Vault extends Component {
   }
 
   addEntry(type) {
-    const facade = createEntryFacade();
+    const facade = createEntryFacade(null, { type });
     facade.parentID = this.state.selectedGroupID;
     this.setState({
       editingEntry: facade
@@ -146,9 +146,8 @@ export default class Vault extends Component {
     if (!currentEntry) {
       throw new Error('Cannot edit entry: No currently selected entry');
     }
-    const clonedEntry = JSON.parse(JSON.stringify(currentEntry));
     this.setState({
-      editingEntry: clonedEntry
+      editingEntry: currentEntry
     });
   }
 }
