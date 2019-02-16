@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 
 function UUIDValue(props, propName, componentName) {
-  if (!/^[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/.test(props[propName])) {
+  if (
+    props[propName] !== null &&
+    !/^[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}$/.test(props[propName])
+  ) {
     return new Error(
       `Invalid prop '${propName}' supplied to '${componentName}. Validation failed.'`
     );

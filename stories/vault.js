@@ -31,13 +31,15 @@ const View = styled.div`
 export default class VaultStory extends Component {
   constructor(...args) {
     super(...args);
-    this.facade = createArchiveFacade(createArchive());
+    this.state = {
+      facade: createArchiveFacade(createArchive())
+    };
   }
 
   render() {
     return (
       <View>
-        <Vault vault={this.facade} />
+        <Vault vault={this.state.facade} onUpdate={vault => this.setState({ facade: vault })} />
       </View>
     );
   }
