@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { EntryFacade } from './props';
 import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
+import { withEntries } from './Vault';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -38,9 +39,10 @@ const Controls = styled.div`
   align-items: center;
 `;
 
-export default class EntriesList extends Component {
+class EntriesList extends Component {
   static propTypes = {
     entries: PropTypes.arrayOf(EntryFacade),
+    selectedEntryID: PropTypes.string,
     onAddEntry: PropTypes.func.isRequired,
     onSelectEntry: PropTypes.func.isRequired
   };
@@ -48,10 +50,6 @@ export default class EntriesList extends Component {
   static defaultProps = {
     onAddEntry: () => {},
     onSelectEntry: () => {}
-  };
-
-  state = {
-    selectedEntryID: null
   };
 
   handleAddEntryClick(event, type = defaultEntryType) {
@@ -74,7 +72,7 @@ export default class EntriesList extends Component {
             <Entry
               key={entry.id}
               onClick={() => this.handleEntryClick(entry.id)}
-              selected={this.state.selectedEntryID === entry.id}
+              selected={this.props.selectedEntryID === entry.id}
             >
               {title(entry)}
             </Entry>
@@ -96,3 +94,5 @@ export default class EntriesList extends Component {
     );
   }
 }
+
+export default withEntries(EntriesList);

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Archive, Entry } from 'buttercup';
 import { createArchiveFacade } from '@buttercup/facades';
-import { Vault } from '../src';
+import { VaultProvider } from '../src/components/vault/Vault';
+import VaultUI from '../src/components/vault/VaultUI';
 
 function createArchive() {
   const archive = Archive.createWithDefaults();
@@ -39,7 +40,12 @@ export default class VaultStory extends Component {
   render() {
     return (
       <View>
-        <Vault vault={this.state.facade} onUpdate={vault => this.setState({ facade: vault })} />
+        <VaultProvider
+          vault={this.state.facade}
+          onUpdate={vault => this.setState({ facade: vault })}
+        >
+          <VaultUI />
+        </VaultProvider>
       </View>
     );
   }
