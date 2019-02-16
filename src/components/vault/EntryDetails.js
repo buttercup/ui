@@ -92,40 +92,82 @@ class EntryDetails extends PureComponent {
               <EntryPropertyRow key={field.property}>
                 <EntryProperty>{field.title}</EntryProperty>
                 <EntryPropertyValue>
-                  <With
-                    format={field.formatting ? field.formatting.format : undefined}
-                    placeholder={field.formatting ? field.formatting.placeholder : field.title}
-                  >
-                    <Choose>
-                      <When condition={this.props.editing}>
-                        <Choose>
-                          <When condition={field.multiline}>
-                            <ValueWithNewLines>{field.value}</ValueWithNewLines>
-                          </When>
-                          <Otherwise>
-                            <FormattedInput
-                              value={field.value}
-                              onChange={(formattedValue, raw) => {
-                                field.value = raw;
-                              }}
-                              placeholder={placeholder}
-                              format={format}
-                            />
-                          </Otherwise>
-                        </Choose>
-                      </When>
-                      <Otherwise>
-                        <Choose>
-                          <When condition={field.multiline}>
-                            <ValueWithNewLines>{field.value}</ValueWithNewLines>
-                          </When>
-                          <Otherwise>
-                            <FormattedText format={format} value={field.value} />
-                          </Otherwise>
-                        </Choose>
-                      </Otherwise>
-                    </Choose>
-                  </With>
+                  <Choose>
+                    <When condition={this.props.editing}>
+                      <Choose>
+                        <When condition={field.multiline}>
+                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                        </When>
+                        <When condition={field.formatting && field.formatting.options}>
+                          <select
+                            defaultValue={field.value ? undefined : field.formatting.defaultOption}
+                            value={field.value || undefined}
+                            onChange={event => {
+                              console.log('SET', event.target.value, field);
+                              field.value = event.target.value;
+                            }}
+                          >
+                            <Choose>
+                              <When condition={typeof field.formatting.options === 'object'}>
+                                <For each="optionValue" of={Object.keys(field.formatting.options)}>
+                                  <option key={optionValue} value={optionValue}>
+                                    {field.formatting.options[optionValue]}
+                                  </option>
+                                </For>
+                              </When>
+                              <Otherwise>
+                                <For each="optionValue" of={field.formatting.options}>
+                                  <option key={optionValue} value={optionValue}>
+                                    {optionValue}
+                                  </option>
+                                </For>
+                              </Otherwise>
+                            </Choose>
+                          </select>
+                        </When>
+                        <Otherwise>
+                          <FormattedInput
+                            value={field.value}
+                            onChange={(formattedValue, raw) => {
+                              field.value = raw;
+                            }}
+                            placeholder={
+                              field.formatting && field.formatting.placeholder
+                                ? field.formatting.placeholder
+                                : field.title
+                            }
+                            format={
+                              field.formatting && field.formatting.format
+                                ? field.formatting.format
+                                : undefined
+                            }
+                          />
+                        </Otherwise>
+                      </Choose>
+                    </When>
+                    <Otherwise>
+                      <Choose>
+                        <When condition={field.multiline}>
+                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                        </When>
+                        <When condition={field.formatting && field.formatting.options}>
+                          {typeof field.formatting.options === 'object'
+                            ? field.formatting.options[field.value] || field.value
+                            : field.value}
+                        </When>
+                        <Otherwise>
+                          <FormattedText
+                            format={
+                              field.formatting && field.formatting.format
+                                ? field.formatting.format
+                                : undefined
+                            }
+                            value={field.value}
+                          />
+                        </Otherwise>
+                      </Choose>
+                    </Otherwise>
+                  </Choose>
                 </EntryPropertyValue>
               </EntryPropertyRow>
             </For>
