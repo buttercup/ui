@@ -34,19 +34,11 @@ export class VaultProvider extends Component {
       : [];
   }
 
-  addEntry = type => {
-    const facade = createEntryFacade(null, { type });
-    facade.parentID = this.state.selectedGroupID;
-    this.setState({
-      editingEntry: facade
-    });
-  };
-
-  cancelEntryChanges = () => {
-    this.setState({
-      editingEntry: null
-    });
-  };
+  get selectedEntry() {
+    return this.state.selectedEntryID
+      ? this.state.vault.entries.find(entry => entry.id === this.state.selectedEntryID)
+      : null;
+  }
 
   componentDidMount() {
     this.selectGroup(this.state.vault.groups[0].id);
@@ -60,26 +52,19 @@ export class VaultProvider extends Component {
     }
   }
 
-  get selectedEntry() {
-    return this.state.selectedEntryID
-      ? this.state.vault.entries.find(entry => entry.id === this.state.selectedEntryID)
-      : null;
-  }
+  addEntry = type => {
+    const facade = createEntryFacade(null, { type });
+    facade.parentID = this.state.selectedGroupID;
+    this.setState({
+      editingEntry: facade
+    });
+  };
 
-  render() {
-    const context = {
-      ...this.state,
-      currentEntries: this.currentEntries,
-      onSelectGroup: this.selectGroup,
-      onAddEntry: this.addEntry,
-      onSelectEntry: this.selectEntry,
-      selectedEntry: this.selectedEntry,
-      onCancelEdit: this.cancelEntryChanges,
-      onEdit: this.startEditingEntry,
-      onSaveEdit: this.saveEntryChanges
-    };
-    return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
-  }
+  cancelEntryChanges = () => {
+    this.setState({
+      editingEntry: null
+    });
+  };
 
   saveEntryChanges = () => {
     const newEntry = this.state.editingEntry;
@@ -134,6 +119,21 @@ export class VaultProvider extends Component {
       editingEntry: currentEntry
     });
   };
+
+  render() {
+    const context = {
+      ...this.state,
+      currentEntries: this.currentEntries,
+      onSelectGroup: this.selectGroup,
+      onAddEntry: this.addEntry,
+      onSelectEntry: this.selectEntry,
+      selectedEntry: this.selectedEntry,
+      onCancelEdit: this.cancelEntryChanges,
+      onEdit: this.startEditingEntry,
+      onSaveEdit: this.saveEntryChanges
+    };
+    return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
+  }
 }
 
 export const withGroups = Component => {
