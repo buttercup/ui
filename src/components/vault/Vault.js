@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import uuid from 'uuid/v4';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import GroupsList from './GroupsList';
@@ -25,12 +26,24 @@ export default class Vault extends Component {
 
   state = {
     currentEntries: [],
+    editingEntry: null,
     selectedEntryID: null,
     selectedGroupID: null
   };
 
+  addEntry(type) {
+    const facade = createEntryFacade();
+    facade.parentID = this.state.selectedGroupID;
+  }
+
+  cancelEntryChanges() {
+    this.setState({
+      editingEntry: null
+    });
+  }
+
   componentDidMount() {
-    this.handleGroupChange(this.props.vault.groups[0].id);
+    this.selectGroup(this.props.vault.groups[0].id);
   }
 
   getSelectedEntry() {
@@ -39,18 +52,52 @@ export default class Vault extends Component {
       : null;
   }
 
-  handleAddEntry(type) {
-    const facade = createEntryFacade();
-    facade.parentID = this.state.selectedGroupID;
+  render() {
+    return (
+      <VaultContainer>
+        <GroupsList groups={this.props.vault.groups} onSelectGroup={::this.selectGroup} />
+        <EntriesList
+          entries={this.state.currentEntries}
+          onAddEntry={::this.addEntry}
+          onSelectEntry={::this.selectEntry}
+        />
+        <EntryDetails
+          entry={this.state.editingEntry || this.getSelectedEntry()}
+          editing={!!this.state.editingEntry}
+          onCancelEdit={::this.cancelEntryChanges}
+          onEdit={::this.startEditingEntry}
+          onSaveEdit={::this.saveEntryChanges}
+        />
+      </VaultContainer>
+    );
   }
 
-  handleEntryChange(entryID) {
+  saveEntryChanges() {
+    const newEntry = this.state.editingEntry;
+    if (newEntry.id) {
+      const targetIndex = this.props.vault.entries.findIndex(entry => entry.id === newEntry.id);
+      if (targetIndex < 0) {
+        throw new Error(
+          `Failed saving entry changes: Unable to find entry with ID: ${newEntry.id}`
+        );
+      }
+      this.props.vault.entries.splice(targetIndex, 1, newEntry);
+    } else {
+      newEntry.id = uuid();
+      this.props.vault.entries.push(newEntry);
+    }
+    this.setState({
+      editingEntry: null
+    });
+  }
+
+  selectEntry(entryID) {
     this.setState({
       selectedEntryID: entryID
     });
   }
 
-  handleGroupChange(groupID) {
+  selectGroup(groupID) {
     const targetGroupID = groupID ? groupID : this.props.vault.groups[0].id;
     this.setState({
       currentEntries: this.props.vault.entries.filter(entry => entry.parentID === targetGroupID),
@@ -58,17 +105,14 @@ export default class Vault extends Component {
     });
   }
 
-  render() {
-    return (
-      <VaultContainer>
-        <GroupsList groups={this.props.vault.groups} onSelectGroup={::this.handleGroupChange} />
-        <EntriesList
-          entries={this.state.currentEntries}
-          onAddEntry={::this.handleAddEntry}
-          onSelectEntry={::this.handleEntryChange}
-        />
-        <EntryDetails entry={this.getSelectedEntry()} />
-      </VaultContainer>
-    );
+  startEditingEntry() {
+    const currentEntry = this.getSelectedEntry();
+    if (!currentEntry) {
+      throw new Error('Cannot edit entry: No currently selected entry');
+    }
+    const clonedEntry = JSON.parse(JSON.stringify(currentEntry));
+    this.setState({
+      editingEntry: clonedEntry
+    });
   }
 }

@@ -12,6 +12,8 @@ function title(entry) {
   return titleField ? titleField.value : <i>(Untitled)</i>;
 }
 
+const NOOP = () => {};
+
 const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,36 +51,19 @@ const ValueWithNewLines = styled.span`
 
 export default class EntryDetails extends Component {
   static propTypes = {
-    entry: EntryFacade
+    entry: EntryFacade,
+    editing: PropTypes.bool.isRequired,
+    onCancelEdit: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onSaveEdit: PropTypes.func.isRequired
   };
 
-  state = {
+  static defaultProps = {
     editing: false,
-    editingValues: {}
+    onCancelEdit: NOOP,
+    onEdit: NOOP,
+    onSaveEdit: NOOP
   };
-
-  cancelEditing() {
-    this.setState({
-      editing: false,
-      editingValues: []
-    });
-  }
-
-  saveEditing() {
-    this.props.entry.fields = this.state.editingValues;
-    this.setState({
-      editing: false,
-      editingValues: []
-    });
-  }
-
-  startEditing() {
-    const clonedFields = JSON.parse(JSON.stringify(this.props.entry.fields));
-    this.setState({
-      editing: true,
-      editingValues: clonedFields
-    });
-  }
 
   render() {
     return (
@@ -100,8 +85,8 @@ export default class EntryDetails extends Component {
         <EntryPropertiesList>
           <With
             fields={
-              this.state.editing
-                ? this.state.editingValues
+              this.props.editing
+                ? this.props.entry.fields
                 : this.props.entry.fields.filter(
                     item => item.field === 'property' && item.property !== 'title'
                   )
@@ -112,7 +97,7 @@ export default class EntryDetails extends Component {
                 <EntryProperty>{field.title}</EntryProperty>
                 <EntryPropertyValue>
                   <Choose>
-                    <When condition={this.state.editing}>
+                    <When condition={this.props.editing}>
                       <Choose>
                         <When condition={field.multiline}>
                           <ValueWithNewLines>{field.value}</ValueWithNewLines>
@@ -141,12 +126,12 @@ export default class EntryDetails extends Component {
               </EntryPropertyRow>
             </For>
           </With>
-          <If condition={!this.state.editing}>
-            <button onClick={::this.startEditing}>Edit</button>
+          <If condition={!this.props.editing}>
+            <button onClick={::this.props.onEdit}>Edit</button>
           </If>
-          <If condition={this.state.editing}>
-            <button onClick={::this.saveEditing}>Save</button>
-            <button onClick={::this.cancelEditing}>Cancel</button>
+          <If condition={this.props.editing}>
+            <button onClick={::this.props.onSaveEdit}>Save</button>
+            <button onClick={::this.props.onCancelEdit}>Cancel</button>
           </If>
         </EntryPropertiesList>
       </div>
