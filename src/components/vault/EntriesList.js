@@ -11,13 +11,7 @@ function title(entry) {
   return titleField ? titleField.value : <i>(Untitled)</i>;
 }
 
-const EntriesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  min-width: 25%;
-`;
+const EntriesContainer = styled.div``;
 const Entries = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,6 +29,7 @@ class EntriesList extends PureComponent {
   static propTypes = {
     entries: PropTypes.arrayOf(EntryFacade),
     selectedEntryID: PropTypes.string,
+    className: PropTypes.string,
     onAddEntry: PropTypes.func.isRequired,
     onSelectEntry: PropTypes.func.isRequired
   };
@@ -44,21 +39,14 @@ class EntriesList extends PureComponent {
     onSelectEntry: () => {}
   };
 
-  handleEntryClick(entryID) {
-    this.setState({
-      selectedEntryID: entryID
-    });
-    this.props.onSelectEntry(entryID);
-  }
-
   render() {
     return (
-      <EntriesContainer>
+      <EntriesContainer className={this.props.className}>
         <Entries>
           <For each="entry" of={this.props.entries} index="entryIndex">
             <Entry
               key={entry.id}
-              onClick={() => this.handleEntryClick(entry.id)}
+              onClick={() => this.props.onSelectEntry(entry.id)}
               selected={this.props.selectedEntryID === entry.id}
             >
               {title(entry)}

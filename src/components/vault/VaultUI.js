@@ -1,47 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
-import GroupsListView from './GroupsList';
-import EntriesListView from './EntriesList';
-import EntryDetailsView from './EntryDetails';
+import GroupsList from './GroupsList';
+import EntriesListBase from './EntriesList';
+import EntryDetails from './EntryDetails';
 import AddEntry from './AddEntry';
 
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
+
+import 'react-reflex/styles.css';
+
 const VaultContainer = styled.div`
-  width: 100vw;
-  height: 90vh;
-  display: grid;
-  grid-template-columns: 300px 300px 1fr;
-  grid-column-gap: 1rem;
-  grid-template-rows: 1fr auto;
-  grid-template-areas:
-    'groups   entries   entry'
-    '.        actions   .';
+  width: 100%;
+  height: 100%;
 `;
 
-const EntryDetails = styled(EntryDetailsView)`
-  grid-area: entry;
+const Pane = styled(ReflexElement)`
+  display: flex;
+  flex-direction: column;
 `;
 
-const GroupsList = styled(GroupsListView)`
-  grid-area: groups;
-`;
-
-const EntriesList = styled(EntriesListView)`
-  grid-area: entries;
+const EntriesList = styled(EntriesListBase)`
+  flex: 1;
 `;
 
 const Actions = styled.div`
-  grid-area: actions;
+  flex: 0;
 `;
 
 export default () => {
   return (
-    <VaultContainer>
-      <GroupsList />
-      <EntriesList />
-      <EntryDetails />
-      <Actions>
-        <AddEntry />
-      </Actions>
-    </VaultContainer>
+    <ReflexContainer orientation="vertical">
+      <Pane size={300}>
+        <GroupsList />
+      </Pane>
+
+      <ReflexSplitter />
+
+      <Pane size={300}>
+        <EntriesList />
+        <Actions>
+          <AddEntry />
+        </Actions>
+      </Pane>
+
+      <ReflexSplitter />
+
+      <Pane>
+        <EntryDetails />
+      </Pane>
+    </ReflexContainer>
   );
 };
