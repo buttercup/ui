@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { EntryFacade } from './props';
@@ -31,7 +31,7 @@ const Entry = styled.div`
   background-color: ${props => (props.selected ? '#ccc' : '#fff')};
 `;
 
-class EntriesList extends Component {
+class EntriesList extends PureComponent {
   static propTypes = {
     entries: PropTypes.arrayOf(EntryFacade),
     selectedEntryID: PropTypes.string,

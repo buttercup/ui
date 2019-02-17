@@ -51,14 +51,16 @@ class EntryDetails extends PureComponent {
     editing: PropTypes.bool.isRequired,
     onCancelEdit: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
-    onSaveEdit: PropTypes.func.isRequired
+    onSaveEdit: PropTypes.func.isRequired,
+    onFieldUpdate: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     editing: false,
     onCancelEdit: NOOP,
     onEdit: NOOP,
-    onSaveEdit: NOOP
+    onSaveEdit: NOOP,
+    onFieldUpdate: NOOP
   };
 
   render() {
@@ -75,15 +77,19 @@ class EntryDetails extends PureComponent {
   }
 
   renderEntryDetails() {
+    const { editing, entry, onFieldUpdate, onSaveEdit, onEdit, onCancelEdit } = this.props;
+
     return (
       <>
-        <h2>{title(this.props.entry)}</h2>
+        <If condition={!editing}>
+          <h2>{title(entry)}</h2>
+        </If>
         <EntryPropertiesList>
           <With
             fields={
-              this.props.editing
-                ? this.props.entry.fields.filter(item => item.field === 'property')
-                : this.props.entry.fields.filter(
+              editing
+                ? entry.fields.filter(item => item.field === 'property')
+                : entry.fields.filter(
                     item => item.field === 'property' && item.property !== 'title'
                   )
             }
@@ -93,7 +99,7 @@ class EntryDetails extends PureComponent {
                 <EntryProperty>{field.title}</EntryProperty>
                 <EntryPropertyValue>
                   <Choose>
-                    <When condition={this.props.editing}>
+                    <When condition={editing}>
                       <Choose>
                         <When condition={field.multiline}>
                           <ValueWithNewLines>{field.value}</ValueWithNewLines>
@@ -102,10 +108,7 @@ class EntryDetails extends PureComponent {
                           <select
                             defaultValue={field.value ? undefined : field.formatting.defaultOption}
                             value={field.value || undefined}
-                            onChange={event => {
-                              console.log('SET', event.target.value, field);
-                              field.value = event.target.value;
-                            }}
+                            onChange={event => onFieldUpdate(field, event.target.value)}
                           >
                             <Choose>
                               <When condition={typeof field.formatting.options === 'object'}>
@@ -128,9 +131,7 @@ class EntryDetails extends PureComponent {
                         <Otherwise>
                           <FormattedInput
                             value={field.value}
-                            onChange={(formattedValue, raw) => {
-                              field.value = raw;
-                            }}
+                            onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
                             placeholder={
                               field.formatting && field.formatting.placeholder
                                 ? field.formatting.placeholder
@@ -162,7 +163,7 @@ class EntryDetails extends PureComponent {
                                 ? field.formatting.format
                                 : undefined
                             }
-                            value={field.value}
+                            value={field.value || ''}
                           />
                         </Otherwise>
                       </Choose>
@@ -172,12 +173,12 @@ class EntryDetails extends PureComponent {
               </EntryPropertyRow>
             </For>
           </With>
-          <If condition={!this.props.editing}>
-            <button onClick={::this.props.onEdit}>Edit</button>
+          <If condition={!editing}>
+            <button onClick={onEdit}>Edit</button>
           </If>
-          <If condition={this.props.editing}>
-            <button onClick={::this.props.onSaveEdit}>Save</button>
-            <button onClick={::this.props.onCancelEdit}>Cancel</button>
+          <If condition={editing}>
+            <button onClick={onSaveEdit}>Save</button>
+            <button onClick={onCancelEdit}>Cancel</button>
           </If>
         </EntryPropertiesList>
       </>

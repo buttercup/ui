@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { clone } from 'ramda';
 import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
 import equals from 'fast-deep-equal';
@@ -41,7 +41,7 @@ export class VaultProvider extends Component {
   }
 
   componentDidMount() {
-    this.selectGroup(this.state.vault.groups[0].id);
+    this.handleSelectGroup(this.state.vault.groups[0].id);
   }
 
   componentDidUpdate() {
@@ -52,21 +52,22 @@ export class VaultProvider extends Component {
     }
   }
 
-  addEntry = type => {
+  handleAddEntry = type => {
     const facade = createEntryFacade(null, { type });
     facade.parentID = this.state.selectedGroupID;
     this.setState({
-      editingEntry: facade
+      editingEntry: facade,
+      selectedEntryID: null
     });
   };
 
-  cancelEntryChanges = () => {
+  handleCancelEntryChanges = () => {
     this.setState({
       editingEntry: null
     });
   };
 
-  saveEntryChanges = () => {
+  handleSaveEntryChanges = () => {
     const newEntry = this.state.editingEntry;
     if (newEntry.id) {
       const targetIndex = this.state.vault.entries.findIndex(entry => entry.id === newEntry.id);
@@ -96,13 +97,16 @@ export class VaultProvider extends Component {
     });
   };
 
-  selectEntry = entryID => {
+  handleSelectEntry = entryID => {
+    if (this.state.editingEntry) {
+      return;
+    }
     this.setState({
       selectedEntryID: entryID
     });
   };
 
-  selectGroup = groupID => {
+  handleSelectGroup = groupID => {
     const targetGroupID = groupID ? groupID : this.state.vault.groups[0].id;
     this.setState({
       selectedGroupID: targetGroupID,
@@ -110,13 +114,28 @@ export class VaultProvider extends Component {
     });
   };
 
-  startEditingEntry = () => {
+  handleEditEntry = () => {
     const currentEntry = this.selectedEntry;
     if (!currentEntry) {
       throw new Error('Cannot edit entry: No currently selected entry');
     }
     this.setState({
-      editingEntry: currentEntry
+      editingEntry: clone(currentEntry)
+    });
+  };
+
+  handleEntryFieldUpdate = (changedField, value) => {
+    const { editingEntry } = this.state;
+    this.setState({
+      editingEntry: {
+        ...editingEntry,
+        fields: editingEntry.fields.map(field => {
+          if (field.property === changedField.property) {
+            return { ...field, value };
+          }
+          return field;
+        })
+      }
     });
   };
 
@@ -124,13 +143,16 @@ export class VaultProvider extends Component {
     const context = {
       ...this.state,
       currentEntries: this.currentEntries,
-      onSelectGroup: this.selectGroup,
-      onAddEntry: this.addEntry,
-      onSelectEntry: this.selectEntry,
       selectedEntry: this.selectedEntry,
-      onCancelEdit: this.cancelEntryChanges,
-      onEdit: this.startEditingEntry,
-      onSaveEdit: this.saveEntryChanges
+
+      // Actions
+      onSelectGroup: this.handleSelectGroup,
+      onAddEntry: this.handleAddEntry,
+      onSelectEntry: this.handleSelectEntry,
+      onCancelEdit: this.handleCancelEntryChanges,
+      onFieldUpdate: this.handleEntryFieldUpdate,
+      onEdit: this.handleEditEntry,
+      onSaveEdit: this.handleSaveEntryChanges
     };
     return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
   }
@@ -174,13 +196,14 @@ export const withEntry = Component => {
   return function ConnectedEntryComponent(props) {
     return (
       <VaultContext.Consumer>
-        {({ editingEntry, selectedEntry, onCancelEdit, onEdit, onSaveEdit }) => (
+        {({ editingEntry, selectedEntry, onCancelEdit, onEdit, onSaveEdit, onFieldUpdate }) => (
           <Component
             {...props}
             entry={editingEntry || selectedEntry}
             editing={!!editingEntry}
             onCancelEdit={onCancelEdit}
             onEdit={onEdit}
+            onFieldUpdate={onFieldUpdate}
             onSaveEdit={onSaveEdit}
           />
         )}

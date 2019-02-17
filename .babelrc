@@ -10,6 +10,7 @@
         }]
     ],
     "plugins": [
+        "ramda",
         "@babel/plugin-transform-spread",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-function-bind",

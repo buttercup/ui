@@ -51,6 +51,7 @@
     "@storybook/addons": "^4.1.11",
     "@storybook/react": "^4.1.11",
     "babel-plugin-jsx-control-statements": "^4.0.0",
+    "babel-plugin-ramda": "^2.0.0",
     "buttercup": "^2.10.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.9.1",
@@ -81,6 +82,7 @@
     "filter-react-dom-props": "^0.0.2",
     "polished": "^1.9.2",
     "prop-types": "^15.6.1",
+    "ramda": "^0.26.1",
     "react-icons": "^2.2.7",
     "react-popover": "^0.5.10",
     "zxcvbn": "^4.4.2"
