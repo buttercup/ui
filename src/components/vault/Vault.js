@@ -166,6 +166,17 @@ export class VaultProvider extends Component {
     });
   };
 
+  handleRemoveField = targetField => {
+    this.setState({
+      editingEntry: {
+        ...this.state.editingEntry,
+        fields: this.state.editingEntry.fields.filter(field => {
+          return field.id !== targetField.id;
+        })
+      }
+    });
+  };
+
   render() {
     const context = {
       ...this.state,
@@ -181,6 +192,7 @@ export class VaultProvider extends Component {
       onFieldNameUpdate: this.handleEntryFieldNameUpdate,
       onFieldUpdate: this.handleEntryFieldUpdate,
       onEdit: this.handleEditEntry,
+      onRemoveField: this.handleRemoveField,
       onSaveEdit: this.handleSaveEntryChanges
     };
     return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
@@ -231,9 +243,10 @@ export const withEntry = Component => {
           onAddField,
           onCancelEdit,
           onEdit,
-          onSaveEdit,
           onFieldNameUpdate,
-          onFieldUpdate
+          onFieldUpdate,
+          onRemoveField,
+          onSaveEdit
         }) => (
           <Component
             {...props}
@@ -244,6 +257,7 @@ export const withEntry = Component => {
             onEdit={onEdit}
             onFieldNameUpdate={onFieldNameUpdate}
             onFieldUpdate={onFieldUpdate}
+            onRemoveField={onRemoveField}
             onSaveEdit={onSaveEdit}
           />
         )}

@@ -52,8 +52,9 @@ class EntryDetails extends PureComponent {
     onAddField: PropTypes.func.isRequired,
     onCancelEdit: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
-    onSaveEdit: PropTypes.func.isRequired,
-    onFieldUpdate: PropTypes.func.isRequired
+    onFieldUpdate: PropTypes.func.isRequired,
+    onRemoveField: PropTypes.func.isRequired,
+    onSaveEdit: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -61,8 +62,9 @@ class EntryDetails extends PureComponent {
     onAddField: NOOP,
     onCancelEdit: NOOP,
     onEdit: NOOP,
-    onSaveEdit: NOOP,
-    onFieldUpdate: NOOP
+    onFieldUpdate: NOOP,
+    onRemoveField: NOOP,
+    onSaveEdit: NOOP
   };
 
   render() {
@@ -87,6 +89,7 @@ class EntryDetails extends PureComponent {
       onEdit,
       onFieldNameUpdate,
       onFieldUpdate,
+      onRemoveField,
       onSaveEdit
     } = this.props;
     return (
@@ -193,6 +196,7 @@ class EntryDetails extends PureComponent {
                     </Otherwise>
                   </Choose>
                 </EntryPropertyValue>
+                <button onClick={() => onRemoveField(field)}>X</button>
               </EntryPropertyRow>
             </For>
           </With>
