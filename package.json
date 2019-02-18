@@ -11,7 +11,7 @@
     "build-storybook": "build-storybook",
     "format": "prettier --write '{src,stories,__tests__}/**/*.js'",
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "storybook": "start-storybook -p 6006",
     "test": "run-s test:unit test:format",
     "test:format": "prettier-check '{src,stories,__tests__}/**/*.js'",
