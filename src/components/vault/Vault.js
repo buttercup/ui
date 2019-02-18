@@ -3,7 +3,7 @@ import { clone } from 'ramda';
 import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
 import equals from 'fast-deep-equal';
-import { createEntryFacade } from '@buttercup/facades';
+import { createEntryFacade, createFieldDescriptor } from '@buttercup/facades';
 import { VaultFacade } from './props';
 
 export const VaultContext = React.createContext();
@@ -58,6 +58,18 @@ export class VaultProvider extends Component {
     this.setState({
       editingEntry: facade,
       selectedEntryID: null
+    });
+  };
+
+  handleAddField = () => {
+    const field = createFieldDescriptor(null, '', 'property', '', {
+      removeable: true
+    });
+    this.setState({
+      editingEntry: {
+        ...this.state.editingEntry,
+        fields: [...this.state.editingEntry.fields, field]
+      }
     });
   };
 
@@ -130,8 +142,23 @@ export class VaultProvider extends Component {
       editingEntry: {
         ...editingEntry,
         fields: editingEntry.fields.map(field => {
-          if (field.property === changedField.property) {
+          if (field.id === changedField.id) {
             return { ...field, value };
+          }
+          return field;
+        })
+      }
+    });
+  };
+
+  handleEntryFieldNameUpdate = (changedField, value) => {
+    const { editingEntry } = this.state;
+    this.setState({
+      editingEntry: {
+        ...editingEntry,
+        fields: editingEntry.fields.map(field => {
+          if (field.id === changedField.id) {
+            return { ...field, property: value };
           }
           return field;
         })
@@ -148,8 +175,10 @@ export class VaultProvider extends Component {
       // Actions
       onSelectGroup: this.handleSelectGroup,
       onAddEntry: this.handleAddEntry,
+      onAddField: this.handleAddField,
       onSelectEntry: this.handleSelectEntry,
       onCancelEdit: this.handleCancelEntryChanges,
+      onFieldNameUpdate: this.handleEntryFieldNameUpdate,
       onFieldUpdate: this.handleEntryFieldUpdate,
       onEdit: this.handleEditEntry,
       onSaveEdit: this.handleSaveEntryChanges
@@ -196,13 +225,24 @@ export const withEntry = Component => {
   return function ConnectedEntryComponent(props) {
     return (
       <VaultContext.Consumer>
-        {({ editingEntry, selectedEntry, onCancelEdit, onEdit, onSaveEdit, onFieldUpdate }) => (
+        {({
+          editingEntry,
+          selectedEntry,
+          onAddField,
+          onCancelEdit,
+          onEdit,
+          onSaveEdit,
+          onFieldNameUpdate,
+          onFieldUpdate
+        }) => (
           <Component
             {...props}
             entry={editingEntry || selectedEntry}
             editing={!!editingEntry}
+            onAddField={onAddField}
             onCancelEdit={onCancelEdit}
             onEdit={onEdit}
+            onFieldNameUpdate={onFieldNameUpdate}
             onFieldUpdate={onFieldUpdate}
             onSaveEdit={onSaveEdit}
           />

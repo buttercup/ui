@@ -45,7 +45,7 @@
     "@babel/plugin-transform-spread": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "@buttercup/facades": "^0.6.0",
+    "@buttercup/facades": "^0.7.0",
     "@storybook/addon-actions": "^4.1.11",
     "@storybook/addons": "^4.1.11",
     "@storybook/react": "^4.1.11",

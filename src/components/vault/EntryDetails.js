@@ -49,6 +49,7 @@ class EntryDetails extends PureComponent {
   static propTypes = {
     entry: EntryFacade,
     editing: PropTypes.bool.isRequired,
+    onAddField: PropTypes.func.isRequired,
     onCancelEdit: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onSaveEdit: PropTypes.func.isRequired,
@@ -57,6 +58,7 @@ class EntryDetails extends PureComponent {
 
   static defaultProps = {
     editing: false,
+    onAddField: NOOP,
     onCancelEdit: NOOP,
     onEdit: NOOP,
     onSaveEdit: NOOP,
@@ -77,8 +79,16 @@ class EntryDetails extends PureComponent {
   }
 
   renderEntryDetails() {
-    const { editing, entry, onFieldUpdate, onSaveEdit, onEdit, onCancelEdit } = this.props;
-
+    const {
+      editing,
+      entry,
+      onAddField,
+      onCancelEdit,
+      onEdit,
+      onFieldNameUpdate,
+      onFieldUpdate,
+      onSaveEdit
+    } = this.props;
     return (
       <>
         <If condition={!editing}>
@@ -95,8 +105,21 @@ class EntryDetails extends PureComponent {
             }
           >
             <For each="field" of={fields}>
-              <EntryPropertyRow key={field.property}>
-                <EntryProperty>{field.title}</EntryProperty>
+              <EntryPropertyRow key={field.id}>
+                <EntryProperty>
+                  <Choose>
+                    <When condition={editing && field.title.length <= 0}>
+                      <input
+                        type="text"
+                        value={field.property}
+                        onChange={event => {
+                          onFieldNameUpdate(field, event.target.value);
+                        }}
+                      />
+                    </When>
+                    <Otherwise>{field.title || field.property}</Otherwise>
+                  </Choose>
+                </EntryProperty>
                 <EntryPropertyValue>
                   <Choose>
                     <When condition={editing}>
@@ -173,6 +196,9 @@ class EntryDetails extends PureComponent {
               </EntryPropertyRow>
             </For>
           </With>
+          <If condition={editing}>
+            <button onClick={onAddField}>Add Field</button>
+          </If>
           <If condition={!editing}>
             <button onClick={onEdit}>Edit</button>
           </If>
