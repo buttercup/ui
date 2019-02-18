@@ -196,7 +196,9 @@ class EntryDetails extends PureComponent {
                     </Otherwise>
                   </Choose>
                 </EntryPropertyValue>
-                <button onClick={() => onRemoveField(field)}>X</button>
+                <If condition={editing && field.removeable}>
+                  <button onClick={() => onRemoveField(field)}>X</button>
+                </If>
               </EntryPropertyRow>
             </For>
           </With>
