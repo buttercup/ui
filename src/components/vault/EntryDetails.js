@@ -128,7 +128,12 @@ class EntryDetails extends PureComponent {
                     <When condition={editing}>
                       <Choose>
                         <When condition={field.multiline}>
-                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                          <TextArea
+                            value={field.value}
+                            onChange={event => onFieldUpdate(field, event.target.value)}
+                          >
+                            {field.value}
+                          </TextArea>
                         </When>
                         <When condition={field.formatting && field.formatting.options}>
                           <select

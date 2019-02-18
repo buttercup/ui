@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { clone } from 'ramda';
 import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import { VaultFacade } from './props';
 
 export const VaultContext = React.createContext();
 
-export class VaultProvider extends Component {
+export class VaultProvider extends PureComponent {
   static propTypes = {
     onUpdate: PropTypes.func.isRequired,
     vault: VaultFacade.isRequired
