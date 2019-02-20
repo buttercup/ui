@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Archive, Entry } from 'buttercup';
 import { createArchiveFacade } from '@buttercup/facades';
-import { VaultProvider } from '../src/components/vault/Vault';
-import VaultUI from '../src/components/vault/VaultUI';
+import { VaultProvider, VaultUI } from '../src/index';
 
 function createArchive() {
   const archive = Archive.createWithDefaults();
