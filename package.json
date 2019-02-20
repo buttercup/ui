@@ -1,6 +1,6 @@
 {
   "name": "@buttercup/ui",
-  "version": "1.4.2",
+  "version": "2.0.0-rc1",
   "description": "Buttercup UI Components in React",
   "main": "dist/index.js",
   "repository": "git@github.com:buttercup/buttercup-ui.git",
