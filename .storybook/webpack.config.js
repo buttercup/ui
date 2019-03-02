@@ -8,17 +8,17 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        include: path.resolve(__dirname, '../node_modules/react-reflex'),
         use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          }
+          'style-loader', // creates style nodes from JS strings
+          'css-loader' // translates CSS into CommonJS
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'sass-loader' // compiles Sass to CSS, using Node Sass by default
         ]
       }
     ]

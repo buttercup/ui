@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import GroupsList from './GroupsList';
 import EntriesListBase from './EntriesList';
 import EntryDetails from './EntryDetails';
 import AddEntry from './AddEntry';
-
-import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-
-import 'react-reflex/styles.css';
 
 const VaultContainer = styled.div`
   width: 100%;

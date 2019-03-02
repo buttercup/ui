@@ -6,6 +6,7 @@ import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
 import VaultStory from './vault';
+import '../src/styles/index.scss';
 
 const Digits = styled(ColoredDigits)`
   .num {
