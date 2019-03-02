@@ -20,6 +20,9 @@ function createArchive() {
       'note',
       'Team meeting\n\n - Cool item created\n   - To be released sometime\n   - Costs $$$\n - Bug found, oh noes\n   - Fire Tim\n   - Bye Tim!\n - Success ✌️\n\nAll done.\n'
     );
+  notes.createGroup('Meetings');
+  const personal = notes.createGroup('Personal');
+  personal.createGroup('Test');
   return archive;
 }
 
