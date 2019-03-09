@@ -6,8 +6,19 @@ $pt-font-family: 'Inter';
 $pt-intent-primary: $turquoise3;
 
 @import "~@blueprintjs/core/src/blueprint.scss";
-@import "~react-reflex/styles.css";
+// @import "~react-reflex/styles.css";
+@import "./reflex.scss";
 
 // .bp3-tree-node-content {
 //   border-radius: 3px;
+// }
+
+// .reflex-container.vertical > .reflex-splitter {
+//   border-color: transparent !important;
+//   background-color: $light-gray1 !important;
+//   width: 1px !important;
+
+//   &.active {
+//     background-color: $gray5 !important;
+//   }
 // }

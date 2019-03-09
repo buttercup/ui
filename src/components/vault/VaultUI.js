@@ -31,7 +31,7 @@ export default () => {
         <GroupsList />
       </Pane>
 
-      <ReflexSplitter />
+      <ReflexSplitter className="reflex-thin" />
 
       <Pane size={300}>
         <EntriesList />
@@ -40,7 +40,7 @@ export default () => {
         </Actions>
       </Pane>
 
-      <ReflexSplitter />
+      <ReflexSplitter className="reflex-thin" />
 
       <Pane>
         <EntryDetails />
