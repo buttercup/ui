@@ -1,7 +1,13 @@
 @import url('https://rsms.me/inter/inter.css');
 
+@import "~@blueprintjs/core/src/common/_colors.scss";
+
 $pt-font-family: 'Inter';
+$pt-intent-primary: $turquoise3;
 
 @import "~@blueprintjs/core/src/blueprint.scss";
 @import "~react-reflex/styles.css";
 
+// .bp3-tree-node-content {
+//   border-radius: 3px;
+// }

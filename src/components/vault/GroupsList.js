@@ -14,7 +14,7 @@ const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID 
       const isExpanded = expandedGroups.includes(group.id);
       const isTrash = group.attributes && group.attributes.bc_group_role === 'trash';
       return {
-        ...group,
+        id: group.id,
         label: group.title,
         icon: isTrash ? 'trash' : isExpanded ? 'folder-open' : 'folder-close',
         hasCaret: childNodes.length,

@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Archive, Entry } from 'buttercup';
+import { ThemeProvider } from 'styled-components';
 import { createArchiveFacade } from '@buttercup/facades';
-import { VaultProvider, VaultUI } from '../src/index';
+import { VaultProvider, VaultUI, themes } from '../src/index';
 
 function createArchive() {
   const archive = Archive.createWithDefaults();
   const [general] = archive.findGroupsByTitle('General');
   general
     .createEntry('Home wi-fi')
-    .setProperty('username', '-')
-    .setProperty('password', 'x8v@mId01');
-  general.createEntry('Gate lock combination').setProperty('password', '4812');
+    .setProperty('username', 'somehow')
+    .setProperty('password', 'x8v@mId01')
+    .setProperty('url', 'https://google.com');
+  general
+    .createEntry('Gate lock combination')
+    .setProperty('username', 'test')
+    .setProperty('password', '4812');
   const notes = archive.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
@@ -41,14 +46,16 @@ export default class VaultStory extends Component {
 
   render() {
     return (
-      <View>
-        <VaultProvider
-          vault={this.state.facade}
-          onUpdate={vault => this.setState({ facade: vault })}
-        >
-          <VaultUI />
-        </VaultProvider>
-      </View>
+      <ThemeProvider theme={themes.light}>
+        <View>
+          <VaultProvider
+            vault={this.state.facade}
+            onUpdate={vault => this.setState({ facade: vault })}
+          >
+            <VaultUI />
+          </VaultProvider>
+        </View>
+      </ThemeProvider>
     );
   }
 }
