@@ -91,7 +91,7 @@
     "@blueprintjs/core": "^3.13.0",
     "@blueprintjs/icons": "^3.6.0",
     "@buttercup/generator": "^1.2.0",
-    "@buttercup/iconographer": "^1.1.1",
+    "@buttercup/iconographer": "^1.2.0",
     "@buttercup/react-formatted-input": "^1.0.1",
     "classnames": "^2.2.5",
     "filter-react-dom-props": "^0.0.2",

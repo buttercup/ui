@@ -52,6 +52,9 @@ module.exports = {
       }
     ]
   },
+  node: {
+    fs: "empty"
+  },
   optimization: {
     minimizer: [
       new TerserPlugin({

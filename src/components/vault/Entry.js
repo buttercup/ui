@@ -1,12 +1,12 @@
-import React from 'react';
 import path from 'path';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
-import * as iconographer from '@buttercup/iconographer';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
+import { getIconForDomain } from './icons.js';
 
 function title(entry) {
   const titleField = getFacadeField(entry, 'title');
@@ -15,11 +15,7 @@ function title(entry) {
 
 function getIcon(entry) {
   const url = getFacadeField(entry, 'url');
-  const icon = iconographer.getIconFilename(url ? extractDomain(url) : null, {
-    greyscale: true
-  });
-  const image = require(`../../../node_modules/@buttercup/iconographer${icon}`);
-  return image;
+  return getIconForDomain(url ? extractDomain(url) : null);
 }
 
 const EntryWrapper = styled.div`
