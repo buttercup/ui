@@ -49,6 +49,18 @@ module.exports = {
           },
           'css-loader' // translates CSS into CommonJS
         ]
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: "[name].[ext]",
+              outputPath: "icons"
+            }
+          }
+        ]
       }
     ]
   },
