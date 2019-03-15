@@ -17,6 +17,7 @@ module.exports = {
     index: './src/index.js',
     styles: './src/styles/index.scss'
   },
+  devtool: false,
   output: {
     libraryTarget: 'commonjs2',
     // filename: '[name].[ext]',

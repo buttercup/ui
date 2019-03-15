@@ -7,9 +7,10 @@
   "author": "Sallar Kaboli <sallar.kaboli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && webpack --config webpack.config.js",
+    "build": "npm run clean && webpack --mode production --config webpack.config.js",
     "build:storybook": "build-storybook",
     "clean": "rimraf dist",
+    "dev": "npm run clean && webpack --mode development --config webpack.config.js --progress --watch",
     "format": "prettier --write '{src,stories,__tests__}/**/*.js'",
     "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
