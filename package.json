@@ -19,6 +19,9 @@
     "test:unit": "jest",
     "test:updateSnapshots": "jest -u"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "lint-staged": {
     "{src,stories,__tests__}/**/*.js": [
       "prettier --write",
