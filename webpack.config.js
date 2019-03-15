@@ -18,7 +18,7 @@ module.exports = {
     styles: './src/styles/index.scss'
   },
   output: {
-    libraryTarget: 'commonjs',
+    libraryTarget: 'commonjs2',
     // filename: '[name].[ext]',
     path: path.resolve(__dirname, 'dist')
   },
