@@ -6,16 +6,16 @@ import { Colors, Text, Classes } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
-import { getIconForDomain } from './icons.js';
+import Icon from './Icon';
+
+function getEntryDomain(entry) {
+  const url = getFacadeField(entry, 'url');
+  return url ? extractDomain(url) : null;
+}
 
 function title(entry) {
   const titleField = getFacadeField(entry, 'title');
   return titleField || <i>(Untitled)</i>;
-}
-
-function getIcon(entry) {
-  const url = getFacadeField(entry, 'url');
-  return getIconForDomain(url ? extractDomain(url) : null);
 }
 
 const EntryWrapper = styled.div`
@@ -70,7 +70,7 @@ const ContentWrapper = styled.div`
 const Entry = ({ entry, selected, onClick }) => (
   <EntryWrapper selected={selected} onClick={onClick}>
     <ImageWrapper>
-      <img src={getIcon(entry)} />
+      <Icon domain={getEntryDomain(entry)} />
     </ImageWrapper>
     <ContentWrapper>
       <Text ellipsize>{title(entry)}</Text>
