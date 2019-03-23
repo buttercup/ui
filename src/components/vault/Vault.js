@@ -1,203 +1,125 @@
-import React, { PureComponent } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import { clone } from 'ramda';
-import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
 import equals from 'fast-deep-equal';
 import { createEntryFacade, createFieldDescriptor } from '@buttercup/facades';
 import { VaultFacade } from './props';
+import { entryReducer } from './reducers/entry';
+import { vaultReducer } from './reducers/vault';
 
 export const VaultContext = React.createContext();
 
-export class VaultProvider extends PureComponent {
-  static propTypes = {
-    onUpdate: PropTypes.func.isRequired,
-    vault: VaultFacade.isRequired
-  };
+export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
+  const [vault, dispatch] = useReducer(vaultReducer, clone(vaultSource));
+  const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
+  const [selectedEntryID, setSelectedEntryID] = useState(null);
+  const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
 
-  static defaultProps = {
-    onUpdate: () => {}
-  };
+  const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
+  const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      editingEntry: null,
-      selectedEntryID: null,
-      selectedGroupID: null,
-      vault: this.props.vault
-    };
-  }
-
-  get currentEntries() {
-    return this.state.selectedGroupID
-      ? this.state.vault.entries.filter(entry => entry.parentID === this.state.selectedGroupID)
-      : [];
-  }
-
-  get selectedEntry() {
-    return this.state.selectedEntryID
-      ? this.state.vault.entries.find(entry => entry.id === this.state.selectedEntryID)
-      : null;
-  }
-
-  componentDidMount() {
-    this.handleSelectGroup(this.state.vault.groups[0].id);
-  }
-
-  componentDidUpdate() {
-    if (!equals(this.state.vault, this.props.vault)) {
-      this.setState({
-        vault: this.props.vault
-      });
-    }
-  }
-
-  handleAddEntry = type => {
-    const facade = createEntryFacade(null, { type });
-    facade.parentID = this.state.selectedGroupID;
-    this.setState({
-      editingEntry: facade,
-      selectedEntryID: null
-    });
-  };
-
-  handleAddField = () => {
-    const field = createFieldDescriptor(null, '', 'property', '', {
-      removeable: true
-    });
-    this.setState({
-      editingEntry: {
-        ...this.state.editingEntry,
-        fields: [...this.state.editingEntry.fields, field]
-      }
-    });
-  };
-
-  handleCancelEntryChanges = () => {
-    this.setState({
-      editingEntry: null
-    });
-  };
-
-  handleSaveEntryChanges = () => {
-    const newEntry = this.state.editingEntry;
-    if (newEntry.id) {
-      const targetIndex = this.state.vault.entries.findIndex(entry => entry.id === newEntry.id);
-      if (targetIndex < 0) {
-        throw new Error(
-          `Failed saving entry changes: Unable to find entry with ID: ${newEntry.id}`
-        );
-      }
-      this.state.vault.entries.splice(targetIndex, 1, newEntry);
-    } else {
-      newEntry.id = uuid();
-      this.setState(
-        ({ vault }) => ({
-          selectedEntryID: newEntry.id,
-          vault: {
-            ...vault,
-            entries: [...vault.entries, newEntry]
-          }
-        }),
-        () => {
-          this.props.onUpdate(this.state.vault);
-        }
-      );
-    }
-    this.setState({
-      editingEntry: null
-    });
-  };
-
-  handleSelectEntry = entryID => {
-    if (this.state.editingEntry) {
+  useEffect(() => {
+    if (equals(vault, vaultSource)) {
       return;
     }
-    this.setState({
-      selectedEntryID: entryID
-    });
-  };
+    onUpdate(vault);
+  });
 
-  handleSelectGroup = groupID => {
-    const targetGroupID = groupID ? groupID : this.state.vault.groups[0].id;
-    this.setState({
-      selectedGroupID: targetGroupID,
-      selectedEntryID: null
-    });
-  };
+  const context = {
+    vault,
+    currentEntries,
+    selectedEntry,
+    editingEntry,
+    selectedEntryID,
+    selectedGroupID,
 
-  handleEditEntry = () => {
-    const currentEntry = this.selectedEntry;
-    if (!currentEntry) {
-      throw new Error('Cannot edit entry: No currently selected entry');
+    // Actions
+    onSelectGroup: groupID => {
+      setSelectedGroupID(groupID);
+      setSelectedEntryID(null);
+    },
+    onAddEntry: type => {
+      const facade = createEntryFacade(null, { type });
+      facade.parentID = selectedGroupID;
+      dispatchEditing({
+        type: 'set-entry',
+        payload: facade
+      });
+      setSelectedEntryID(null);
+    },
+    onEdit: () => {
+      if (!selectedEntry) {
+        return;
+      }
+      dispatchEditing({
+        type: 'set-entry',
+        payload: clone(selectedEntry)
+      });
+      setSelectedEntryID(null);
+    },
+    onSaveEdit: () => {
+      if (!editingEntry) {
+        return;
+      }
+      dispatch({
+        type: 'save-entry',
+        entry: editingEntry
+      });
+      dispatchEditing({
+        type: 'stop-editing'
+      });
+      if (editingEntry.id) {
+        setSelectedEntryID(editingEntry.id);
+      }
+    },
+    onCancelEdit: () => {
+      dispatchEditing({
+        type: 'stop-editing'
+      });
+    },
+    onSelectEntry: entryID => {
+      if (editingEntry) {
+        return;
+      }
+      setSelectedEntryID(entryID);
+    },
+    onAddField: () => {
+      dispatchEditing({
+        type: 'add-field'
+      });
+    },
+    onFieldUpdate: (changedField, value) => {
+      dispatchEditing({
+        type: 'update-field',
+        field: changedField,
+        value
+      });
+    },
+    onFieldNameUpdate: (changedField, property) => {
+      dispatchEditing({
+        type: 'update-field',
+        field: changedField,
+        property
+      });
+    },
+    onRemoveField: field => {
+      dispatchEditing({
+        type: 'remove-field',
+        field
+      });
     }
-    this.setState({
-      editingEntry: clone(currentEntry)
-    });
   };
+  return <VaultContext.Provider value={context}>{children}</VaultContext.Provider>;
+};
 
-  handleEntryFieldUpdate = (changedField, value) => {
-    const { editingEntry } = this.state;
-    this.setState({
-      editingEntry: {
-        ...editingEntry,
-        fields: editingEntry.fields.map(field => {
-          if (field.id === changedField.id) {
-            return { ...field, value };
-          }
-          return field;
-        })
-      }
-    });
-  };
+VaultProvider.propTypes = {
+  onUpdate: PropTypes.func.isRequired,
+  vault: VaultFacade.isRequired
+};
 
-  handleEntryFieldNameUpdate = (changedField, value) => {
-    const { editingEntry } = this.state;
-    this.setState({
-      editingEntry: {
-        ...editingEntry,
-        fields: editingEntry.fields.map(field => {
-          if (field.id === changedField.id) {
-            return { ...field, property: value };
-          }
-          return field;
-        })
-      }
-    });
-  };
-
-  handleRemoveField = targetField => {
-    this.setState({
-      editingEntry: {
-        ...this.state.editingEntry,
-        fields: this.state.editingEntry.fields.filter(field => {
-          return field.id !== targetField.id;
-        })
-      }
-    });
-  };
-
-  render() {
-    const context = {
-      ...this.state,
-      currentEntries: this.currentEntries,
-      selectedEntry: this.selectedEntry,
-
-      // Actions
-      onSelectGroup: this.handleSelectGroup,
-      onAddEntry: this.handleAddEntry,
-      onAddField: this.handleAddField,
-      onSelectEntry: this.handleSelectEntry,
-      onCancelEdit: this.handleCancelEntryChanges,
-      onFieldNameUpdate: this.handleEntryFieldNameUpdate,
-      onFieldUpdate: this.handleEntryFieldUpdate,
-      onEdit: this.handleEditEntry,
-      onRemoveField: this.handleRemoveField,
-      onSaveEdit: this.handleSaveEntryChanges
-    };
-    return <VaultContext.Provider value={context}>{this.props.children}</VaultContext.Provider>;
-  }
-}
+VaultProvider.defaultProps = {
+  onUpdate: () => {}
+};
 
 export const withGroups = Component => {
   return function ConnectedGroupsComponent(props) {
