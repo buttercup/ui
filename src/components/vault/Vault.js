@@ -1,7 +1,6 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState, useEffect, useRef } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
-import equals from 'fast-deep-equal';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
@@ -15,16 +14,20 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
   const [expandedGroups, setExpandedGroups] = useState([]);
+  const initRef = useRef(false);
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
 
   useEffect(() => {
-    if (equals(vault, vaultSource)) {
+    if (initRef.current === false) {
+      console.log('Init call. Do not call onUpdate');
+      initRef.current = true;
       return;
     }
+    console.log('Debug: Running on Update function. Yay!');
     onUpdate(vault);
-  });
+  }, [vault]);
 
   const context = {
     vault,

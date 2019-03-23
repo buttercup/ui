@@ -30,7 +30,5 @@ export function vaultReducer(state, action) {
         ]
       };
     }
-    default:
-      return state;
   }
 }

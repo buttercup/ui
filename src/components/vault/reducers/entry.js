@@ -33,7 +33,5 @@ export function entryReducer(state, action) {
         })
       };
     }
-    default:
-      return state;
   }
 }
