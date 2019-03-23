@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
-import { withGlobalActions } from './Vault';
+import { useActions } from './hooks/vault';
 
-const AddEntry = ({ onAddEntry }) => {
+const AddEntry = () => {
+  const { onAddEntry } = useActions();
   const handleAddEntryClick = (event, type = defaultEntryType) => {
     event.preventDefault();
     onAddEntry(type);
@@ -24,12 +25,4 @@ const AddEntry = ({ onAddEntry }) => {
   );
 };
 
-AddEntry.propTypes = {
-  onAddEntry: PropTypes.func.isRequired
-};
-
-AddEntry.defaultProps = {
-  onAddEntry: () => {}
-};
-
-export default withGlobalActions(AddEntry);
+export default AddEntry;

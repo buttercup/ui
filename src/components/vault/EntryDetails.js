@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
-import { withEntry } from './Vault';
+import { useCurrentEntry } from './hooks/vault';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -45,53 +45,20 @@ const ValueWithNewLines = styled.span`
   white-space: pre-line;
 `;
 
-class EntryDetails extends PureComponent {
-  static propTypes = {
-    entry: EntryFacade,
-    editing: PropTypes.bool.isRequired,
-    onAddField: PropTypes.func.isRequired,
-    onCancelEdit: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired,
-    onFieldUpdate: PropTypes.func.isRequired,
-    onRemoveField: PropTypes.func.isRequired,
-    onSaveEdit: PropTypes.func.isRequired
-  };
+const EntryDetails = () => {
+  const {
+    entry,
+    editing,
+    onAddField,
+    onCancelEdit,
+    onEdit,
+    onFieldNameUpdate,
+    onFieldUpdate,
+    onRemoveField,
+    onSaveEdit
+  } = useCurrentEntry();
 
-  static defaultProps = {
-    editing: false,
-    onAddField: NOOP,
-    onCancelEdit: NOOP,
-    onEdit: NOOP,
-    onFieldUpdate: NOOP,
-    onRemoveField: NOOP,
-    onSaveEdit: NOOP
-  };
-
-  render() {
-    return (
-      <DetailsContainer>
-        <Choose>
-          <When condition={this.props.entry}>{this.renderEntryDetails()}</When>
-          <Otherwise>
-            <span>No entry selected</span>
-          </Otherwise>
-        </Choose>
-      </DetailsContainer>
-    );
-  }
-
-  renderEntryDetails() {
-    const {
-      editing,
-      entry,
-      onAddField,
-      onCancelEdit,
-      onEdit,
-      onFieldNameUpdate,
-      onFieldUpdate,
-      onRemoveField,
-      onSaveEdit
-    } = this.props;
+  const renderEntryDetails = () => {
     return (
       <>
         <If condition={!editing}>
@@ -220,7 +187,18 @@ class EntryDetails extends PureComponent {
         </EntryPropertiesList>
       </>
     );
-  }
-}
+  };
 
-export default withEntry(EntryDetails);
+  return (
+    <DetailsContainer>
+      <Choose>
+        <When condition={entry}>{renderEntryDetails()}</When>
+        <Otherwise>
+          <span>No entry selected</span>
+        </Otherwise>
+      </Choose>
+    </DetailsContainer>
+  );
+};
+
+export default EntryDetails;

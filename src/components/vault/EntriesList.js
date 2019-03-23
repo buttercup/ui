@@ -1,49 +1,39 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { EntryFacade } from './props';
-import { withEntries } from './Vault';
 import Entry from './Entry';
+import { useCurrentEntries } from './hooks/vault';
 
 const EntriesContainer = styled.div``;
 const Entries = styled.div`
   padding: 0.5rem;
 `;
 
-class EntriesList extends PureComponent {
-  static propTypes = {
-    entries: PropTypes.arrayOf(EntryFacade),
-    selectedEntryID: PropTypes.string,
-    className: PropTypes.string,
-    onAddEntry: PropTypes.func.isRequired,
-    onSelectEntry: PropTypes.func.isRequired
-  };
+const EntriesList = ({ className }) => {
+  const { entries, selectedEntryID, onSelectEntry } = useCurrentEntries();
 
-  static defaultProps = {
-    onAddEntry: () => {},
-    onSelectEntry: () => {}
-  };
+  return (
+    <EntriesContainer className={className}>
+      <Entries>
+        <For each="entry" of={entries} index="entryIndex">
+          <Entry
+            entry={entry}
+            key={entry.id}
+            onClick={e => onSelectEntry(entry.id)}
+            selected={selectedEntryID === entry.id}
+          />
+        </For>
+      </Entries>
+    </EntriesContainer>
+  );
+};
 
-  handleClick = (e, entry) => {
-    this.props.onSelectEntry(entry.id);
-  };
+EntriesList.propTypes = {
+  className: PropTypes.string
+};
 
-  render() {
-    return (
-      <EntriesContainer className={this.props.className}>
-        <Entries>
-          <For each="entry" of={this.props.entries} index="entryIndex">
-            <Entry
-              entry={entry}
-              key={entry.id}
-              onClick={e => this.handleClick(e, entry)}
-              selected={this.props.selectedEntryID === entry.id}
-            />
-          </For>
-        </Entries>
-      </EntriesContainer>
-    );
-  }
-}
+EntriesList.defaultProps = {
+  className: null
+};
 
-export default withEntries(EntriesList);
+export default EntriesList;

@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Tree } from '@blueprintjs/core';
 import { GroupFacade } from './props';
-import { withGroups } from './Vault';
+import { useGroups } from './hooks/vault';
 
 const GroupsContainer = styled.div``;
 const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
@@ -25,49 +25,26 @@ const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID 
     });
 };
 
-class GroupsList extends PureComponent {
-  static propTypes = {
-    groups: PropTypes.arrayOf(GroupFacade),
-    selectedGroupID: PropTypes.string,
-    onSelectGroup: PropTypes.func.isRequired
-  };
+const GroupsList = () => {
+  const {
+    groups,
+    selectedGroupID,
+    onSelectGroup,
+    expandedGroups,
+    handleCollapseGroup,
+    handleExpandGroup
+  } = useGroups();
 
-  state = {
-    expanded: []
-  };
+  return (
+    <GroupsContainer>
+      <Tree
+        contents={getNestedGroups(groups, selectedGroupID, expandedGroups)}
+        onNodeClick={group => onSelectGroup(group.id)}
+        onNodeExpand={handleExpandGroup}
+        onNodeCollapse={handleCollapseGroup}
+      />
+    </GroupsContainer>
+  );
+};
 
-  static defaultProps = {
-    onSelectGroup: () => {}
-  };
-
-  handleExpand = group => {
-    this.setState({
-      expanded: [...this.state.expanded, group.id]
-    });
-  };
-
-  handleCollapse = group => {
-    this.setState({
-      expanded: this.state.expanded.filter(id => id !== group.id)
-    });
-  };
-
-  render() {
-    return (
-      <GroupsContainer>
-        <Tree
-          contents={getNestedGroups(
-            this.props.groups,
-            this.props.selectedGroupID,
-            this.state.expanded
-          )}
-          onNodeClick={group => this.props.onSelectGroup(group.id)}
-          onNodeExpand={this.handleExpand}
-          onNodeCollapse={this.handleCollapse}
-        />
-      </GroupsContainer>
-    );
-  }
-}
-
-export default withGroups(GroupsList);
+export default GroupsList;

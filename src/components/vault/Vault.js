@@ -2,7 +2,7 @@ import React, { useReducer, useState, useEffect } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
 import equals from 'fast-deep-equal';
-import { createEntryFacade, createFieldDescriptor } from '@buttercup/facades';
+import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer } from './reducers/vault';
@@ -14,6 +14,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
+  const [expandedGroups, setExpandedGroups] = useState([]);
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
@@ -32,11 +33,19 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     editingEntry,
     selectedEntryID,
     selectedGroupID,
+    expandedGroups,
 
     // Actions
     onSelectGroup: groupID => {
       setSelectedGroupID(groupID);
       setSelectedEntryID(null);
+    },
+    handleExpandGroup: group => {
+      setExpandedGroups([...expandedGroups, group.id]);
+    },
+
+    handleCollapseGroup: group => {
+      setExpandedGroups(expandedGroups.filter(id => id !== group.id));
     },
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });
@@ -76,6 +85,9 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       dispatchEditing({
         type: 'stop-editing'
       });
+      if (editingEntry.id) {
+        setSelectedEntryID(editingEntry.id);
+      }
     },
     onSelectEntry: entryID => {
       if (editingEntry) {
@@ -119,81 +131,4 @@ VaultProvider.propTypes = {
 
 VaultProvider.defaultProps = {
   onUpdate: () => {}
-};
-
-export const withGroups = Component => {
-  return function ConnectedGroupsComponent(props) {
-    return (
-      <VaultContext.Consumer>
-        {({ vault, onSelectGroup, selectedGroupID }) => (
-          <Component
-            {...props}
-            groups={vault.groups}
-            selectedGroupID={selectedGroupID}
-            onSelectGroup={onSelectGroup}
-          />
-        )}
-      </VaultContext.Consumer>
-    );
-  };
-};
-
-export const withEntries = Component => {
-  return function ConnectedEntriesComponent(props) {
-    return (
-      <VaultContext.Consumer>
-        {({ currentEntries, onSelectEntry, selectedEntryID }) => (
-          <Component
-            {...props}
-            entries={currentEntries}
-            onSelectEntry={onSelectEntry}
-            selectedEntryID={selectedEntryID}
-          />
-        )}
-      </VaultContext.Consumer>
-    );
-  };
-};
-
-export const withEntry = Component => {
-  return function ConnectedEntryComponent(props) {
-    return (
-      <VaultContext.Consumer>
-        {({
-          editingEntry,
-          selectedEntry,
-          onAddField,
-          onCancelEdit,
-          onEdit,
-          onFieldNameUpdate,
-          onFieldUpdate,
-          onRemoveField,
-          onSaveEdit
-        }) => (
-          <Component
-            {...props}
-            entry={editingEntry || selectedEntry}
-            editing={!!editingEntry}
-            onAddField={onAddField}
-            onCancelEdit={onCancelEdit}
-            onEdit={onEdit}
-            onFieldNameUpdate={onFieldNameUpdate}
-            onFieldUpdate={onFieldUpdate}
-            onRemoveField={onRemoveField}
-            onSaveEdit={onSaveEdit}
-          />
-        )}
-      </VaultContext.Consumer>
-    );
-  };
-};
-
-export const withGlobalActions = Component => {
-  return function ConnectedActionsComponent(props) {
-    return (
-      <VaultContext.Consumer>
-        {({ onAddEntry }) => <Component {...props} onAddEntry={onAddEntry} />}
-      </VaultContext.Consumer>
-    );
-  };
 };
