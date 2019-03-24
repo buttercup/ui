@@ -59,6 +59,15 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       });
       setSelectedEntryID(null);
     },
+    onDeleteEntry: entryID => {
+      dispatch({
+        type: 'delete-entry',
+        entryID: entryID
+      });
+      dispatchEditing({
+        type: 'stop-editing'
+      });
+    },
     onEdit: () => {
       if (!selectedEntry) {
         return;

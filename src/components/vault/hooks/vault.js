@@ -5,6 +5,7 @@ export function useCurrentEntry() {
   const {
     editingEntry,
     selectedEntry,
+    onDeleteEntry,
     onAddField,
     onCancelEdit,
     onEdit,
@@ -17,6 +18,7 @@ export function useCurrentEntry() {
   return {
     entry: editingEntry || selectedEntry,
     editing: Boolean(editingEntry),
+    onDeleteEntry,
     onAddField,
     onCancelEdit,
     onEdit,

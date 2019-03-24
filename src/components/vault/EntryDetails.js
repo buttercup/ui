@@ -52,6 +52,7 @@ const EntryDetails = () => {
     onAddField,
     onCancelEdit,
     onEdit,
+    onDeleteEntry,
     onFieldNameUpdate,
     onFieldUpdate,
     onRemoveField,
@@ -174,15 +175,14 @@ const EntryDetails = () => {
               </EntryPropertyRow>
             </For>
           </With>
-          <If condition={editing}>
-            <button onClick={onAddField}>Add Field</button>
-          </If>
           <If condition={!editing}>
             <button onClick={onEdit}>Edit</button>
           </If>
           <If condition={editing}>
+            <button onClick={onAddField}>Add Field</button>
             <button onClick={onSaveEdit}>Save</button>
             <button onClick={onCancelEdit}>Cancel</button>
+            <button onClick={() => onDeleteEntry(entry.id)}>Delete Entry</button>
           </If>
         </EntryPropertiesList>
       </>

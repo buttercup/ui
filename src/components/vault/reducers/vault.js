@@ -30,5 +30,10 @@ export function vaultReducer(state, action) {
         ]
       };
     }
+    case 'delete-entry':
+      return {
+        ...state,
+        entries: state.entries.filter(entry => entry.id !== action.entryID)
+      };
   }
 }
