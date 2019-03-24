@@ -22,6 +22,8 @@ const EntriesList = styled(EntriesListBase)`
 
 const Actions = styled.div`
   flex: 0;
+  padding: 0.5rem;
+  border-top: 1px solid ${p => p.theme.colors.divider};
 `;
 
 export default () => {

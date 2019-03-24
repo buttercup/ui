@@ -4,6 +4,9 @@ const light = {
   list: {
     selectedBackgroundColor: Colors.TURQUOISE3,
     selectedTextColor: '#fff'
+  },
+  colors: {
+    divider: Colors.LIGHT_GRAY5
   }
 };
 

@@ -1,27 +1,33 @@
 import React from 'react';
+import { Button, ButtonGroup, Popover, Menu, MenuItem } from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
 import { useActions } from './hooks/vault';
 
 const AddEntry = () => {
   const { onAddEntry } = useActions();
-  const handleAddEntryClick = (event, type = defaultEntryType) => {
-    event.preventDefault();
-    onAddEntry(type);
-  };
+
+  const renderMenu = (
+    <Menu>
+      <For each="entryType" of={entryTypes}>
+        <MenuItem
+          key={entryType.type}
+          text={entryType.title}
+          icon={entryType.icon}
+          label={entryType.label}
+          onClick={() => onAddEntry(entryType.type || defaultEntryType)}
+        />
+      </For>
+    </Menu>
+  );
 
   return (
-    <>
-      <For each="entryType" of={entryTypes}>
-        <button
-          key={entryType.type}
-          onClick={event => handleAddEntryClick(event, entryType.type)}
-          title={entryType.description}
-        >
-          {entryType.title}
-        </button>
-      </For>
-    </>
+    <ButtonGroup>
+      <Button icon="plus" text="New Entry" onClick={() => onAddEntry(defaultEntryType)} />
+      <Popover content={renderMenu} boundary="viewport">
+        <Button icon="more" />
+      </Popover>
+    </ButtonGroup>
   );
 };
 
