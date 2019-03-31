@@ -5,8 +5,8 @@ import TextArea from 'react-textarea-autosize';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
 import { useCurrentEntry } from './hooks/vault';
-import { getThemeProp } from '../../utils';
-import { Colors } from '@blueprintjs/core';
+import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
+import { NonIdealState } from '@blueprintjs/core';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -17,12 +17,6 @@ function title(entry) {
 
 const NOOP = () => {};
 
-const DetailsContainer = styled.div`
-  flex: 1;
-  padding: 0.5rem;
-  background-color: ${props =>
-    getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
-`;
 const EntryPropertiesList = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,118 +64,127 @@ const EntryDetails = () => {
     return (
       <>
         <If condition={!editing}>
-          <h2>{title(entry)}</h2>
+          <PaneHeader title={title(entry)} />
         </If>
-        <EntryPropertiesList>
-          <With
-            fields={
-              editing
-                ? entry.fields.filter(item => item.field === 'property')
-                : entry.fields.filter(
-                    item => item.field === 'property' && item.property !== 'title'
-                  )
-            }
-          >
-            <For each="field" of={fields}>
-              <EntryPropertyRow key={field.id}>
-                <EntryProperty>
-                  <Choose>
-                    <When condition={editing && field.title.length <= 0}>
-                      <input
-                        type="text"
-                        value={field.property}
-                        onChange={event => {
-                          onFieldNameUpdate(field, event.target.value);
-                        }}
-                      />
-                    </When>
-                    <Otherwise>{field.title || field.property}</Otherwise>
-                  </Choose>
-                </EntryProperty>
-                <EntryPropertyValue>
-                  <Choose>
-                    <When condition={editing}>
-                      <Choose>
-                        <When condition={field.multiline}>
-                          <TextArea
-                            value={field.value}
-                            onChange={event => onFieldUpdate(field, event.target.value)}
-                          >
-                            {field.value}
-                          </TextArea>
-                        </When>
-                        <When condition={field.formatting && field.formatting.options}>
-                          <select
-                            defaultValue={field.value ? undefined : field.formatting.defaultOption}
-                            value={field.value || undefined}
-                            onChange={event => onFieldUpdate(field, event.target.value)}
-                          >
-                            <Choose>
-                              <When condition={typeof field.formatting.options === 'object'}>
-                                <For each="optionValue" of={Object.keys(field.formatting.options)}>
-                                  <option key={optionValue} value={optionValue}>
-                                    {field.formatting.options[optionValue]}
-                                  </option>
-                                </For>
-                              </When>
-                              <Otherwise>
-                                <For each="optionValue" of={field.formatting.options}>
-                                  <option key={optionValue} value={optionValue}>
-                                    {optionValue}
-                                  </option>
-                                </For>
-                              </Otherwise>
-                            </Choose>
-                          </select>
-                        </When>
-                        <Otherwise>
-                          <FormattedInput
-                            value={field.value}
-                            onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
-                            placeholder={
-                              field.formatting && field.formatting.placeholder
-                                ? field.formatting.placeholder
-                                : field.title
-                            }
-                            format={
-                              field.formatting && field.formatting.format
-                                ? field.formatting.format
-                                : undefined
-                            }
-                          />
-                        </Otherwise>
-                      </Choose>
-                    </When>
-                    <Otherwise>
-                      <Choose>
-                        <When condition={field.multiline}>
-                          <ValueWithNewLines>{field.value}</ValueWithNewLines>
-                        </When>
-                        <When condition={field.formatting && field.formatting.options}>
-                          {typeof field.formatting.options === 'object'
-                            ? field.formatting.options[field.value] || field.value
-                            : field.value}
-                        </When>
-                        <Otherwise>
-                          <FormattedText
-                            format={
-                              field.formatting && field.formatting.format
-                                ? field.formatting.format
-                                : undefined
-                            }
-                            value={field.value || ''}
-                          />
-                        </Otherwise>
-                      </Choose>
-                    </Otherwise>
-                  </Choose>
-                </EntryPropertyValue>
-                <If condition={editing && field.removeable}>
-                  <button onClick={() => onRemoveField(field)}>X</button>
-                </If>
-              </EntryPropertyRow>
-            </For>
-          </With>
+        <PaneContent>
+          <EntryPropertiesList>
+            <With
+              fields={
+                editing
+                  ? entry.fields.filter(item => item.field === 'property')
+                  : entry.fields.filter(
+                      item => item.field === 'property' && item.property !== 'title'
+                    )
+              }
+            >
+              <For each="field" of={fields}>
+                <EntryPropertyRow key={field.id}>
+                  <EntryProperty>
+                    <Choose>
+                      <When condition={editing && field.title.length <= 0}>
+                        <input
+                          type="text"
+                          value={field.property}
+                          onChange={event => {
+                            onFieldNameUpdate(field, event.target.value);
+                          }}
+                        />
+                      </When>
+                      <Otherwise>{field.title || field.property}</Otherwise>
+                    </Choose>
+                  </EntryProperty>
+                  <EntryPropertyValue>
+                    <Choose>
+                      <When condition={editing}>
+                        <Choose>
+                          <When condition={field.multiline}>
+                            <TextArea
+                              value={field.value}
+                              onChange={event => onFieldUpdate(field, event.target.value)}
+                            >
+                              {field.value}
+                            </TextArea>
+                          </When>
+                          <When condition={field.formatting && field.formatting.options}>
+                            <select
+                              defaultValue={
+                                field.value ? undefined : field.formatting.defaultOption
+                              }
+                              value={field.value || undefined}
+                              onChange={event => onFieldUpdate(field, event.target.value)}
+                            >
+                              <Choose>
+                                <When condition={typeof field.formatting.options === 'object'}>
+                                  <For
+                                    each="optionValue"
+                                    of={Object.keys(field.formatting.options)}
+                                  >
+                                    <option key={optionValue} value={optionValue}>
+                                      {field.formatting.options[optionValue]}
+                                    </option>
+                                  </For>
+                                </When>
+                                <Otherwise>
+                                  <For each="optionValue" of={field.formatting.options}>
+                                    <option key={optionValue} value={optionValue}>
+                                      {optionValue}
+                                    </option>
+                                  </For>
+                                </Otherwise>
+                              </Choose>
+                            </select>
+                          </When>
+                          <Otherwise>
+                            <FormattedInput
+                              value={field.value}
+                              onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
+                              placeholder={
+                                field.formatting && field.formatting.placeholder
+                                  ? field.formatting.placeholder
+                                  : field.title
+                              }
+                              format={
+                                field.formatting && field.formatting.format
+                                  ? field.formatting.format
+                                  : undefined
+                              }
+                            />
+                          </Otherwise>
+                        </Choose>
+                      </When>
+                      <Otherwise>
+                        <Choose>
+                          <When condition={field.multiline}>
+                            <ValueWithNewLines>{field.value}</ValueWithNewLines>
+                          </When>
+                          <When condition={field.formatting && field.formatting.options}>
+                            {typeof field.formatting.options === 'object'
+                              ? field.formatting.options[field.value] || field.value
+                              : field.value}
+                          </When>
+                          <Otherwise>
+                            <FormattedText
+                              format={
+                                field.formatting && field.formatting.format
+                                  ? field.formatting.format
+                                  : undefined
+                              }
+                              value={field.value || ''}
+                            />
+                          </Otherwise>
+                        </Choose>
+                      </Otherwise>
+                    </Choose>
+                  </EntryPropertyValue>
+                  <If condition={editing && field.removeable}>
+                    <button onClick={() => onRemoveField(field)}>X</button>
+                  </If>
+                </EntryPropertyRow>
+              </For>
+            </With>
+          </EntryPropertiesList>
+        </PaneContent>
+        <PaneFooter>
           <If condition={!editing}>
             <button onClick={onEdit}>Edit</button>
           </If>
@@ -191,20 +194,26 @@ const EntryDetails = () => {
             <button onClick={onCancelEdit}>Cancel</button>
             <button onClick={() => onDeleteEntry(entry.id)}>Delete Entry</button>
           </If>
-        </EntryPropertiesList>
+        </PaneFooter>
       </>
     );
   };
 
   return (
-    <DetailsContainer>
+    <PaneContainer primary>
       <Choose>
         <When condition={entry}>{renderEntryDetails()}</When>
         <Otherwise>
-          <span>No entry selected</span>
+          <PaneContent>
+            <NonIdealState
+              icon="satellite"
+              title="No document selected"
+              description="Select or create a new document."
+            />
+          </PaneContent>
         </Otherwise>
       </Choose>
-    </DetailsContainer>
+    </PaneContainer>
   );
 };
 

@@ -17,6 +17,12 @@ function createArchive() {
     .createEntry('Gate lock combination')
     .setProperty('username', 'test')
     .setProperty('password', '4812');
+  for (let i = 0; i < 20; i++) {
+    general
+      .createEntry('Gate lock combination ' + i)
+      .setProperty('username', 'test')
+      .setProperty('password', '4812');
+  }
   const notes = archive.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
