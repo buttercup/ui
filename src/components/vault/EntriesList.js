@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Entry from './Entry';
 import { useCurrentEntries } from './hooks/vault';
+import ListHeader from './ListHeader';
 
-const EntriesContainer = styled.div``;
-const Entries = styled.div`
+const EntriesContainer = styled.div`
   padding: 0.5rem;
+`;
+const Entries = styled.div`
+  padding: 0;
 `;
 
 const EntriesList = ({ className }) => {
@@ -14,6 +17,7 @@ const EntriesList = ({ className }) => {
 
   return (
     <EntriesContainer className={className}>
+      <ListHeader title="Documents" count={entries.length} />
       <Entries>
         <For each="entry" of={entries} index="entryIndex">
           <Entry
