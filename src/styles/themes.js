@@ -6,7 +6,8 @@ const light = {
     selectedTextColor: '#fff'
   },
   colors: {
-    divider: Colors.LIGHT_GRAY5
+    divider: Colors.LIGHT_GRAY5,
+    mainPaneBackground: Colors.LIGHT_GRAY5
   }
 };
 

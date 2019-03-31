@@ -29,13 +29,13 @@ const Actions = styled.div`
 export default () => {
   return (
     <ReflexContainer orientation="vertical">
-      <Pane size={300}>
+      <Pane size={300} minSize={200}>
         <GroupsList />
       </Pane>
 
       <ReflexSplitter className="reflex-thin" />
 
-      <Pane size={300}>
+      <Pane size={300} minSize={200}>
         <EntriesList />
         <Actions>
           <AddEntry />
@@ -44,7 +44,7 @@ export default () => {
 
       <ReflexSplitter className="reflex-thin" />
 
-      <Pane>
+      <Pane minSize={400}>
         <EntryDetails />
       </Pane>
     </ReflexContainer>

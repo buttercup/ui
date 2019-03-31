@@ -5,6 +5,8 @@ import TextArea from 'react-textarea-autosize';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
 import { useCurrentEntry } from './hooks/vault';
+import { getThemeProp } from '../../utils';
+import { Colors } from '@blueprintjs/core';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -15,7 +17,12 @@ function title(entry) {
 
 const NOOP = () => {};
 
-const DetailsContainer = styled.div``;
+const DetailsContainer = styled.div`
+  flex: 1;
+  padding: 0.5rem;
+  background-color: ${props =>
+    getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
+`;
 const EntryPropertiesList = styled.div`
   display: flex;
   flex-direction: column;
