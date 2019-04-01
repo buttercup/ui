@@ -67,8 +67,8 @@ const ContentWrapper = styled.div`
   min-width: 0;
 `;
 
-const Entry = ({ entry, selected, onClick }) => (
-  <EntryWrapper selected={selected} onClick={onClick}>
+const Entry = ({ entry, selected, onClick, innerRef, ...props }) => (
+  <EntryWrapper selected={selected} onClick={onClick} ref={innerRef} {...props}>
     <ImageWrapper>
       <SiteIcon domain={getEntryDomain(entry)} />
     </ImageWrapper>
@@ -84,6 +84,7 @@ const Entry = ({ entry, selected, onClick }) => (
 Entry.propTypes = {
   entry: EntryFacade,
   onClick: PropTypes.func.isRequired,
+  innerRef: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired
 };
 

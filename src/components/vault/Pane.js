@@ -18,8 +18,9 @@ const createScrollShadow = color => css`
 const ListHeader = styled.header`
   display: flex;
   align-items: center;
-  margin: 1rem 0 0.5rem;
+  padding: 1rem 1rem 0.5rem;
   grid-area: header;
+  border-bottom: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 const ListHeading = styled.h2`
   font-weight: 300;
@@ -33,12 +34,11 @@ export const Pane = styled(ReflexElement)`
 `;
 
 export const PaneContainer = styled.div`
-  padding: 0.5rem;
   display: grid;
   overflow: auto;
   background-color: ${props =>
     props.primary && getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
-  grid-template-rows: auto 1fr 50px;
+  grid-template-rows: auto 1fr 40px;
   grid-template-areas:
     'header'
     'body'
@@ -55,6 +55,7 @@ export const PaneContainer = styled.div`
 export const PaneContent = styled.div`
   grid-area: body;
   overflow: auto;
+  padding: 0.5rem;
   margin: 0 ${p => (p.bleed ? '-0.5rem' : 0)};
   ${createScrollShadow('#fff')}
 `;
@@ -72,4 +73,7 @@ export const PaneHeader = ({ count, title }) => (
 
 export const PaneFooter = styled.div`
   grid-area: footer;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
