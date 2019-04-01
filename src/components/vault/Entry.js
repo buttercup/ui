@@ -1,12 +1,13 @@
+import React, { useState } from 'react';
 import path from 'path';
-import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { Colors, Text, Classes } from '@blueprintjs/core';
+import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
+import { useGroups } from './hooks/vault';
 
 function getEntryDomain(entry) {
   const url = getFacadeField(entry, 'url');
@@ -23,14 +24,30 @@ const EntryWrapper = styled.div`
   user-select: none;
   cursor: pointer;
   border-radius: 3px;
-  color: ${props =>
-    props.selected ? getThemeProp(props, 'list.selectedTextColor', '#fff') : 'inherit'};
-  background-color: ${props =>
-    props.selected
-      ? getThemeProp(props, 'list.selectedBackgroundColor', Colors.COBALT3)
-      : 'transparent'};
+  color: inherit;
+  background-color: transparent;
   display: flex;
   align-items: center;
+
+  &:focus {
+    background-color: ${props =>
+      getThemeProp(props, 'list.focusedBackgroundColor', Colors.LIGHT_GRAY5)};
+  }
+
+  ${props =>
+    props.focused &&
+    css`
+      background-color: ${props =>
+        getThemeProp(props, 'list.focusedBackgroundColor', Colors.LIGHT_GRAY5)};
+    `}
+
+  ${props =>
+    props.selected &&
+    css`
+      background-color: ${props =>
+        getThemeProp(props, 'list.selectedBackgroundColor', Colors.COBALT3)} !important;
+      color: ${props => getThemeProp(props, 'list.selectedTextColor', '#fff')};
+    `}
 `;
 
 const ImageWrapper = styled.figure`
@@ -67,19 +84,76 @@ const ContentWrapper = styled.div`
   min-width: 0;
 `;
 
-const Entry = ({ entry, selected, onClick, innerRef, ...props }) => (
-  <EntryWrapper selected={selected} onClick={onClick} ref={innerRef} {...props}>
-    <ImageWrapper>
-      <SiteIcon domain={getEntryDomain(entry)} />
-    </ImageWrapper>
-    <ContentWrapper>
-      <Text ellipsize>{title(entry)}</Text>
-      <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
-        {getFacadeField(entry, 'username')}
-      </SecondaryText>
-    </ContentWrapper>
-  </EntryWrapper>
-);
+const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
+  const [contextMenuOpen, setContextMenuVisibility] = useState(false);
+  const { groups } = useGroups();
+
+  const handleMove = e => {
+    console.log(e);
+  };
+
+  const renderGroupsMenu = (items, parentNode) => (
+    <>
+      <If condition={parentNode}>
+        <MenuItem
+          text={`Move to ${parentNode.label}`}
+          key={parentNode.id}
+          icon={parentNode.icon}
+          onClick={handleMove}
+        />
+        <MenuDivider />
+      </If>
+      <For each="group" of={items}>
+        <Choose>
+          <When condition={group.childNodes.length > 0}>
+            <MenuItem text={group.label} key={group.id} icon={group.icon} onClick={handleMove}>
+              {renderGroupsMenu(group.childNodes, group)}
+            </MenuItem>
+          </When>
+          <Otherwise>
+            <MenuItem text={group.label} key={group.id} icon={group.icon} onClick={handleMove} />
+          </Otherwise>
+        </Choose>
+      </For>
+    </>
+  );
+
+  const showContextMenu = e => {
+    e.preventDefault();
+    setContextMenuVisibility(true);
+    ContextMenu.show(
+      <Menu>
+        <MenuItem text="Move to..." icon="add-to-folder">
+          {renderGroupsMenu(groups)}
+        </MenuItem>
+        <MenuItem text="Move to Trash" icon="trash" />
+      </Menu>,
+      { left: e.clientX, top: e.clientY },
+      () => setContextMenuVisibility(false)
+    );
+  };
+
+  return (
+    <EntryWrapper
+      selected={selected}
+      focused={contextMenuOpen}
+      onClick={onClick}
+      ref={innerRef}
+      onContextMenu={showContextMenu}
+      {...props}
+    >
+      <ImageWrapper>
+        <SiteIcon domain={getEntryDomain(entry)} />
+      </ImageWrapper>
+      <ContentWrapper>
+        <Text ellipsize>{title(entry)}</Text>
+        <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
+          {getFacadeField(entry, 'username')}
+        </SecondaryText>
+      </ContentWrapper>
+    </EntryWrapper>
+  );
+};
 
 Entry.propTypes = {
   entry: EntryFacade,

@@ -38,6 +38,25 @@ export function useCurrentEntries() {
   };
 }
 
+const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
+  return groups
+    .filter(group => group.parentID === parentID)
+    .map(group => {
+      const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
+      const isExpanded = expandedGroups.includes(group.id);
+      const isTrash = group.attributes && group.attributes.bc_group_role === 'trash';
+      return {
+        id: group.id,
+        label: group.title,
+        icon: isTrash ? 'trash' : isExpanded ? 'folder-open' : 'folder-close',
+        hasCaret: childNodes.length,
+        isSelected: group.id === selectedGroupID,
+        isExpanded,
+        childNodes
+      };
+    });
+};
+
 export function useGroups() {
   const {
     vault,
@@ -49,7 +68,7 @@ export function useGroups() {
   } = useContext(VaultContext);
 
   return {
-    groups: vault.groups,
+    groups: getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
     onSelectGroup,
     selectedGroupID,
     expandedGroups,

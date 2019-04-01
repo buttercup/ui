@@ -125,7 +125,7 @@ body.row-resize {
   -webkit-background-clip: padding;
   background-clip: padding-box;
   opacity: 0.2;
-  z-index: 100;
+  z-index: 0;
 }
 
 .reflex-container > .reflex-splitter.reflex-thin.active

@@ -22,7 +22,7 @@ const AddEntry = () => {
   );
 
   return (
-    <ButtonGroup>
+    <ButtonGroup fill>
       <Button icon="plus" text="New Entry" onClick={() => onAddEntry(defaultEntryType)} />
       <Popover content={renderMenu} boundary="viewport">
         <Button icon="more" />

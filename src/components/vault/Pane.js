@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { ReflexElement } from 'react-reflex';
-import { Tag, Colors } from '@blueprintjs/core';
+import { Tag, Colors, Button, Popover, Menu, MenuItem } from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
 
 const createScrollShadow = color => css`
@@ -60,20 +60,33 @@ export const PaneContent = styled.div`
   ${createScrollShadow('#fff')}
 `;
 
-export const PaneHeader = ({ count, title }) => (
-  <ListHeader>
-    <ListHeading>{title}</ListHeading>
-    <If condition={typeof count === 'number'}>
-      <Tag minimal round>
-        {count}
-      </Tag>
-    </If>
-  </ListHeader>
-);
-
 export const PaneFooter = styled.div`
   grid-area: footer;
   display: flex;
   align-items: center;
+  padding: 0 0.5rem;
   border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
+
+export const PaneHeader = ({ count, title }) => {
+  const renderMenu = (
+    <Menu>
+      <MenuItem text="Alphabetical" label="(a-z)" icon="sort-alphabetical" />
+      <MenuItem text="Alphabetical" label="(z-a)" icon="sort-alphabetical-desc" />
+      <MenuItem text="Filter..." icon="search-text" />
+    </Menu>
+  );
+  return (
+    <ListHeader>
+      <ListHeading>{title}</ListHeading>
+      <If condition={typeof count === 'number'}>
+        <Tag minimal round>
+          {count}
+        </Tag>
+      </If>
+      <Popover content={renderMenu}>
+        <Button minimal icon="filter-list" />
+      </Popover>
+    </ListHeader>
+  );
+};

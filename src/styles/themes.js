@@ -2,6 +2,7 @@ import { Colors } from '@blueprintjs/core';
 
 const light = {
   list: {
+    focusedBackgroundColor: Colors.LIGHT_GRAY5,
     selectedBackgroundColor: Colors.TURQUOISE3,
     selectedTextColor: '#fff'
   },
