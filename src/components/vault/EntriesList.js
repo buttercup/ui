@@ -5,6 +5,7 @@ import Entry from './Entry';
 import { useCurrentEntries } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
+import { NonIdealState } from '@blueprintjs/core';
 
 const EntriesList = ({ className }) => {
   const { entries, selectedEntryID, onSelectEntry } = useCurrentEntries();
@@ -38,24 +39,35 @@ const EntriesList = ({ className }) => {
 
   return (
     <PaneContainer className={className}>
-      <PaneHeader title="Documents" count={entries.length} />
+      <PaneHeader title="Documents" count={entries.length} showFilter />
       <PaneContent>
-        <HotKeys keyMap={keyMap} handlers={handlers} tabIndex={1}>
-          <For each="entry" of={entries} index="entryIndex">
-            <Entry
-              tabIndex={entryIndex + 2}
-              entry={entry}
-              key={entry.id}
-              onClick={e => onSelectEntry(entry.id)}
-              selected={selectedEntryID === entry.id}
-              innerRef={el => {
-                if (selectedEntryID === entry.id) {
-                  ref.current = el;
-                }
-              }}
+        <Choose>
+          <When condition={entries.length > 0}>
+            <HotKeys keyMap={keyMap} handlers={handlers} tabIndex={1}>
+              <For each="entry" of={entries} index="entryIndex">
+                <Entry
+                  tabIndex={entryIndex + 2}
+                  entry={entry}
+                  key={entry.id}
+                  onClick={e => onSelectEntry(entry.id)}
+                  selected={selectedEntryID === entry.id}
+                  innerRef={el => {
+                    if (selectedEntryID === entry.id) {
+                      ref.current = el;
+                    }
+                  }}
+                />
+              </For>
+            </HotKeys>
+          </When>
+          <Otherwise>
+            <NonIdealState
+              title="No Documents"
+              description="Why not create one?"
+              icon="id-number"
             />
-          </For>
-        </HotKeys>
+          </Otherwise>
+        </Choose>
       </PaneContent>
       <PaneFooter>
         <AddEntry />

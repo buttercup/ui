@@ -18,7 +18,7 @@ const GroupsList = () => {
 
   return (
     <PaneContainer>
-      <PaneHeader title="Groups" count={groups.length} />
+      <PaneHeader title="Groups" count={groups.length} showFilter />
       <PaneContent bleed>
         <Tree
           contents={groups}

@@ -38,7 +38,7 @@ export const PaneContainer = styled.div`
   overflow: auto;
   background-color: ${props =>
     props.primary && getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
-  grid-template-rows: auto 1fr 40px;
+  grid-template-rows: 55px 1fr 40px;
   grid-template-areas:
     'header'
     'body'
@@ -68,7 +68,7 @@ export const PaneFooter = styled.div`
   border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 
-export const PaneHeader = ({ count, title }) => {
+export const PaneHeader = ({ count, title, showFilter = false }) => {
   const renderMenu = (
     <Menu>
       <MenuItem text="Alphabetical" label="(a-z)" icon="sort-alphabetical" />
@@ -84,9 +84,11 @@ export const PaneHeader = ({ count, title }) => {
           {count}
         </Tag>
       </If>
-      <Popover content={renderMenu}>
-        <Button minimal icon="filter-list" />
-      </Popover>
+      <If condition={showFilter}>
+        <Popover content={renderMenu}>
+          <Button minimal icon="filter-list" />
+        </Popover>
+      </If>
     </ListHeader>
   );
 };
