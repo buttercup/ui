@@ -61,6 +61,7 @@ export function useGroups() {
   const {
     vault,
     onSelectGroup,
+    onMoveEntryToGroup,
     selectedGroupID,
     expandedGroups,
     handleCollapseGroup,
@@ -70,6 +71,7 @@ export function useGroups() {
   return {
     groups: getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
     onSelectGroup,
+    onMoveEntryToGroup,
     selectedGroupID,
     expandedGroups,
     handleCollapseGroup,

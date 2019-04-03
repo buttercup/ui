@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import path from 'path';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
@@ -86,10 +86,16 @@ const ContentWrapper = styled.div`
 
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
-  const { groups } = useGroups();
+  const { groups, onMoveEntryToGroup } = useGroups();
+  const mounted = useRef(false);
 
-  const handleMove = e => {
-    console.log(e);
+  useEffect(() => {
+    mounted.current = true;
+    return () => (mounted.current = false);
+  });
+
+  const handleMove = parentID => e => {
+    onMoveEntryToGroup(entry.id, parentID);
   };
 
   const renderGroupsMenu = (items, parentNode) => (
@@ -99,19 +105,31 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
           text={`Move to ${parentNode.label}`}
           key={parentNode.id}
           icon={parentNode.icon}
-          onClick={handleMove}
+          onClick={handleMove(parentNode.id)}
+          disabled={entry.parentID === parentNode.id}
         />
         <MenuDivider />
       </If>
       <For each="group" of={items}>
         <Choose>
           <When condition={group.childNodes.length > 0}>
-            <MenuItem text={group.label} key={group.id} icon={group.icon} onClick={handleMove}>
+            <MenuItem
+              text={group.label}
+              key={group.id}
+              icon={group.icon}
+              onClick={handleMove(group.id)}
+            >
               {renderGroupsMenu(group.childNodes, group)}
             </MenuItem>
           </When>
           <Otherwise>
-            <MenuItem text={group.label} key={group.id} icon={group.icon} onClick={handleMove} />
+            <MenuItem
+              text={group.label}
+              key={group.id}
+              icon={group.icon}
+              onClick={handleMove(group.id)}
+              disabled={entry.parentID === group.id}
+            />
           </Otherwise>
         </Choose>
       </For>
@@ -129,7 +147,11 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
         <MenuItem text="Move to Trash" icon="trash" />
       </Menu>,
       { left: e.clientX, top: e.clientY },
-      () => setContextMenuVisibility(false)
+      () => {
+        if (mounted.current) {
+          setContextMenuVisibility(false);
+        }
+      }
     );
   };
 

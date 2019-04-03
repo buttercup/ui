@@ -30,6 +30,19 @@ export function vaultReducer(state, action) {
         ]
       };
     }
+    case 'move-entry':
+      return {
+        ...state,
+        entries: state.entries.map(entry => {
+          if (entry.id === action.entryID) {
+            return {
+              ...entry,
+              parentID: action.parentID
+            };
+          }
+          return entry;
+        })
+      };
     case 'delete-entry':
       return {
         ...state,

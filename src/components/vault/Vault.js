@@ -46,9 +46,15 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     handleExpandGroup: group => {
       setExpandedGroups([...expandedGroups, group.id]);
     },
-
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
+    },
+    onMoveEntryToGroup: (entryID, parentID) => {
+      dispatch({
+        type: 'move-entry',
+        entryID,
+        parentID
+      });
     },
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });
@@ -62,7 +68,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     onDeleteEntry: entryID => {
       dispatch({
         type: 'delete-entry',
-        entryID: entryID
+        entryID
       });
       dispatchEditing({
         type: 'stop-editing'
