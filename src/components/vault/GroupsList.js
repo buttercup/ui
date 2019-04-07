@@ -13,12 +13,19 @@ const GroupsList = () => {
     onSelectGroup,
     expandedGroups,
     handleCollapseGroup,
-    handleExpandGroup
+    handleExpandGroup,
+    filters,
+    onGroupFilterTermChange
   } = useGroups();
 
   return (
     <PaneContainer>
-      <PaneHeader title="Groups" count={groups.length} showFilter />
+      <PaneHeader
+        title="Groups"
+        count={groups.length}
+        filter={filters}
+        onTermChange={term => onGroupFilterTermChange(term)}
+      />
       <PaneContent bleed>
         <Tree
           contents={groups}

@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 import { VaultContext } from '../Vault';
+import { filterNestedGroups, getNestedGroups } from '../utils/groups';
+import { filterEntries } from '../utils/entries';
 
 export function useCurrentEntry() {
   const {
@@ -30,32 +32,21 @@ export function useCurrentEntry() {
 }
 
 export function useCurrentEntries() {
-  const { currentEntries, onSelectEntry, selectedEntryID } = useContext(VaultContext);
-  return {
-    entries: currentEntries,
+  const {
+    currentEntries,
     onSelectEntry,
-    selectedEntryID
+    selectedEntryID,
+    entriesFilters,
+    onEntriesFilterTermChange
+  } = useContext(VaultContext);
+  return {
+    entries: filterEntries(currentEntries, entriesFilters.term),
+    onSelectEntry,
+    selectedEntryID,
+    filters: entriesFilters,
+    onEntriesFilterTermChange
   };
 }
-
-const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
-  return groups
-    .filter(group => group.parentID === parentID)
-    .map(group => {
-      const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
-      const isExpanded = expandedGroups.includes(group.id);
-      const isTrash = group.attributes && group.attributes.bc_group_role === 'trash';
-      return {
-        id: group.id,
-        label: group.title,
-        icon: isTrash ? 'trash' : isExpanded ? 'folder-open' : 'folder-close',
-        hasCaret: childNodes.length,
-        isSelected: group.id === selectedGroupID,
-        isExpanded,
-        childNodes
-      };
-    });
-};
 
 export function useGroups() {
   const {
@@ -65,11 +56,18 @@ export function useGroups() {
     selectedGroupID,
     expandedGroups,
     handleCollapseGroup,
-    handleExpandGroup
+    handleExpandGroup,
+    groupFilters,
+    onGroupFilterTermChange
   } = useContext(VaultContext);
 
   return {
-    groups: getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
+    groups: filterNestedGroups(
+      getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
+      groupFilters.term
+    ),
+    filters: groupFilters,
+    onGroupFilterTermChange,
     onSelectGroup,
     onMoveEntryToGroup,
     selectedGroupID,

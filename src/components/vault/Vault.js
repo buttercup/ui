@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
-import { vaultReducer } from './reducers/vault';
+import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 
 export const VaultContext = React.createContext();
 
@@ -13,6 +13,8 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
+  const [groupFilters, dispatchGroupFilters] = useReducer(filterReducer, defaultFilter);
+  const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
   const initRef = useRef(false);
 
@@ -37,6 +39,8 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     selectedEntryID,
     selectedGroupID,
     expandedGroups,
+    groupFilters,
+    entriesFilters,
 
     // Actions
     onSelectGroup: groupID => {
@@ -48,6 +52,18 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     },
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
+    },
+    onGroupFilterTermChange: term => {
+      dispatchGroupFilters({
+        type: 'set-term',
+        term
+      });
+    },
+    onEntriesFilterTermChange: term => {
+      dispatchEntriesFilters({
+        type: 'set-term',
+        term
+      });
     },
     onMoveEntryToGroup: (entryID, parentID) => {
       dispatch({

@@ -8,7 +8,13 @@ import AddEntry from './AddEntry';
 import { NonIdealState } from '@blueprintjs/core';
 
 const EntriesList = ({ className }) => {
-  const { entries, selectedEntryID, onSelectEntry } = useCurrentEntries();
+  const {
+    entries,
+    selectedEntryID,
+    onSelectEntry,
+    filters,
+    onEntriesFilterTermChange
+  } = useCurrentEntries();
   const ref = useRef(null);
   const currentIndex = entries.findIndex(entry => entry.id === selectedEntryID);
   const keyMap = {
@@ -39,7 +45,12 @@ const EntriesList = ({ className }) => {
 
   return (
     <PaneContainer className={className}>
-      <PaneHeader title="Documents" count={entries.length} showFilter />
+      <PaneHeader
+        title="Documents"
+        count={entries.length}
+        filter={filters}
+        onTermChange={term => onEntriesFilterTermChange(term)}
+      />
       <PaneContent>
         <Choose>
           <When condition={entries.length > 0}>

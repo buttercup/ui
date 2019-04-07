@@ -50,3 +50,18 @@ export function vaultReducer(state, action) {
       };
   }
 }
+
+export function filterReducer(state, action) {
+  switch (action.type) {
+    case 'set-term':
+      return {
+        ...state,
+        term: action.term
+      };
+  }
+}
+
+export const defaultFilter = {
+  term: '',
+  sortMode: 'az'
+};

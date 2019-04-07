@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { ReflexElement } from 'react-reflex';
-import { Tag, Colors, Button, Popover, Menu, MenuItem } from '@blueprintjs/core';
+import {
+  Tag,
+  Colors,
+  Button,
+  Popover,
+  Menu,
+  MenuItem,
+  InputGroup,
+  Classes
+} from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
 
 const createScrollShadow = color => css`
@@ -27,6 +36,13 @@ const ListHeading = styled.h2`
   margin: 0;
   flex: 1;
 `;
+const ListHeadingContent = styled.div`
+  flex: 1;
+  display: flex;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+`;
 
 export const Pane = styled(ReflexElement)`
   display: grid;
@@ -35,7 +51,7 @@ export const Pane = styled(ReflexElement)`
 
 export const PaneContainer = styled.div`
   display: grid;
-  overflow: auto;
+  overflow: hidden;
   background-color: ${props =>
     props.primary && getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
   grid-template-rows: 55px 1fr 40px;
@@ -68,25 +84,61 @@ export const PaneFooter = styled.div`
   border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 
-export const PaneHeader = ({ count, title, showFilter = false }) => {
+export const PaneHeader = ({ count, title, filter = null, onTermChange = () => {} }) => {
+  const [filterInputVisible, toggleFilter] = useState(false);
+  const showFilter = filter !== null;
+
+  const clearSearch = () => onTermChange('');
+  const handleInputKeyPress = e => {
+    if (e.key.toLowerCase() === 'escape') {
+      clearSearch();
+      toggleFilter(false);
+    }
+  };
+
   const renderMenu = (
     <Menu>
       <MenuItem text="Alphabetical" label="(a-z)" icon="sort-alphabetical" />
       <MenuItem text="Alphabetical" label="(z-a)" icon="sort-alphabetical-desc" />
-      <MenuItem text="Filter..." icon="search-text" />
+      <MenuItem
+        text="Filter..."
+        icon="search-text"
+        onClick={() => toggleFilter(!filterInputVisible)}
+        disabled={filter && filter.term !== ''}
+      />
     </Menu>
   );
   return (
     <ListHeader>
-      <ListHeading>{title}</ListHeading>
-      <If condition={typeof count === 'number'}>
-        <Tag minimal round>
-          {count}
-        </Tag>
-      </If>
+      <ListHeadingContent>
+        <Choose>
+          <When condition={(filterInputVisible && showFilter) || (filter && filter.term !== '')}>
+            <InputGroup
+              small
+              className={Classes.FILL}
+              leftIcon="search"
+              rightElement={
+                filter.term !== '' && <Button icon="cross" minimal onClick={clearSearch} />
+              }
+              placeholder="Filter..."
+              value={filter.term}
+              onChange={e => onTermChange(e.target.value)}
+              onKeyDown={handleInputKeyPress}
+            />
+          </When>
+          <Otherwise>
+            <ListHeading>{title}</ListHeading>
+            <If condition={typeof count === 'number'}>
+              <Tag minimal round>
+                {count}
+              </Tag>
+            </If>
+          </Otherwise>
+        </Choose>
+      </ListHeadingContent>
       <If condition={showFilter}>
         <Popover content={renderMenu}>
-          <Button minimal icon="filter-list" />
+          <Button minimal icon="filter-list" small />
         </Popover>
       </If>
     </ListHeader>
