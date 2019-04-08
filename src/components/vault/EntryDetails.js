@@ -200,7 +200,7 @@ const EntryDetails = () => {
   };
 
   return (
-    <PaneContainer primary>
+    <PaneContainer>
       <Choose>
         <When condition={entry}>{renderEntryDetails()}</When>
         <Otherwise>

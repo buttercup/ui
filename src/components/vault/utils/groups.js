@@ -12,7 +12,8 @@ export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, pa
         hasCaret: childNodes.length,
         isSelected: group.id === selectedGroupID,
         isExpanded,
-        childNodes
+        childNodes,
+        className: 'node'
       };
     });
 };
