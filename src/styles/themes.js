@@ -8,6 +8,7 @@ const light = {
   },
   colors: {
     divider: Colors.LIGHT_GRAY4,
+    paneDivider: Colors.GRAY3,
     mainPaneBackground: Colors.LIGHT_GRAY
   },
   tree: {
