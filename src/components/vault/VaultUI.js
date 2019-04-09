@@ -7,9 +7,9 @@ import EntryDetails from './EntryDetails';
 import { Pane } from './Pane';
 import { getThemeProp } from '../../utils';
 
-const Splitter = styled(ReflexSplitter).attrs({ className: 'reflex-thin' })`
-  background-color: ${props => getThemeProp(props, 'colors.paneDivider')} !important;
-`;
+// const Splitter = styled(ReflexSplitter).attrs({ className: 'reflex-thin' })`
+//   background-color: ${props => getThemeProp(props, 'colors.paneDivider')} !important;
+// `;
 
 export default () => {
   return (
@@ -18,15 +18,15 @@ export default () => {
         <GroupsList />
       </Pane>
 
-      <Splitter />
+      <ReflexSplitter className="reflex-thin" />
 
       <Pane size={300} minSize={200}>
         <EntriesList />
       </Pane>
 
-      <Splitter />
+      <ReflexSplitter className="reflex-thin" />
 
-      <Pane minSize={400}>
+      <Pane minSize={400} autoGrow>
         <EntryDetails />
       </Pane>
     </ReflexContainer>
