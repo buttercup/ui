@@ -58,6 +58,11 @@ export function filterReducer(state, action) {
         ...state,
         term: action.term
       };
+    case 'set-sort-mode':
+      return {
+        ...state,
+        sortMode: action.sortMode
+      };
   }
 }
 

@@ -86,7 +86,7 @@ const ContentWrapper = styled.div`
 
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
-  const { groups, onMoveEntryToGroup, onMoveEntryToTrash } = useGroups();
+  const { groups, onMoveEntryToGroup, onMoveEntryToTrash, trashID } = useGroups();
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -144,7 +144,13 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
         <MenuItem text="Move to..." icon="add-to-folder">
           {renderGroupsMenu(groups)}
         </MenuItem>
-        <MenuItem text="Move to Trash" icon="trash" onClick={() => onMoveEntryToTrash(entry.id)} />
+        <If condition={entry.parentID !== trashID}>
+          <MenuItem
+            text="Move to Trash"
+            icon="trash"
+            onClick={() => onMoveEntryToTrash(entry.id)}
+          />
+        </If>
       </Menu>,
       { left: e.clientX, top: e.clientY },
       () => {

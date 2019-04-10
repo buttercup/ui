@@ -9,7 +9,8 @@ import {
   Menu,
   MenuItem,
   InputGroup,
-  Classes
+  Classes,
+  Icon
 } from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
 
@@ -84,7 +85,13 @@ export const PaneFooter = styled.div`
   border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 
-export const PaneHeader = ({ count, title, filter = null, onTermChange = () => {} }) => {
+export const PaneHeader = ({
+  count,
+  title,
+  filter = null,
+  onTermChange = () => {},
+  onSortModeChange = () => {}
+}) => {
   const [filterInputVisible, toggleFilter] = useState(false);
   const showFilter = filter !== null;
 
@@ -96,10 +103,22 @@ export const PaneHeader = ({ count, title, filter = null, onTermChange = () => {
     }
   };
 
+  const checkedIcon = <Icon icon="small-tick" />;
+
   const renderMenu = (
     <Menu>
-      <MenuItem text="Alphabetical" label="(a-z)" icon="sort-alphabetical" />
-      <MenuItem text="Alphabetical" label="(z-a)" icon="sort-alphabetical-desc" />
+      <MenuItem
+        text="Alphabetical"
+        label={filter && filter.sortMode === 'az' ? checkedIcon : ''}
+        icon="sort-alphabetical"
+        onClick={() => onSortModeChange('az')}
+      />
+      <MenuItem
+        text="Alphabetical"
+        label={filter && filter.sortMode === 'za' ? checkedIcon : ''}
+        icon="sort-alphabetical-desc"
+        onClick={() => onSortModeChange('za')}
+      />
       <MenuItem
         text="Filter..."
         icon="search-text"

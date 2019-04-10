@@ -59,10 +59,22 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         term
       });
     },
+    onGroupFilterSortModeChange: sortMode => {
+      dispatchGroupFilters({
+        type: 'set-sort-mode',
+        sortMode
+      });
+    },
     onEntriesFilterTermChange: term => {
       dispatchEntriesFilters({
         type: 'set-term',
         term
+      });
+    },
+    onEntriesFilterSortModeChange: sortMode => {
+      dispatchEntriesFilters({
+        type: 'set-sort-mode',
+        sortMode
       });
     },
     onMoveEntryToGroup: (entryID, parentID) => {

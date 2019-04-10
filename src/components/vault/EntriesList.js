@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
 import Entry from './Entry';
-import { useCurrentEntries } from './hooks/vault';
+import { useCurrentEntries, useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
 import { NonIdealState } from '@blueprintjs/core';
@@ -13,8 +13,10 @@ const EntriesList = ({ className }) => {
     selectedEntryID,
     onSelectEntry,
     filters,
-    onEntriesFilterTermChange
+    onEntriesFilterTermChange,
+    onEntriesFilterSortModeChange
   } = useCurrentEntries();
+  const { trashSelected } = useGroups();
   const ref = useRef(null);
   const currentIndex = entries.findIndex(entry => entry.id === selectedEntryID);
   const keyMap = {
@@ -46,10 +48,11 @@ const EntriesList = ({ className }) => {
   return (
     <PaneContainer className={className}>
       <PaneHeader
-        title="Documents"
+        title={trashSelected ? 'Trash' : 'Documents'}
         count={entries.length}
         filter={filters}
         onTermChange={term => onEntriesFilterTermChange(term)}
+        onSortModeChange={sortMode => onEntriesFilterSortModeChange(sortMode)}
       />
       <PaneContent>
         <Choose>
@@ -73,6 +76,9 @@ const EntriesList = ({ className }) => {
           </When>
           <When condition={entries.length === 0 && filters.term !== ''}>
             <NonIdealState title="Not found" />
+          </When>
+          <When condition={entries.length === 0 && trashSelected}>
+            <NonIdealState title="Trash is empty!" icon="trash" />
           </When>
           <Otherwise>
             <NonIdealState

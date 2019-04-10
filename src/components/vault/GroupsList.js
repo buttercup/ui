@@ -40,6 +40,7 @@ const GroupsList = () => {
     handleExpandGroup,
     filters,
     onGroupFilterTermChange,
+    onGroupFilterSortModeChange,
     trashCount,
     trashSelected,
     trashID
@@ -52,6 +53,7 @@ const GroupsList = () => {
         count={groups.length}
         filter={filters}
         onTermChange={term => onGroupFilterTermChange(term)}
+        onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
       />
       <PaneContent>
         <Tree

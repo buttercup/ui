@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { VaultContext } from '../Vault';
-import { filterNestedGroups, getNestedGroups, isTrashGroup } from '../utils/groups';
-import { filterEntries } from '../utils/entries';
+import { filterNestedGroups, getNestedGroups, isTrashGroup, sortGroups } from '../utils/groups';
+import { filterEntries, sortEntries } from '../utils/entries';
 
 export function useCurrentEntry() {
   const {
@@ -37,14 +37,20 @@ export function useCurrentEntries() {
     onSelectEntry,
     selectedEntryID,
     entriesFilters,
-    onEntriesFilterTermChange
+    onEntriesFilterTermChange,
+    onEntriesFilterSortModeChange
   } = useContext(VaultContext);
+  const { sortMode } = entriesFilters;
+  const entries =
+    sortMode === 'na' ? currentEntries : sortEntries(currentEntries, sortMode === 'az');
+
   return {
-    entries: filterEntries(currentEntries, entriesFilters.term),
+    entries: filterEntries(entries, entriesFilters.term),
     onSelectEntry,
     selectedEntryID,
     filters: entriesFilters,
-    onEntriesFilterTermChange
+    onEntriesFilterTermChange,
+    onEntriesFilterSortModeChange
   };
 }
 
@@ -58,7 +64,8 @@ export function useGroups() {
     handleCollapseGroup,
     handleExpandGroup,
     groupFilters,
-    onGroupFilterTermChange
+    onGroupFilterTermChange,
+    onGroupFilterSortModeChange
   } = useContext(VaultContext);
 
   const trashGroup = vault.groups.find(isTrashGroup);
@@ -69,11 +76,16 @@ export function useGroups() {
 
   return {
     groups: filterNestedGroups(
-      getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
+      getNestedGroups(
+        sortGroups(vault.groups, groupFilters.sortMode === 'az'),
+        selectedGroupID,
+        expandedGroups
+      ),
       groupFilters.term
     ),
     filters: groupFilters,
     onGroupFilterTermChange,
+    onGroupFilterSortModeChange,
     onSelectGroup,
     onMoveEntryToGroup,
     selectedGroupID,
