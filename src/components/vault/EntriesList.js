@@ -71,6 +71,9 @@ const EntriesList = ({ className }) => {
               </For>
             </HotKeys>
           </When>
+          <When condition={entries.length === 0 && filters.term !== ''}>
+            <NonIdealState title="Not found" />
+          </When>
           <Otherwise>
             <NonIdealState
               title="No Documents"

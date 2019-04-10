@@ -1,10 +1,12 @@
+export const isTrashGroup = group => group.attributes && group.attributes.bc_group_role === 'trash';
+
 export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
   return groups
     .filter(group => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')
     .map(group => {
       const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
       const isExpanded = expandedGroups.includes(group.id);
-      const isTrash = group.attributes && group.attributes.bc_group_role === 'trash';
+      const isTrash = isTrashGroup(group);
       return {
         id: group.id,
         label: group.title,
@@ -13,7 +15,8 @@ export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, pa
         isSelected: group.id === selectedGroupID,
         isExpanded,
         childNodes,
-        className: 'node'
+        className: 'node',
+        isTrash
       };
     });
 };

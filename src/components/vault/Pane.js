@@ -16,11 +16,11 @@ import { getThemeProp } from '../../utils';
 const createScrollShadow = color => css`
   /* Show shadow on scroll: https://gist.github.com/tbmiller/6675197 */
   background: linear-gradient(${color} 30%, hsla(0, 0%, 100%, 0)),
-    linear-gradient(hsla(0, 0%, 100%, 0) 10px, ${color} 70%) bottom,
+    linear-gradient(hsla(0, 0%, 100%, 0) 0px, ${color} 70%) bottom,
     radial-gradient(at top, rgba(0, 0, 0, 0.2), transparent 70%),
     radial-gradient(at bottom, rgba(0, 0, 0, 0.2), transparent 70%) bottom;
   background-repeat: no-repeat;
-  background-size: 100% 20px, 100% 20px, 100% 10px, 100% 10px;
+  background-size: 100% 10px, 100% 10px, 100% 5px, 100% 5px;
   background-attachment: local, local, scroll, scroll;
 `;
 

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { VaultContext } from '../Vault';
-import { filterNestedGroups, getNestedGroups } from '../utils/groups';
+import { filterNestedGroups, getNestedGroups, isTrashGroup } from '../utils/groups';
 import { filterEntries } from '../utils/entries';
 
 export function useCurrentEntry() {
@@ -61,6 +61,12 @@ export function useGroups() {
     onGroupFilterTermChange
   } = useContext(VaultContext);
 
+  const trashGroup = vault.groups.find(isTrashGroup);
+  const trashID = trashGroup && trashGroup.id;
+  const trashSelected = selectedGroupID === trashID;
+  const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
+  const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
+
   return {
     groups: filterNestedGroups(
       getNestedGroups(vault.groups, selectedGroupID, expandedGroups),
@@ -73,7 +79,11 @@ export function useGroups() {
     selectedGroupID,
     expandedGroups,
     handleCollapseGroup,
-    handleExpandGroup
+    handleExpandGroup,
+    onMoveEntryToTrash,
+    trashID,
+    trashSelected,
+    trashCount
   };
 }
 

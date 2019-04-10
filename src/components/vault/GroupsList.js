@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Tree as BaseTree } from '@blueprintjs/core';
+import { Tree as BaseTree, Button, Tag, Intent, Alignment } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
-import { PaneContainer, PaneHeader, PaneContent } from './Pane';
+import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
 
 const Tree = styled(BaseTree)`
@@ -39,7 +39,10 @@ const GroupsList = () => {
     handleCollapseGroup,
     handleExpandGroup,
     filters,
-    onGroupFilterTermChange
+    onGroupFilterTermChange,
+    trashCount,
+    trashSelected,
+    trashID
   } = useGroups();
 
   return (
@@ -58,6 +61,22 @@ const GroupsList = () => {
           onNodeCollapse={handleCollapseGroup}
         />
       </PaneContent>
+      <PaneFooter>
+        <Button
+          rightIcon={
+            <Tag round minimal intent={trashCount > 0 ? Intent.WARNING : Intent.NONE}>
+              {trashCount}
+            </Tag>
+          }
+          icon="trash"
+          fill
+          minimal
+          text="Trash"
+          alignText={Alignment.LEFT}
+          active={trashSelected}
+          onClick={() => onSelectGroup(trashID)}
+        />
+      </PaneFooter>
     </PaneContainer>
   );
 };
