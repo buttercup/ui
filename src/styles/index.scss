@@ -4,6 +4,12 @@
 
 $pt-font-family: 'Inter';
 $pt-intent-primary: $turquoise3;
+$button-intents: (
+  "primary": ($pt-intent-primary, $turquoise2, $turquoise1),
+  "success": ($pt-intent-success, $green2, $green1),
+  "warning": ($pt-intent-warning, $orange2, $orange1),
+  "danger": ($pt-intent-danger, $red2, $red1)
+) !default;
 
 @import "~@blueprintjs/core/src/blueprint.scss";
 // @import "~react-reflex/styles.css";

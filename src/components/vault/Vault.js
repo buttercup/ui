@@ -83,6 +83,11 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         entryID,
         parentID
       });
+      if (editingEntry && entryID === editingEntry.id) {
+        dispatchEditing({
+          type: 'stop-editing'
+        });
+      }
     },
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });

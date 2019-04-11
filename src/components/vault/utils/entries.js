@@ -10,7 +10,7 @@ export const filterEntries = (entries = [], term = '') => {
   );
 };
 
-export const sortEntries = (groups = [], asc = true) => {
+export const sortEntries = (entries = [], asc = true) => {
   const sortByTitleCaseInsensitive = R.sortBy(
     R.compose(
       R.toLower,
@@ -21,6 +21,6 @@ export const sortEntries = (groups = [], asc = true) => {
       )
     )
   );
-  const sorted = sortByTitleCaseInsensitive(groups);
+  const sorted = sortByTitleCaseInsensitive(entries);
   return asc ? sorted : R.reverse(sorted);
 };

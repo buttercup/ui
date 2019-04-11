@@ -90,7 +90,7 @@ const EntriesList = ({ className }) => {
         </Choose>
       </PaneContent>
       <PaneFooter>
-        <AddEntry />
+        <AddEntry disabled={trashSelected} />
       </PaneFooter>
     </PaneContainer>
   );

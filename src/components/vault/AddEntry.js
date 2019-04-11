@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
 import { useActions } from './hooks/vault';
 
-const AddEntry = () => {
+const AddEntry = ({ disabled }) => {
   const { onAddEntry } = useActions();
 
   const renderMenu = (
@@ -23,9 +23,14 @@ const AddEntry = () => {
 
   return (
     <ButtonGroup fill>
-      <Button icon="plus" text="New Entry" onClick={() => onAddEntry(defaultEntryType)} />
+      <Button
+        icon="plus"
+        text="New Entry"
+        onClick={() => onAddEntry(defaultEntryType)}
+        disabled={disabled}
+      />
       <Popover content={renderMenu} boundary="viewport">
-        <Button icon="more" />
+        <Button icon="more" disabled={disabled} />
       </Popover>
     </ButtonGroup>
   );

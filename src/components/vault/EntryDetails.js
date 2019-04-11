@@ -2,11 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
+import { NonIdealState, Button, Intent } from '@blueprintjs/core';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
-import { useCurrentEntry } from './hooks/vault';
+import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
-import { NonIdealState } from '@blueprintjs/core';
+import ConfirmButton from './ConfirmButton';
+
+const ActionBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+
+  > div button {
+    margin-right: 10px;
+  }
+`;
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -59,6 +70,7 @@ const EntryDetails = () => {
     onRemoveField,
     onSaveEdit
   } = useCurrentEntry();
+  const { onMoveEntryToTrash, trashID } = useGroups();
 
   const renderEntryDetails = () => {
     return (
@@ -183,17 +195,34 @@ const EntryDetails = () => {
               </For>
             </With>
           </EntryPropertiesList>
-        </PaneContent>
-        <PaneFooter>
-          <If condition={!editing}>
-            <button onClick={onEdit}>Edit</button>
-          </If>
           <If condition={editing}>
             <button onClick={onAddField}>Add Field</button>
-            <button onClick={onSaveEdit}>Save</button>
-            <button onClick={onCancelEdit}>Cancel</button>
-            <button onClick={() => onDeleteEntry(entry.id)}>Delete Entry</button>
           </If>
+        </PaneContent>
+        <PaneFooter>
+          <ActionBar>
+            <If condition={!editing}>
+              <Button onClick={onEdit} icon="edit" disabled={entry.parentID === trashID}>
+                Edit
+              </Button>
+            </If>
+            <If condition={editing}>
+              <div>
+                <Button onClick={onSaveEdit} intent={Intent.PRIMARY} icon="tick">
+                  Save
+                </Button>
+                <Button onClick={onCancelEdit}>Cancel</Button>
+              </div>
+              <ConfirmButton
+                icon="trash"
+                title="Confirm move to Trash"
+                description="Are you sure you want to move this entry to Trash?"
+                primaryAction="Move to Trash"
+                onClick={() => onMoveEntryToTrash(entry.id)}
+                danger
+              />
+            </If>
+          </ActionBar>
         </PaneFooter>
       </>
     );
