@@ -1,13 +1,19 @@
 import R from 'ramda';
+import Fuse from 'fuse.js';
 import { getFacadeField } from '../../../utils';
+
+const options = {
+  keys: ['fields.value'],
+  includeMatches: true,
+  minMatchCharLength: 3
+};
 
 export const filterEntries = (entries = [], term = '') => {
   if (term === '') {
     return entries;
   }
-  return entries.filter(entry =>
-    (getFacadeField(entry, 'username') || '').toLowerCase().includes(term.toLowerCase())
-  );
+  const fuse = new Fuse(entries, options);
+  return fuse.search(term).map(hit => ({ ...hit.item, matches: hit.matches }));
 };
 
 export const sortEntries = (entries = [], asc = true) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { ReflexElement } from 'react-reflex';
 import {
@@ -93,7 +93,14 @@ export const PaneHeader = ({
   onSortModeChange = () => {}
 }) => {
   const [filterInputVisible, toggleFilter] = useState(false);
+  const inputRef = useRef(null);
   const showFilter = filter !== null;
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [filterInputVisible]);
 
   const clearSearch = () => onTermChange('');
   const handleInputKeyPress = e => {
@@ -143,6 +150,7 @@ export const PaneHeader = ({
               value={filter.term}
               onChange={e => onTermChange(e.target.value)}
               onKeyDown={handleInputKeyPress}
+              inputRef={ref => (inputRef.current = ref)}
             />
           </When>
           <Otherwise>

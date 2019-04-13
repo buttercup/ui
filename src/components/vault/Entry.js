@@ -174,9 +174,9 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
         <SiteIcon domain={getEntryDomain(entry)} />
       </ImageWrapper>
       <ContentWrapper>
-        <Text ellipsize>{title(entry)}</Text>
+        <Text ellipsize>{getFacadeField(entry, 'title', entry.matches)}</Text>
         <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
-          {getFacadeField(entry, 'username')}
+          {getFacadeField(entry, 'username', entry.matches)}
         </SecondaryText>
       </ContentWrapper>
     </EntryWrapper>

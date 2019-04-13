@@ -14,9 +14,9 @@ const Tree = styled(BaseTree)`
         background-color: ${props =>
           getThemeProp(props, 'tree.selectedBackgroundColor')} !important;
         color: ${props => getThemeProp(props, 'tree.selectedTextColor')};
-      }
-      [icon] {
-        color: ${props => getThemeProp(props, 'tree.selectedIconColor')} !important;
+        > [icon] {
+          color: ${props => getThemeProp(props, 'tree.selectedIconColor')} !important;
+        }
       }
     }
     > [class*='node-content'] {
