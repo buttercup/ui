@@ -143,9 +143,7 @@ export const PaneHeader = ({
               small
               className={Classes.FILL}
               leftIcon="search"
-              rightElement={
-                filter.term !== '' && <Button icon="cross" minimal onClick={clearSearch} />
-              }
+              type="search"
               placeholder="Filter..."
               value={filter.term}
               onChange={e => onTermChange(e.target.value)}

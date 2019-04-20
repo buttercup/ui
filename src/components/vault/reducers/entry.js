@@ -27,7 +27,9 @@ export function entryReducer(state, action) {
         ...state,
         fields: state.fields.map(field => {
           if (field.id === changedField.id) {
-            return { ...field, value: value || field.value, property: property || field.property };
+            const newValue = typeof value === 'string' ? value : field.value;
+            const newProperty = typeof property === 'string' ? property : field.property;
+            return { ...field, value: newValue, property: newProperty };
           }
           return field;
         })
