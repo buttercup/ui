@@ -11,7 +11,7 @@ export const VaultContext = React.createContext();
 export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [vault, dispatch] = useReducer(vaultReducer, clone(vaultSource));
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
-  const [selectedEntryID, setSelectedEntryID] = useState(null);
+  const [selectedEntryID, setSelectedEntryID] = useState(vault.entries[0].id);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
   const [groupFilters, dispatchGroupFilters] = useReducer(filterReducer, defaultFilter);
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);

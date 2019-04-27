@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import TextArea from 'react-textarea-autosize';
 import {
@@ -11,13 +11,18 @@ import {
   HTMLSelect,
   // TextArea,
   EditableText,
-  Classes
+  Classes,
+  ControlGroup,
+  Colors,
+  FormGroup,
+  ButtonGroup
 } from '@blueprintjs/core';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { EntryFacade } from './props';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
+import { copyToClipboard } from '../../utils';
 
 const ActionBar = styled.div`
   display: flex;
@@ -39,34 +44,159 @@ function title(entry) {
 const NOOP = () => {};
 
 const EntryPropertyRow = styled.div`
-  display: grid;
-  grid-template-columns: 100px 1fr;
+  /* display: grid;
+  grid-template-columns: 100px 1fr; */
   padding: 0.5rem 0;
 `;
-const EntryProperty = styled.div``;
-const EntryPropertyValue = styled.div``;
+const EntryProperty = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const EntryPropertyValue = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const ValueWithNewLines = styled.span`
   white-space: pre-line;
 `;
+const FormContainer = styled.div`
+  background-color: ${p => (p.primary ? Colors.LIGHT_GRAY5 : 'transparent')};
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+`;
+const CustomFieldsHeading = styled.h5`
+  text-transform: uppercase;
+  color: ${Colors.GRAY3};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  margin-bottom: 0;
+
+  &:before,
+  &:after {
+    display: flex;
+    content: '';
+    height: 1px;
+    background-color: ${Colors.LIGHT_GRAY2};
+    width: 100%;
+  }
+
+  span {
+    padding: 0 0.5rem;
+  }
+`;
+const FieldRowContainer = styled.div`
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-gap: 1rem;
+  margin-bottom: 0.5rem;
+`;
+const FieldRowLabel = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: ${Colors.GRAY3};
+`;
+const FieldRowChildren = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const FieldTextToolbar = styled(ButtonGroup)`
+  margin-left: 0.5rem;
+  opacity: 0;
+`;
+const FieldTextWrapper = styled.span`
+  border: 1px dashed transparent;
+  border-radius: 2px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+
+  &:hover {
+    border-color: ${Colors.LIGHT_GRAY1};
+
+    ${FieldTextToolbar} {
+      opacity: 1;
+    }
+  }
+`;
+
+const FieldText = ({ field }) => {
+  const [visible, toggleVisibility] = useState(false);
+  const Element = field.secret ? 'code' : 'span';
+
+  return (
+    <FieldTextWrapper role="content">
+      <Choose>
+        <When condition={field.multiline}>
+          <ValueWithNewLines>{field.value}</ValueWithNewLines>
+        </When>
+        <When condition={field.formatting && field.formatting.options}>
+          {typeof field.formatting.options === 'object'
+            ? field.formatting.options[field.value] || field.value
+            : field.value}
+        </When>
+        <Otherwise>
+          <Element>
+            <Choose>
+              <When condition={field.secret && !visible}>●●●●</When>
+              <Otherwise>
+                <FormattedText
+                  format={
+                    field.formatting && field.formatting.format
+                      ? field.formatting.format
+                      : undefined
+                  }
+                  value={field.value || ''}
+                />
+              </Otherwise>
+            </Choose>
+          </Element>
+        </Otherwise>
+      </Choose>
+      <FieldTextToolbar>
+        <If condition={field.secret}>
+          <Button
+            text={visible ? 'Hide' : 'Reveal'}
+            small
+            onClick={() => toggleVisibility(!visible)}
+          />
+        </If>
+        <Button icon="clipboard" small onClick={() => copyToClipboard(field.value)} />
+      </FieldTextToolbar>
+    </FieldTextWrapper>
+  );
+};
+
+const FieldRowGroup = ({ label, children }) => {
+  return (
+    <FieldRowContainer>
+      <FieldRowLabel>{label}</FieldRowLabel>
+      <FieldRowChildren>{children}</FieldRowChildren>
+    </FieldRowContainer>
+  );
+};
 
 const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveField }) => {
+  const label =
+    editing && field.removeable ? (
+      <EditableText
+        value={field.property}
+        onChange={value => {
+          onFieldNameUpdate(field, value);
+        }}
+      />
+    ) : (
+      field.title || field.property
+    );
   return (
     <EntryPropertyRow key={field.id}>
-      <EntryProperty>
-        <Choose>
-          <When condition={editing && field.title.length <= 0}>
-            <InputGroup
-              type="text"
-              value={field.property}
-              onChange={event => {
-                onFieldNameUpdate(field, event.target.value);
-              }}
-            />
-          </When>
-          <Otherwise>{field.title || field.property}</Otherwise>
-        </Choose>
-      </EntryProperty>
-      <EntryPropertyValue>
+      <FieldRowGroup label={label}>
         <Choose>
           <When condition={editing}>
             <Choose>
@@ -79,6 +209,7 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
               </When>
               <When condition={field.formatting && field.formatting.options}>
                 <HTMLSelect
+                  fill
                   defaultValue={field.value ? undefined : field.formatting.defaultOption}
                   value={field.value || undefined}
                   onChange={event => onFieldUpdate(field, event.target.value)}
@@ -103,6 +234,8 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
               </When>
               <Otherwise>
                 <FormattedInput
+                  minimal
+                  className={Classes.FILL}
                   element={InputGroup}
                   value={field.value}
                   onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
@@ -121,32 +254,10 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
             </Choose>
           </When>
           <Otherwise>
-            <Choose>
-              <When condition={field.multiline}>
-                <ValueWithNewLines>{field.value}</ValueWithNewLines>
-              </When>
-              <When condition={field.formatting && field.formatting.options}>
-                {typeof field.formatting.options === 'object'
-                  ? field.formatting.options[field.value] || field.value
-                  : field.value}
-              </When>
-              <Otherwise>
-                <FormattedText
-                  format={
-                    field.formatting && field.formatting.format
-                      ? field.formatting.format
-                      : undefined
-                  }
-                  value={field.value || ''}
-                />
-              </Otherwise>
-            </Choose>
+            <FieldText field={field} />
           </Otherwise>
         </Choose>
-      </EntryPropertyValue>
-      <If condition={editing && field.removeable}>
-        <button onClick={() => onRemoveField(field)}>X</button>
-      </If>
+      </FieldRowGroup>
     </EntryPropertyRow>
   );
 };
@@ -176,7 +287,7 @@ const EntryDetailsContent = () => {
     <>
       <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
       <PaneContent>
-        <Card elevation={1}>
+        <FormContainer primary>
           <For each="field" of={mainFields}>
             <FieldRow
               field={field}
@@ -186,9 +297,12 @@ const EntryDetailsContent = () => {
               editing={editing}
             />
           </For>
-        </Card>
+        </FormContainer>
+        <CustomFieldsHeading>
+          <span>Custom Fields:</span>
+        </CustomFieldsHeading>
         <If condition={removeableFields.length > 0}>
-          <Card elevation={1}>
+          <FormContainer>
             <For each="field" of={removeableFields}>
               <FieldRow
                 field={field}
@@ -198,7 +312,7 @@ const EntryDetailsContent = () => {
                 editing={editing}
               />
             </For>
-          </Card>
+          </FormContainer>
         </If>
         <If condition={editing}>
           <button onClick={onAddField}>Add Field</button>
