@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
 import {
   NonIdealState,
   Button,
   Intent,
-  Card,
   InputGroup,
   HTMLSelect,
-  // TextArea,
   EditableText,
   Classes,
   ControlGroup,
   Colors,
-  FormGroup,
-  ButtonGroup
+  ButtonGroup,
+  Text
 } from '@blueprintjs/core';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
-import { EntryFacade } from './props';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
 import { copyToClipboard } from '../../utils';
+
+function title(entry) {
+  const titleField = entry.fields.find(
+    item => item.field === 'property' && item.property === 'title'
+  );
+  return titleField ? titleField.value : <i>(Untitled)</i>;
+}
 
 const ActionBar = styled.div`
   display: flex;
@@ -33,31 +37,8 @@ const ActionBar = styled.div`
     margin-right: 10px;
   }
 `;
-
-function title(entry) {
-  const titleField = entry.fields.find(
-    item => item.field === 'property' && item.property === 'title'
-  );
-  return titleField ? titleField.value : <i>(Untitled)</i>;
-}
-
-const NOOP = () => {};
-
-const EntryPropertyRow = styled.div`
-  /* display: grid;
-  grid-template-columns: 100px 1fr; */
-  padding: 0.5rem 0;
-`;
-const EntryProperty = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const EntryPropertyValue = styled.div`
-  display: flex;
-  align-items: center;
-`;
 const ValueWithNewLines = styled.span`
-  white-space: pre-line;
+  white-space: pre-wrap;
 `;
 const FormContainer = styled.div`
   background-color: ${p => (p.primary ? Colors.LIGHT_GRAY5 : 'transparent')};
@@ -92,6 +73,7 @@ const FieldRowContainer = styled.div`
   grid-template-columns: 100px 1fr;
   grid-gap: 1rem;
   margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
 `;
 const FieldRowLabel = styled.div`
   display: flex;
@@ -129,6 +111,10 @@ const FieldTextWrapper = styled.span`
 const FieldText = ({ field }) => {
   const [visible, toggleVisibility] = useState(false);
   const Element = field.secret ? 'code' : 'span';
+
+  if (!field.value) {
+    return <Text className={Classes.TEXT_MUTED}>Not set.</Text>;
+  }
 
   return (
     <FieldTextWrapper role="content">
@@ -195,70 +181,66 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
       field.title || field.property
     );
   return (
-    <EntryPropertyRow key={field.id}>
-      <FieldRowGroup label={label}>
-        <Choose>
-          <When condition={editing}>
-            <Choose>
-              <When condition={field.multiline}>
-                <TextArea
-                  className={Classes.INPUT}
-                  value={field.value}
-                  onChange={val => onFieldUpdate(field, val.target.value)}
-                />
-              </When>
-              <When condition={field.formatting && field.formatting.options}>
-                <HTMLSelect
-                  fill
-                  defaultValue={field.value ? undefined : field.formatting.defaultOption}
-                  value={field.value || undefined}
-                  onChange={event => onFieldUpdate(field, event.target.value)}
-                >
-                  <Choose>
-                    <When condition={typeof field.formatting.options === 'object'}>
-                      <For each="optionValue" of={Object.keys(field.formatting.options)}>
-                        <option key={optionValue} value={optionValue}>
-                          {field.formatting.options[optionValue]}
-                        </option>
-                      </For>
-                    </When>
-                    <Otherwise>
-                      <For each="optionValue" of={field.formatting.options}>
-                        <option key={optionValue} value={optionValue}>
-                          {optionValue}
-                        </option>
-                      </For>
-                    </Otherwise>
-                  </Choose>
-                </HTMLSelect>
-              </When>
-              <Otherwise>
-                <FormattedInput
-                  minimal
-                  className={Classes.FILL}
-                  element={InputGroup}
-                  value={field.value}
-                  onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
-                  placeholder={
-                    field.formatting && field.formatting.placeholder
-                      ? field.formatting.placeholder
-                      : field.title
-                  }
-                  format={
-                    field.formatting && field.formatting.format
-                      ? field.formatting.format
-                      : undefined
-                  }
-                />
-              </Otherwise>
-            </Choose>
-          </When>
-          <Otherwise>
-            <FieldText field={field} />
-          </Otherwise>
-        </Choose>
-      </FieldRowGroup>
-    </EntryPropertyRow>
+    <FieldRowGroup label={label} key={field.id}>
+      <Choose>
+        <When condition={editing}>
+          <Choose>
+            <When condition={field.multiline}>
+              <TextArea
+                className={cx(Classes.INPUT, Classes.FILL)}
+                value={field.value}
+                onChange={val => onFieldUpdate(field, val.target.value)}
+              />
+            </When>
+            <When condition={field.formatting && field.formatting.options}>
+              <HTMLSelect
+                fill
+                defaultValue={field.value ? undefined : field.formatting.defaultOption}
+                value={field.value || undefined}
+                onChange={event => onFieldUpdate(field, event.target.value)}
+              >
+                <Choose>
+                  <When condition={typeof field.formatting.options === 'object'}>
+                    <For each="optionValue" of={Object.keys(field.formatting.options)}>
+                      <option key={optionValue} value={optionValue}>
+                        {field.formatting.options[optionValue]}
+                      </option>
+                    </For>
+                  </When>
+                  <Otherwise>
+                    <For each="optionValue" of={field.formatting.options}>
+                      <option key={optionValue} value={optionValue}>
+                        {optionValue}
+                      </option>
+                    </For>
+                  </Otherwise>
+                </Choose>
+              </HTMLSelect>
+            </When>
+            <Otherwise>
+              <FormattedInput
+                minimal
+                className={Classes.FILL}
+                element={InputGroup}
+                value={field.value}
+                onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
+                placeholder={
+                  field.formatting && field.formatting.placeholder
+                    ? field.formatting.placeholder
+                    : field.title
+                }
+                format={
+                  field.formatting && field.formatting.format ? field.formatting.format : undefined
+                }
+              />
+            </Otherwise>
+          </Choose>
+        </When>
+        <Otherwise>
+          <FieldText field={field} />
+        </Otherwise>
+      </Choose>
+    </FieldRowGroup>
   );
 };
 
@@ -298,22 +280,22 @@ const EntryDetailsContent = () => {
             />
           </For>
         </FormContainer>
-        <CustomFieldsHeading>
-          <span>Custom Fields:</span>
-        </CustomFieldsHeading>
-        <If condition={removeableFields.length > 0}>
-          <FormContainer>
-            <For each="field" of={removeableFields}>
-              <FieldRow
-                field={field}
-                onFieldNameUpdate={onFieldNameUpdate}
-                onFieldUpdate={onFieldUpdate}
-                onRemoveField={onRemoveField}
-                editing={editing}
-              />
-            </For>
-          </FormContainer>
+        <If condition={editing || removeableFields.length > 0}>
+          <CustomFieldsHeading>
+            <span>Custom Fields:</span>
+          </CustomFieldsHeading>
         </If>
+        <FormContainer>
+          <For each="field" of={removeableFields}>
+            <FieldRow
+              field={field}
+              onFieldNameUpdate={onFieldNameUpdate}
+              onFieldUpdate={onFieldUpdate}
+              onRemoveField={onRemoveField}
+              editing={editing}
+            />
+          </For>
+        </FormContainer>
         <If condition={editing}>
           <button onClick={onAddField}>Add Field</button>
         </If>

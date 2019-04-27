@@ -1,6 +1,7 @@
 import React, { useReducer, useState, useEffect, useRef } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
@@ -92,6 +93,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });
       facade.parentID = selectedGroupID;
+      facade.id = uuid();
       dispatchEditing({
         type: 'set-entry',
         payload: facade

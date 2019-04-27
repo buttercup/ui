@@ -1,14 +1,9 @@
-import uuid from 'uuid/v4';
-
 export function vaultReducer(state, action) {
   switch (action.type) {
     case 'save-entry': {
       const { entry } = action;
-      if (entry.id) {
-        const existingEntry = state.entries.find(e => e.id === entry.id);
-        if (!existingEntry) {
-          throw new Error(`Failed saving entry changes: Unable to find entry with ID: ${entry.id}`);
-        }
+      const existingEntry = state.entries.find(e => e.id === entry.id);
+      if (existingEntry) {
         return {
           ...state,
           entries: state.entries.map(e => {
@@ -21,13 +16,7 @@ export function vaultReducer(state, action) {
       }
       return {
         ...state,
-        entries: [
-          ...state.entries,
-          {
-            ...entry,
-            id: uuid()
-          }
-        ]
+        entries: [...state.entries, entry]
       };
     }
     case 'move-entry':
