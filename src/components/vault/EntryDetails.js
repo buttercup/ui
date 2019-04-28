@@ -320,14 +320,16 @@ const EntryDetailsContent = () => {
               </Button>
               <Button onClick={onCancelEdit}>Cancel</Button>
             </div>
-            <ConfirmButton
-              icon="trash"
-              title="Confirm move to Trash"
-              description="Are you sure you want to move this entry to Trash?"
-              primaryAction="Move to Trash"
-              onClick={() => onMoveEntryToTrash(entry.id)}
-              danger
-            />
+            <If condition={!entry.isNew}>
+              <ConfirmButton
+                icon="trash"
+                title="Confirm move to Trash"
+                description="Are you sure you want to move this entry to Trash?"
+                primaryAction="Move to Trash"
+                onClick={() => onMoveEntryToTrash(entry.id)}
+                danger
+              />
+            </If>
           </If>
         </ActionBar>
       </PaneFooter>

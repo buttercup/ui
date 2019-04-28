@@ -1,7 +1,8 @@
 export function vaultReducer(state, action) {
   switch (action.type) {
     case 'save-entry': {
-      const { entry } = action;
+      const { entry: baseEntry } = action;
+      const { isNew, ...entry } = baseEntry;
       const existingEntry = state.entries.find(e => e.id === entry.id);
       if (existingEntry) {
         return {
