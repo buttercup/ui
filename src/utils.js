@@ -64,6 +64,11 @@ export function getFacadeField(facade, fieldName, matches) {
   return value;
 }
 
-export function getThemeProp(props, propName, defaultValue) {
-  return pathOr(defaultValue, ['theme', ...propName.split('.')], props);
+export function getThemeProp(props, propName) {
+  const res = pathOr(null, ['theme', 'vault', ...propName.split('.')], props);
+  if (res === null) {
+    console.warn(`No theme value found for \`${propName}\`.`);
+    return 'red';
+  }
+  return res;
 }

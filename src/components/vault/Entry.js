@@ -30,23 +30,20 @@ const EntryWrapper = styled.div`
   align-items: center;
 
   &:focus {
-    background-color: ${props =>
-      getThemeProp(props, 'list.focusedBackgroundColor', Colors.LIGHT_GRAY5)};
+    background-color: ${props => getThemeProp(props, 'list.focusedBackgroundColor')};
   }
 
   ${props =>
     props.focused &&
     css`
-      background-color: ${props =>
-        getThemeProp(props, 'list.focusedBackgroundColor', Colors.LIGHT_GRAY5)};
+      background-color: ${props => getThemeProp(props, 'list.focusedBackgroundColor')};
     `}
 
   ${props =>
     props.selected &&
     css`
-      background-color: ${props =>
-        getThemeProp(props, 'list.selectedBackgroundColor', Colors.COBALT3)} !important;
-      color: ${props => getThemeProp(props, 'list.selectedTextColor', '#fff')};
+      background-color: ${props => getThemeProp(props, 'list.selectedBackgroundColor')} !important;
+      color: ${props => getThemeProp(props, 'list.selectedTextColor')};
     `}
 `;
 

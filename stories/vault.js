@@ -52,8 +52,8 @@ export default class VaultStory extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={themes.light}>
-        <View>
+      <ThemeProvider theme={themes.dark}>
+        <View className="bp3-dark">
           <VaultProvider
             vault={this.state.facade}
             onUpdate={vault => this.setState({ facade: vault })}

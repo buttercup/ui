@@ -53,8 +53,7 @@ export const Pane = styled(ReflexElement)`
 export const PaneContainer = styled.div`
   display: grid;
   overflow: hidden;
-  background-color: ${props =>
-    props.primary && getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5)};
+  background-color: ${props => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
   grid-template-rows: 55px 1fr 40px;
   grid-template-areas:
     'header'
@@ -64,7 +63,7 @@ export const PaneContainer = styled.div`
     props.primary &&
     css`
       ${PaneContent} {
-        ${createScrollShadow(getThemeProp(props, 'colors.mainPaneBackground', Colors.LIGHT_GRAY5))}
+        ${createScrollShadow(getThemeProp(props, 'colors.mainPaneBackground'))}
       }
     `};
 `;
@@ -74,7 +73,7 @@ export const PaneContent = styled.div`
   overflow: auto;
   padding: 0.5rem;
   margin: 0 ${p => (p.bleed ? '-0.5rem' : 0)};
-  ${createScrollShadow('#fff')}
+  ${props => createScrollShadow(getThemeProp(props, 'colors.uiBackground'))}
 `;
 
 export const PaneFooter = styled.div`

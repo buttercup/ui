@@ -11,7 +11,6 @@ import {
   EditableText,
   Classes,
   ControlGroup,
-  Colors,
   ButtonGroup,
   Text
 } from '@blueprintjs/core';
@@ -19,7 +18,7 @@ import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input'
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
-import { copyToClipboard } from '../../utils';
+import { copyToClipboard, getThemeProp } from '../../utils';
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -41,14 +40,14 @@ const ValueWithNewLines = styled.span`
   white-space: pre-wrap;
 `;
 const FormContainer = styled.div`
-  background-color: ${p => (p.primary ? Colors.LIGHT_GRAY5 : 'transparent')};
+  background-color: ${p => (p.primary ? getThemeProp(p, 'entry.primaryContainer') : 'transparent')};
   border-radius: 5px;
   padding: 1rem;
   margin-bottom: 1rem;
 `;
 const CustomFieldsHeading = styled.h5`
   text-transform: uppercase;
-  color: ${Colors.GRAY3};
+  color: ${p => getThemeProp(p, 'entry.separatorTextColor')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +59,7 @@ const CustomFieldsHeading = styled.h5`
     display: flex;
     content: '';
     height: 1px;
-    background-color: ${Colors.LIGHT_GRAY2};
+    background-color: ${p => getThemeProp(p, 'entry.separatorBorder')};
     width: 100%;
   }
 
@@ -79,7 +78,7 @@ const FieldRowLabel = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: ${Colors.GRAY3};
+  color: ${p => getThemeProp(p, 'entry.separatorTextColor')};
 `;
 const FieldRowChildren = styled.div`
   display: flex;
@@ -100,7 +99,7 @@ const FieldTextWrapper = styled.span`
   padding: 2px;
 
   &:hover {
-    border-color: ${Colors.LIGHT_GRAY1};
+    border-color: ${p => getThemeProp(p, 'entry.fieldHoverBorder')};
 
     ${FieldTextToolbar} {
       opacity: 1;
@@ -272,6 +271,7 @@ const EntryDetailsContent = () => {
         <FormContainer primary>
           <For each="field" of={mainFields}>
             <FieldRow
+              key={field.property}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
@@ -288,6 +288,7 @@ const EntryDetailsContent = () => {
         <FormContainer>
           <For each="field" of={removeableFields}>
             <FieldRow
+              key={field.property}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}

@@ -7,13 +7,13 @@ import EntryDetails from './EntryDetails';
 import { Pane } from './Pane';
 import { getThemeProp } from '../../utils';
 
-// const Splitter = styled(ReflexSplitter).attrs({ className: 'reflex-thin' })`
-//   background-color: ${props => getThemeProp(props, 'colors.paneDivider')} !important;
-// `;
+const Container = styled(ReflexContainer)`
+  background-color: ${p => getThemeProp(p, 'colors.uiBackground')};
+`;
 
 export default () => {
   return (
-    <ReflexContainer orientation="vertical">
+    <Container orientation="vertical">
       <Pane size={300} minSize={200}>
         <GroupsList />
       </Pane>
@@ -29,6 +29,6 @@ export default () => {
       <Pane minSize={400} autoGrow>
         <EntryDetails />
       </Pane>
-    </ReflexContainer>
+    </Container>
   );
 };
