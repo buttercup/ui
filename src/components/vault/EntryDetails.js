@@ -84,6 +84,10 @@ const FieldRowChildren = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
+  ${`.${Classes.CONTROL_GROUP}`} {
+    flex: 1;
+  }
 `;
 
 const FieldTextToolbar = styled(ButtonGroup)`
@@ -183,57 +187,64 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
     <FieldRowGroup label={label} key={field.id}>
       <Choose>
         <When condition={editing}>
-          <Choose>
-            <When condition={field.multiline}>
-              <TextArea
-                className={cx(Classes.INPUT, Classes.FILL)}
-                value={field.value}
-                onChange={val => onFieldUpdate(field, val.target.value)}
-              />
-            </When>
-            <When condition={field.formatting && field.formatting.options}>
-              <HTMLSelect
-                fill
-                defaultValue={field.value ? undefined : field.formatting.defaultOption}
-                value={field.value || undefined}
-                onChange={event => onFieldUpdate(field, event.target.value)}
-              >
-                <Choose>
-                  <When condition={typeof field.formatting.options === 'object'}>
-                    <For each="optionValue" of={Object.keys(field.formatting.options)}>
-                      <option key={optionValue} value={optionValue}>
-                        {field.formatting.options[optionValue]}
-                      </option>
-                    </For>
-                  </When>
-                  <Otherwise>
-                    <For each="optionValue" of={field.formatting.options}>
-                      <option key={optionValue} value={optionValue}>
-                        {optionValue}
-                      </option>
-                    </For>
-                  </Otherwise>
-                </Choose>
-              </HTMLSelect>
-            </When>
-            <Otherwise>
-              <FormattedInput
-                minimal
-                className={Classes.FILL}
-                element={InputGroup}
-                value={field.value}
-                onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
-                placeholder={
-                  field.formatting && field.formatting.placeholder
-                    ? field.formatting.placeholder
-                    : field.title
-                }
-                format={
-                  field.formatting && field.formatting.format ? field.formatting.format : undefined
-                }
-              />
-            </Otherwise>
-          </Choose>
+          <ControlGroup>
+            <Choose>
+              <When condition={field.multiline}>
+                <TextArea
+                  className={cx(Classes.INPUT, Classes.FILL)}
+                  value={field.value}
+                  onChange={val => onFieldUpdate(field, val.target.value)}
+                />
+              </When>
+              <When condition={field.formatting && field.formatting.options}>
+                <HTMLSelect
+                  fill
+                  defaultValue={field.value ? undefined : field.formatting.defaultOption}
+                  value={field.value || undefined}
+                  onChange={event => onFieldUpdate(field, event.target.value)}
+                >
+                  <Choose>
+                    <When condition={typeof field.formatting.options === 'object'}>
+                      <For each="optionValue" of={Object.keys(field.formatting.options)}>
+                        <option key={optionValue} value={optionValue}>
+                          {field.formatting.options[optionValue]}
+                        </option>
+                      </For>
+                    </When>
+                    <Otherwise>
+                      <For each="optionValue" of={field.formatting.options}>
+                        <option key={optionValue} value={optionValue}>
+                          {optionValue}
+                        </option>
+                      </For>
+                    </Otherwise>
+                  </Choose>
+                </HTMLSelect>
+              </When>
+              <Otherwise>
+                <FormattedInput
+                  minimal
+                  className={Classes.FILL}
+                  element={InputGroup}
+                  value={field.value}
+                  onChange={(formattedValue, raw) => onFieldUpdate(field, raw)}
+                  placeholder={
+                    field.formatting && field.formatting.placeholder
+                      ? field.formatting.placeholder
+                      : field.title
+                  }
+                  format={
+                    field.formatting && field.formatting.format
+                      ? field.formatting.format
+                      : undefined
+                  }
+                />
+              </Otherwise>
+            </Choose>
+            <If condition={field.removeable}>
+              <Button icon="trash" onClick={() => onRemoveField(field)} />
+            </If>
+          </ControlGroup>
         </When>
         <Otherwise>
           <FieldText field={field} />
@@ -298,7 +309,7 @@ const EntryDetailsContent = () => {
           </For>
         </FormContainer>
         <If condition={editing}>
-          <button onClick={onAddField}>Add Field</button>
+          <Button onClick={onAddField} text="Add Custom Field" icon="small-plus" />
         </If>
       </PaneContent>
       <PaneFooter>
