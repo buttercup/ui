@@ -368,10 +368,11 @@ exports[`generator initial render remains consistent 1`] = `
 <body>
         <div
           class="Popover Popover-above "
-          style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1;"
+          style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
         >
           <div
             class="Popover-body"
+            style="order: -1;"
           >
             <div
               class="c0"
@@ -512,7 +513,7 @@ exports[`generator initial render remains consistent 1`] = `
           <svg
             class="Popover-tip"
             height="7"
-            style="transform: translateX(-14px);"
+            style="transform: translateX(-14px); transition: transform 150ms ease-in;"
             width="14"
           >
             <polygon
@@ -550,10 +551,11 @@ exports[`generator initial render remains consistent 1`] = `
         <body>
           <div
             class="Popover Popover-above "
-            style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1;"
+            style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
           >
             <div
               class="Popover-body"
+              style="order: -1;"
             >
               <div
                 class="c0"
@@ -694,7 +696,7 @@ exports[`generator initial render remains consistent 1`] = `
             <svg
               class="Popover-tip"
               height="7"
-              style="transform: translateX(-14px);"
+              style="transform: translateX(-14px); transition: transform 150ms ease-in;"
               width="14"
             >
               <polygon

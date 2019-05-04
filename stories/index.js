@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
+import VaultStory from './vault';
+import '../src/styles/index.scss';
 
 const Digits = styled(ColoredDigits)`
   .num {
@@ -105,3 +107,5 @@ storiesOf('Strength Meter', module).add('default', () => <MeterStory />);
 storiesOf('Colored Digits', module)
   .add('styled digits', () => <Digits value="Hello123HowAre1You" />)
   .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
+
+storiesOf('Vault', module).add('default', () => <VaultStory />);
