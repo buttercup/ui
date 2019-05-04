@@ -73,6 +73,7 @@ export const PaneContent = styled.div`
   overflow: auto;
   padding: 0.5rem;
   margin: 0 ${p => (p.bleed ? '-0.5rem' : 0)};
+  width: 100%;
   ${props => createScrollShadow(getThemeProp(props, 'colors.uiBackground'))}
 `;
 

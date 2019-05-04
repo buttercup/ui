@@ -68,9 +68,7 @@ const CustomFieldsHeading = styled.h5`
   }
 `;
 const FieldRowContainer = styled.div`
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  grid-gap: 1rem;
+  display: flex;
   margin-bottom: 0.5rem;
   padding: 0.5rem 0;
 `;
@@ -79,11 +77,15 @@ const FieldRowLabel = styled.div`
   justify-content: flex-end;
   align-items: center;
   color: ${p => getThemeProp(p, 'entry.separatorTextColor')};
+  width: 100px;
+  margin-right: 1rem;
 `;
 const FieldRowChildren = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  width: 100%;
+  flex: 1;
 
   ${`.${Classes.CONTROL_GROUP}`} {
     flex: 1;
@@ -101,12 +103,14 @@ const FieldTextWrapper = styled.span`
   justify-content: center;
   align-items: center;
   padding: 2px;
+  word-break: break-all;
+  pointer-events: ${p => (p.disabled ? 'none' : 'all')};
 
   &:hover {
-    border-color: ${p => getThemeProp(p, 'entry.fieldHoverBorder')};
+    border-color: ${p => (p.disabled ? 'transparent' : getThemeProp(p, 'entry.fieldHoverBorder'))};
 
     ${FieldTextToolbar} {
-      opacity: 1;
+      opacity: ${p => (p.disabled ? 0 : 1)};
     }
   }
 `;
@@ -115,13 +119,12 @@ const FieldText = ({ field }) => {
   const [visible, toggleVisibility] = useState(false);
   const Element = field.secret ? 'code' : 'span';
 
-  if (!field.value) {
-    return <Text className={Classes.TEXT_MUTED}>Not set.</Text>;
-  }
-
   return (
-    <FieldTextWrapper role="content">
+    <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
+        <When condition={!field.value}>
+          <Text className={Classes.TEXT_MUTED}>Not set.</Text>
+        </When>
         <When condition={field.multiline}>
           <ValueWithNewLines>{field.value}</ValueWithNewLines>
         </When>
@@ -176,7 +179,9 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
     );
   return (
     <FieldRowContainer>
-      <FieldRowLabel>{label}</FieldRowLabel>
+      <If condition={!(field.multiline && !field.removeable)}>
+        <FieldRowLabel>{label}</FieldRowLabel>
+      </If>
       <FieldRowChildren>
         <Choose>
           <When condition={editing}>
