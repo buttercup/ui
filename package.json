@@ -103,6 +103,7 @@
     "classnames": "^2.2.5",
     "filter-react-dom-props": "^0.0.2",
     "fuse.js": "^3.4.4",
+    "otpauth": "^3.2.7",
     "polished": "^1.9.2",
     "prop-types": "^15.6.1",
     "ramda": "^0.26.1",

@@ -6,6 +6,7 @@ import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
 import VaultStory from './vault';
+import OTPDigitsStory from './otp-digits';
 import '../src/styles/index.scss';
 
 const Digits = styled(ColoredDigits)`
@@ -109,3 +110,5 @@ storiesOf('Colored Digits', module)
   .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
 
 storiesOf('Vault', module).add('default', () => <VaultStory />);
+
+storiesOf('OTPDigits', module).add('6 digits', () => <OTPDigitsStory />);
