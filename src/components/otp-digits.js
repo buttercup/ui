@@ -19,26 +19,41 @@ export default class OTPDigits extends Component {
 
   state = {
     digits: '',
-    otpURI: null
+    otpURI: null,
+    period: 30,
+    timeLeft: 30
   };
 
   componentDidMount() {
     this.update();
+    this.interval = setInterval(() => this.update(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
-    return <DigitsContainer>{this.state.digits}</DigitsContainer>;
+    return (
+      <DigitsContainer>
+        {this.state.digits} ({this.state.timeLeft})
+      </DigitsContainer>
+    );
   }
 
   update(props = this.props) {
+    let period = this.state.period;
     if (this.state.otpURI !== props.otpURI) {
       this.totp = OTPAuth.URI.parse(props.otpURI);
+      period = this.totp.period;
       this.setState({
-        otpURI: props.otpURI
+        otpURI: props.otpURI,
+        period
       });
     }
     this.setState({
-      digits: this.totp.generate()
+      digits: this.totp.generate(),
+      timeLeft: period - (Math.floor(Date.now() / 1000) % period)
     });
   }
 }
