@@ -6,7 +6,7 @@ import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
 import VaultStory from './vault';
-import OTPDigitsStory from './otp-digits';
+import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
 
 const Digits = styled(ColoredDigits)`

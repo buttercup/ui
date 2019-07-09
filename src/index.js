@@ -3,7 +3,7 @@ export * from './components/type';
 export * from './components/generator';
 export * from './components/form';
 export { default as Meter } from './components/meter';
-export { default as OTPDigits } from './components/otp-digits';
+export { default as OTPDigits } from './components/OTPDigits';
 export * from './components/colored-digits';
 export { VaultContext, VaultProvider } from './components/vault/Vault';
 export { default as VaultUI } from './components/vault/VaultUI';
