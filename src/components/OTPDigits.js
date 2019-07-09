@@ -3,18 +3,35 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Intent, Spinner } from '@blueprintjs/core';
 import * as OTPAuth from 'otpauth';
+import { copyToClipboard } from '../utils';
 
-const DigitsContainer = styled.div`
+const Container = styled.div`
   min-width: 400px;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  user-select: none;
+`;
+const DigitsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 const Digits = styled.span`
+  -moz-transition: color 0.2s ease-in;
+  -o-transition: color 0.2s ease-in;
+  -webkit-transition: color 0.2s ease-in;
+  transition: color 0.2s ease-in;
+  color: #222;
   font-family: monospace;
   font-size: 2em;
+  &.copy {
+    color: orange;
+  }
 `;
 const TimeLeftSpinner = styled(Spinner)`
   margin-right: 8px;
@@ -26,6 +43,7 @@ export default class OTPDigits extends Component {
   };
 
   state = {
+    copied: false,
     digits: '',
     otpURI: null,
     period: 30,
@@ -41,9 +59,19 @@ export default class OTPDigits extends Component {
     clearInterval(this.interval);
   }
 
+  onClick() {
+    copyToClipboard(this.state.digits);
+    clearTimeout(this.copyTimer);
+    this.setState({ copied: true }, () => {
+      this.copyTimer = setTimeout(() => {
+        this.setState({ copied: false });
+      }, 300);
+    });
+  }
+
   render() {
     return (
-      <DigitsContainer>
+      <Container>
         <With
           leftDigits={this.state.digits.substring(0, this.state.digits.length / 2)}
           rightDigits={this.state.digits.substring(this.state.digits.length / 2)}
@@ -53,11 +81,13 @@ export default class OTPDigits extends Component {
             size={Spinner.SIZE_SMALL}
             value={this.state.timeLeft / this.state.period}
           />
-          <Digits>{leftDigits}</Digits>
-          &nbsp;
-          <Digits>{rightDigits}</Digits>
+          <DigitsContainer onClick={::this.onClick}>
+            <Digits className={this.state.copied ? 'copy' : ''}>{leftDigits}</Digits>
+            &nbsp;
+            <Digits className={this.state.copied ? 'copy' : ''}>{rightDigits}</Digits>
+          </DigitsContainer>
         </With>
-      </DigitsContainer>
+      </Container>
     );
   }
 
