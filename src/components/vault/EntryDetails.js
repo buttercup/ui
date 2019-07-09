@@ -18,11 +18,12 @@ import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input'
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
+import OTPDigits from '../OTPDigits';
 import { copyToClipboard, getThemeProp } from '../../utils';
 
 function title(entry) {
   const titleField = entry.fields.find(
-    item => item.field === 'property' && item.property === 'title'
+    item => item.propertyType === 'property' && item.property === 'title'
   );
   return titleField ? titleField.value : <i>(Untitled)</i>;
 }
@@ -269,10 +270,11 @@ const EntryDetailsContent = () => {
   const { onMoveEntryToTrash, trashID } = useGroups();
 
   const editableFields = editing
-    ? entry.fields.filter(item => item.field === 'property')
-    : entry.fields.filter(item => item.field === 'property' && item.property !== 'title');
+    ? entry.fields.filter(item => item.propertyType === 'property')
+    : entry.fields.filter(item => item.propertyType === 'property' && item.property !== 'title');
   const mainFields = editableFields.filter(field => !field.removeable);
   const removeableFields = editableFields.filter(field => field.removeable);
+  const otpField = entry.fields.find(item => item.special === 'otp');
 
   return (
     <>
@@ -280,16 +282,21 @@ const EntryDetailsContent = () => {
       <PaneContent>
         <FormContainer primary>
           <For each="field" of={mainFields}>
-            <FieldRow
-              key={field.id}
-              field={field}
-              onFieldNameUpdate={onFieldNameUpdate}
-              onFieldUpdate={onFieldUpdate}
-              onRemoveField={onRemoveField}
-              editing={editing}
-            />
+            <If condition={editing || !field.special}>
+              <FieldRow
+                key={field.id}
+                field={field}
+                onFieldNameUpdate={onFieldNameUpdate}
+                onFieldUpdate={onFieldUpdate}
+                onRemoveField={onRemoveField}
+                editing={editing}
+              />
+            </If>
           </For>
         </FormContainer>
+        <If condition={!editing && otpField}>
+          <OTPDigits otpURI={otpField.value} />
+        </If>
         <If condition={editing || removeableFields.length > 0}>
           <CustomFieldsHeading>
             <span>Custom Fields:</span>
@@ -297,14 +304,16 @@ const EntryDetailsContent = () => {
         </If>
         <FormContainer>
           <For each="field" of={removeableFields}>
-            <FieldRow
-              key={field.id}
-              field={field}
-              onFieldNameUpdate={onFieldNameUpdate}
-              onFieldUpdate={onFieldUpdate}
-              onRemoveField={onRemoveField}
-              editing={editing}
-            />
+            <If condition={editing || !field.special}>
+              <FieldRow
+                key={field.id}
+                field={field}
+                onFieldNameUpdate={onFieldNameUpdate}
+                onFieldUpdate={onFieldUpdate}
+                onRemoveField={onRemoveField}
+                editing={editing}
+              />
+            </If>
           </For>
         </FormContainer>
         <If condition={editing}>

@@ -14,6 +14,17 @@ function createArchive() {
     .setProperty('password', 'x8v@mId01')
     .setProperty('url', 'https://google.com');
   general
+    .createEntry('Social website')
+    .setProperty('username', 'user@test.com')
+    .setProperty('password', 'vdfs867sd5')
+    .setProperty(
+      'otpURI',
+      'otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30'
+    )
+    .setAttribute(Entry.Attributes.TOTPProperty, 'otpURI')
+    .setProperty('url', 'https://site.com')
+    .setProperty('Recovery pin', '1234');
+  general
     .createEntry('Gate lock combination')
     .setProperty('username', 'test')
     .setProperty('password', '4812');
