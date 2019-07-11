@@ -21,6 +21,10 @@ function createArchive() {
       'otpURI',
       'otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30'
     )
+    .setProperty(
+      'otpURL',
+      'otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30'
+    )
     .setAttribute(Entry.Attributes.TOTPProperty, 'otpURI')
     .setProperty('url', 'https://site.com')
     .setProperty('Recovery pin', '1234');
