@@ -14,6 +14,11 @@ import {
   ButtonGroup,
   Text
 } from '@blueprintjs/core';
+import {
+  FIELD_VALUE_TYPE_NOTE,
+  FIELD_VALUE_TYPE_OTP,
+  FIELD_VALUE_TYPE_PASSWORD
+} from '@buttercup/facades';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
@@ -119,17 +124,17 @@ const FieldTextWrapper = styled.span`
 const FieldText = ({ field }) => {
   const [visible, toggleVisibility] = useState(false);
   const otpRef = useRef(field.value);
-  const Element = field.secret ? 'code' : 'span';
+  const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
-        <When condition={field.special === 'otp'}>
+        <When condition={field.valueType === FIELD_VALUE_TYPE_OTP}>
           <OTPDigits otpURI={field.value} otpRef={value => (otpRef.current = value)} />
         </When>
         <When condition={!field.value}>
           <Text className={Classes.TEXT_MUTED}>Not set.</Text>
         </When>
-        <When condition={field.multiline}>
+        <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
           <ValueWithNewLines>{field.value}</ValueWithNewLines>
         </When>
         <When condition={field.formatting && field.formatting.options}>
@@ -140,7 +145,9 @@ const FieldText = ({ field }) => {
         <Otherwise>
           <Element>
             <Choose>
-              <When condition={field.secret && !visible}>●●●●</When>
+              <When condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD && !visible}>
+                ●●●●
+              </When>
               <Otherwise>
                 <FormattedText
                   format={
@@ -156,7 +163,7 @@ const FieldText = ({ field }) => {
         </Otherwise>
       </Choose>
       <FieldTextToolbar>
-        <If condition={field.secret}>
+        <If condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD}>
           <Button
             text={visible ? 'Hide' : 'Reveal'}
             small
@@ -183,7 +190,7 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
     );
   return (
     <FieldRowContainer>
-      <If condition={!(field.multiline && !field.removeable)}>
+      <If condition={!(field.valueType === FIELD_VALUE_TYPE_NOTE && !field.removeable)}>
         <FieldRowLabel>{label}</FieldRowLabel>
       </If>
       <FieldRowChildren>
@@ -191,7 +198,7 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
           <When condition={editing}>
             <ControlGroup>
               <Choose>
-                <When condition={field.multiline}>
+                <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
                   <TextArea
                     className={cx(Classes.INPUT, Classes.FILL)}
                     value={field.value}
@@ -277,7 +284,6 @@ const EntryDetailsContent = () => {
     : entry.fields.filter(item => item.propertyType === 'property' && item.property !== 'title');
   const mainFields = editableFields.filter(field => !field.removeable);
   const removeableFields = editableFields.filter(field => field.removeable);
-  const otpField = entry.fields.find(item => item.special === 'otp');
 
   return (
     <>
