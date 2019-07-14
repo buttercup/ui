@@ -3,21 +3,27 @@ import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
 import {
-  NonIdealState,
   Button,
-  Intent,
-  InputGroup,
-  HTMLSelect,
-  EditableText,
+  ButtonGroup,
   Classes,
   ControlGroup,
-  ButtonGroup,
+  EditableText,
+  HTMLSelect,
+  Icon,
+  InputGroup,
+  Intent,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  NonIdealState,
+  Popover,
   Text
 } from '@blueprintjs/core';
 import {
   FIELD_VALUE_TYPE_NOTE,
   FIELD_VALUE_TYPE_OTP,
-  FIELD_VALUE_TYPE_PASSWORD
+  FIELD_VALUE_TYPE_PASSWORD,
+  FIELD_VALUE_TYPE_TEXT
 } from '@buttercup/facades';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { useCurrentEntry, useGroups } from './hooks/vault';
@@ -25,6 +31,13 @@ import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
 import { copyToClipboard, getThemeProp } from '../../utils';
+
+const FIELD_TYPE_OPTIONS = [
+  { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
+  { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
+  { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
+  { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
+];
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -176,7 +189,14 @@ const FieldText = ({ field }) => {
   );
 };
 
-const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveField }) => {
+const FieldRow = ({
+  field,
+  editing,
+  onFieldNameUpdate,
+  onFieldUpdate,
+  onFieldSetValueType,
+  onRemoveField
+}) => {
   const label =
     editing && field.removeable ? (
       <EditableText
@@ -188,6 +208,30 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
     ) : (
       field.title || field.property
     );
+  const renderMenu = (
+    <Menu>
+      {/*
+        The following is in the parent level due to:
+          - https://github.com/palantir/blueprint/issues/2796
+          - https://github.com/palantir/blueprint/issues/3010#issuecomment-443031120
+      */}
+      <For each="fieldTypeOption" of={FIELD_TYPE_OPTIONS}>
+        <MenuItem
+          key={fieldTypeOption.type}
+          text={`Change Type: ${fieldTypeOption.title}`}
+          icon={fieldTypeOption.icon}
+          labelElement={
+            field.valueType === fieldTypeOption.type ? <Icon icon="small-tick" /> : null
+          }
+          onClick={() => {
+            onFieldSetValueType(field, fieldTypeOption.type);
+          }}
+        />
+      </For>
+      <MenuDivider />
+      <MenuItem text="Delete Field" icon="trash" onClick={() => onRemoveField(field)} />
+    </Menu>
+  );
   return (
     <FieldRowContainer>
       <If condition={!(field.valueType === FIELD_VALUE_TYPE_NOTE && !field.removeable)}>
@@ -251,7 +295,10 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
                 </Otherwise>
               </Choose>
               <If condition={field.removeable}>
-                <Button icon="trash" onClick={() => onRemoveField(field)} />
+                <Popover content={renderMenu} boundary="viewport" captureDismiss={false}>
+                  <Button icon="cog" />
+                </Popover>
+                {/* <Button icon="trash" onClick={() => onRemoveField(field)} /> */}
               </If>
             </ControlGroup>
           </When>
@@ -274,6 +321,7 @@ const EntryDetailsContent = () => {
     onDeleteEntry,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldSetValueType,
     onRemoveField,
     onSaveEdit
   } = useCurrentEntry();
@@ -313,6 +361,7 @@ const EntryDetailsContent = () => {
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
+              onFieldSetValueType={onFieldSetValueType}
               onRemoveField={onRemoveField}
               editing={editing}
             />
