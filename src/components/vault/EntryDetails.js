@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -118,11 +118,14 @@ const FieldTextWrapper = styled.span`
 
 const FieldText = ({ field }) => {
   const [visible, toggleVisibility] = useState(false);
+  const otpRef = useRef(field.value);
   const Element = field.secret ? 'code' : 'span';
-
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
+        <When condition={field.special === 'otp'}>
+          <OTPDigits otpURI={field.value} otpRef={value => (otpRef.current = value)} />
+        </When>
         <When condition={!field.value}>
           <Text className={Classes.TEXT_MUTED}>Not set.</Text>
         </When>
@@ -160,7 +163,7 @@ const FieldText = ({ field }) => {
             onClick={() => toggleVisibility(!visible)}
           />
         </If>
-        <Button icon="clipboard" small onClick={() => copyToClipboard(field.value)} />
+        <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
       </FieldTextToolbar>
     </FieldTextWrapper>
   );
@@ -282,21 +285,16 @@ const EntryDetailsContent = () => {
       <PaneContent>
         <FormContainer primary>
           <For each="field" of={mainFields}>
-            <If condition={editing || !field.special}>
-              <FieldRow
-                key={field.id}
-                field={field}
-                onFieldNameUpdate={onFieldNameUpdate}
-                onFieldUpdate={onFieldUpdate}
-                onRemoveField={onRemoveField}
-                editing={editing}
-              />
-            </If>
+            <FieldRow
+              key={field.id}
+              field={field}
+              onFieldNameUpdate={onFieldNameUpdate}
+              onFieldUpdate={onFieldUpdate}
+              onRemoveField={onRemoveField}
+              editing={editing}
+            />
           </For>
         </FormContainer>
-        <If condition={!editing && otpField}>
-          <OTPDigits otpURI={otpField.value} />
-        </If>
         <If condition={editing || removeableFields.length > 0}>
           <CustomFieldsHeading>
             <span>Custom Fields:</span>
@@ -304,16 +302,14 @@ const EntryDetailsContent = () => {
         </If>
         <FormContainer>
           <For each="field" of={removeableFields}>
-            <If condition={editing || !field.special}>
-              <FieldRow
-                key={field.id}
-                field={field}
-                onFieldNameUpdate={onFieldNameUpdate}
-                onFieldUpdate={onFieldUpdate}
-                onRemoveField={onRemoveField}
-                editing={editing}
-              />
-            </If>
+            <FieldRow
+              key={field.id}
+              field={field}
+              onFieldNameUpdate={onFieldNameUpdate}
+              onFieldUpdate={onFieldUpdate}
+              onRemoveField={onRemoveField}
+              editing={editing}
+            />
           </For>
         </FormContainer>
         <If condition={editing}>

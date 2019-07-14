@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Intent, Spinner } from '@blueprintjs/core';
 import * as OTPAuth from 'otpauth';
-import { copyToClipboard } from '../utils';
 
 const Container = styled.div`
-  min-width: 400px;
-  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   user-select: none;
 `;
@@ -22,16 +19,9 @@ const DigitsContainer = styled.div`
   cursor: pointer;
 `;
 const Digits = styled.span`
-  -moz-transition: color 0.2s ease-in;
-  -o-transition: color 0.2s ease-in;
-  -webkit-transition: color 0.2s ease-in;
-  transition: color 0.2s ease-in;
   color: #222;
   font-family: monospace;
   font-size: 2em;
-  &.copy {
-    color: orange;
-  }
 `;
 const TimeLeftSpinner = styled(Spinner)`
   margin-right: 8px;
@@ -39,12 +29,13 @@ const TimeLeftSpinner = styled(Spinner)`
 
 export default class OTPDigits extends Component {
   static propTypes = {
+    otpRef: PropTypes.func.isRequired,
     otpURI: PropTypes.string.isRequired
   };
 
   state = {
-    copied: false,
     digits: '',
+    otpRef: () => {},
     otpURI: null,
     period: 30,
     timeLeft: 30
@@ -59,16 +50,6 @@ export default class OTPDigits extends Component {
     clearInterval(this.interval);
   }
 
-  onClick() {
-    copyToClipboard(this.state.digits);
-    clearTimeout(this.copyTimer);
-    this.setState({ copied: true }, () => {
-      this.copyTimer = setTimeout(() => {
-        this.setState({ copied: false });
-      }, 300);
-    });
-  }
-
   render() {
     return (
       <Container>
@@ -81,10 +62,10 @@ export default class OTPDigits extends Component {
             size={Spinner.SIZE_SMALL}
             value={this.state.timeLeft / this.state.period}
           />
-          <DigitsContainer onClick={::this.onClick}>
-            <Digits className={this.state.copied ? 'copy' : ''}>{leftDigits}</Digits>
+          <DigitsContainer>
+            <Digits>{leftDigits}</Digits>
             &nbsp;
-            <Digits className={this.state.copied ? 'copy' : ''}>{rightDigits}</Digits>
+            <Digits>{rightDigits}</Digits>
           </DigitsContainer>
         </With>
       </Container>
@@ -101,9 +82,11 @@ export default class OTPDigits extends Component {
         period
       });
     }
+    const digits = this.totp.generate();
     this.setState({
-      digits: this.totp.generate(),
+      digits,
       timeLeft: period - (Math.floor(Date.now() / 1000) % period)
     });
+    this.props.otpRef(digits);
   }
 }
