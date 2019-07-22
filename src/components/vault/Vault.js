@@ -161,6 +161,13 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         value
       });
     },
+    onFieldSetValueType: (changedField, valueType) => {
+      dispatchEditing({
+        type: 'set-field-value-type',
+        field: changedField,
+        valueType
+      });
+    },
     onFieldNameUpdate: (changedField, property) => {
       dispatchEditing({
         type: 'update-field',

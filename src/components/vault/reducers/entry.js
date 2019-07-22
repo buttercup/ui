@@ -35,5 +35,17 @@ export function entryReducer(state, action) {
         })
       };
     }
+    case 'set-field-value-type': {
+      const { field: changedField, valueType } = action;
+      return {
+        ...state,
+        fields: state.fields.map(field => {
+          if (field.id === changedField.id) {
+            return { ...field, valueType };
+          }
+          return field;
+        })
+      };
+    }
   }
 }

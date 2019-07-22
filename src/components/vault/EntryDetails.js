@@ -1,28 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
 import {
-  NonIdealState,
   Button,
-  Intent,
-  InputGroup,
-  HTMLSelect,
-  EditableText,
+  ButtonGroup,
   Classes,
   ControlGroup,
-  ButtonGroup,
+  EditableText,
+  HTMLSelect,
+  Icon,
+  InputGroup,
+  Intent,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  NonIdealState,
+  Popover,
   Text
 } from '@blueprintjs/core';
+import {
+  FIELD_VALUE_TYPE_NOTE,
+  FIELD_VALUE_TYPE_OTP,
+  FIELD_VALUE_TYPE_PASSWORD,
+  FIELD_VALUE_TYPE_TEXT
+} from '@buttercup/facades';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
+import OTPDigits from '../OTPDigits';
 import { copyToClipboard, getThemeProp } from '../../utils';
+
+const FIELD_TYPE_OPTIONS = [
+  { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
+  { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
+  { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
+  { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
+];
 
 function title(entry) {
   const titleField = entry.fields.find(
-    item => item.field === 'property' && item.property === 'title'
+    item => item.propertyType === 'property' && item.property === 'title'
   );
   return titleField ? titleField.value : <i>(Untitled)</i>;
 }
@@ -117,15 +136,18 @@ const FieldTextWrapper = styled.span`
 
 const FieldText = ({ field }) => {
   const [visible, toggleVisibility] = useState(false);
-  const Element = field.secret ? 'code' : 'span';
-
+  const otpRef = useRef(field.value);
+  const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
+        <When condition={field.valueType === FIELD_VALUE_TYPE_OTP}>
+          <OTPDigits otpURI={field.value} otpRef={value => (otpRef.current = value)} />
+        </When>
         <When condition={!field.value}>
           <Text className={Classes.TEXT_MUTED}>Not set.</Text>
         </When>
-        <When condition={field.multiline}>
+        <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
           <ValueWithNewLines>{field.value}</ValueWithNewLines>
         </When>
         <When condition={field.formatting && field.formatting.options}>
@@ -136,7 +158,9 @@ const FieldText = ({ field }) => {
         <Otherwise>
           <Element>
             <Choose>
-              <When condition={field.secret && !visible}>●●●●</When>
+              <When condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD && !visible}>
+                ●●●●
+              </When>
               <Otherwise>
                 <FormattedText
                   format={
@@ -152,20 +176,27 @@ const FieldText = ({ field }) => {
         </Otherwise>
       </Choose>
       <FieldTextToolbar>
-        <If condition={field.secret}>
+        <If condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD}>
           <Button
             text={visible ? 'Hide' : 'Reveal'}
             small
             onClick={() => toggleVisibility(!visible)}
           />
         </If>
-        <Button icon="clipboard" small onClick={() => copyToClipboard(field.value)} />
+        <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
       </FieldTextToolbar>
     </FieldTextWrapper>
   );
 };
 
-const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveField }) => {
+const FieldRow = ({
+  field,
+  editing,
+  onFieldNameUpdate,
+  onFieldUpdate,
+  onFieldSetValueType,
+  onRemoveField
+}) => {
   const label =
     editing && field.removeable ? (
       <EditableText
@@ -177,9 +208,33 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
     ) : (
       field.title || field.property
     );
+  const renderMenu = (
+    <Menu>
+      {/*
+        The following is in the parent level due to:
+          - https://github.com/palantir/blueprint/issues/2796
+          - https://github.com/palantir/blueprint/issues/3010#issuecomment-443031120
+      */}
+      <For each="fieldTypeOption" of={FIELD_TYPE_OPTIONS}>
+        <MenuItem
+          key={fieldTypeOption.type}
+          text={`Change Type: ${fieldTypeOption.title}`}
+          icon={fieldTypeOption.icon}
+          labelElement={
+            field.valueType === fieldTypeOption.type ? <Icon icon="small-tick" /> : null
+          }
+          onClick={() => {
+            onFieldSetValueType(field, fieldTypeOption.type);
+          }}
+        />
+      </For>
+      <MenuDivider />
+      <MenuItem text="Delete Field" icon="trash" onClick={() => onRemoveField(field)} />
+    </Menu>
+  );
   return (
     <FieldRowContainer>
-      <If condition={!(field.multiline && !field.removeable)}>
+      <If condition={!(field.valueType === FIELD_VALUE_TYPE_NOTE && !field.removeable)}>
         <FieldRowLabel>{label}</FieldRowLabel>
       </If>
       <FieldRowChildren>
@@ -187,7 +242,7 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
           <When condition={editing}>
             <ControlGroup>
               <Choose>
-                <When condition={field.multiline}>
+                <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
                   <TextArea
                     className={cx(Classes.INPUT, Classes.FILL)}
                     value={field.value}
@@ -240,7 +295,9 @@ const FieldRow = ({ field, editing, onFieldNameUpdate, onFieldUpdate, onRemoveFi
                 </Otherwise>
               </Choose>
               <If condition={field.removeable}>
-                <Button icon="trash" onClick={() => onRemoveField(field)} />
+                <Popover content={renderMenu} boundary="viewport" captureDismiss={false}>
+                  <Button icon="cog" />
+                </Popover>
               </If>
             </ControlGroup>
           </When>
@@ -263,14 +320,15 @@ const EntryDetailsContent = () => {
     onDeleteEntry,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldSetValueType,
     onRemoveField,
     onSaveEdit
   } = useCurrentEntry();
   const { onMoveEntryToTrash, trashID } = useGroups();
 
   const editableFields = editing
-    ? entry.fields.filter(item => item.field === 'property')
-    : entry.fields.filter(item => item.field === 'property' && item.property !== 'title');
+    ? entry.fields.filter(item => item.propertyType === 'property')
+    : entry.fields.filter(item => item.propertyType === 'property' && item.property !== 'title');
   const mainFields = editableFields.filter(field => !field.removeable);
   const removeableFields = editableFields.filter(field => field.removeable);
 
@@ -302,6 +360,7 @@ const EntryDetailsContent = () => {
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
+              onFieldSetValueType={onFieldSetValueType}
               onRemoveField={onRemoveField}
               editing={editing}
             />

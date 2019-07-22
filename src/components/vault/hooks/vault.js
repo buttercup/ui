@@ -13,6 +13,7 @@ export function useCurrentEntry() {
     onEdit,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldSetValueType,
     onRemoveField,
     onSaveEdit
   } = useContext(VaultContext);
@@ -26,6 +27,7 @@ export function useCurrentEntry() {
     onEdit,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldSetValueType,
     onRemoveField,
     onSaveEdit
   };
