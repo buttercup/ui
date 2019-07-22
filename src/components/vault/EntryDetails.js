@@ -298,7 +298,6 @@ const FieldRow = ({
                 <Popover content={renderMenu} boundary="viewport" captureDismiss={false}>
                   <Button icon="cog" />
                 </Popover>
-                {/* <Button icon="trash" onClick={() => onRemoveField(field)} /> */}
               </If>
             </ControlGroup>
           </When>
