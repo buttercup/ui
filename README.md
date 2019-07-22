@@ -1,4 +1,4 @@
-# Buttercup UI Components 
+# Buttercup UI Components
 [![Buttercup](https://cdn.rawgit.com/buttercup-pw/buttercup-assets/6582a033/badge/buttercup-slim.svg)](https://buttercup.pw) [![npm version](https://badge.fury.io/js/%40buttercup%2Fui.svg)](https://www.npmjs.com/package/@buttercup/ui) [![Build Status](https://travis-ci.org/buttercup/ui.svg?branch=master)](https://travis-ci.org/buttercup/ui)
 
 React UI Components used in [Buttercup](https://buttercup.pw) product series.

@@ -90,6 +90,7 @@
     "webpack-cli": "^3.3.5"
   },
   "peerDependencies": {
+    "@buttercup/facades": "^v1.0.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "styled-components": "^4.1.3"
