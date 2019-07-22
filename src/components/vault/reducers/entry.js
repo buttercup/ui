@@ -41,7 +41,6 @@ export function entryReducer(state, action) {
         ...state,
         fields: state.fields.map(field => {
           if (field.id === changedField.id) {
-            console.log('MATCHED', field);
             return { ...field, valueType };
           }
           return field;
