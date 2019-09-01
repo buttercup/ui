@@ -28,6 +28,10 @@ const TimeLeftSpinner = styled(Spinner)`
 `;
 
 export default class OTPDigits extends Component {
+  static defaultProps = {
+    otpRef: n => n
+  };
+
   static propTypes = {
     otpRef: PropTypes.func.isRequired,
     otpURI: PropTypes.string.isRequired
