@@ -1,7 +1,6 @@
 import React, { useReducer, useState, useEffect, useRef } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
-import uuid from 'uuid/v4';
 import { createEntryFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
