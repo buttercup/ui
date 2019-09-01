@@ -93,7 +93,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });
       facade.parentID = selectedGroupID;
-      facade.id = uuid();
+      facade.id = null;
       facade.isNew = true;
       dispatchEditing({
         type: 'set-entry',
