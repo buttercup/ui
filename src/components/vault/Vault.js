@@ -6,9 +6,18 @@ import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 
+const NOOP = () => {};
+
 export const VaultContext = React.createContext();
 
-export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
+export const VaultProvider = ({
+  children,
+  onRequestShareOptions = NOOP,
+  onShareOptionsUpdate = NOOP,
+  onUpdate,
+  sharing = false,
+  vault: vaultSource
+}) => {
   const [vault, dispatch] = useReducer(vaultReducer, clone(vaultSource));
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
@@ -16,6 +25,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [groupFilters, dispatchGroupFilters] = useReducer(filterReducer, defaultFilter);
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
+  const [shareOptions, setShareOptions] = useState([]);
   const initRef = useRef(false);
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
@@ -23,13 +33,19 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
 
   useEffect(() => {
     if (initRef.current === false) {
-      console.log('Init call. Do not call onUpdate');
       initRef.current = true;
       return;
     }
-    console.log('Debug: Running on Update function. Yay!');
     onUpdate(vault);
   }, [vault]);
+  if (sharing) {
+    useEffect(() => {
+      const stopShareListener = onShareOptionsUpdate(shareOptions => {
+        setShareOptions(shareOptions);
+      });
+      return stopShareListener;
+    });
+  }
 
   const context = {
     vault,
@@ -41,6 +57,11 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     expandedGroups,
     groupFilters,
     entriesFilters,
+    shareOptions,
+    sharingEnabled: sharing,
+
+    // External
+    onRequestShareOptions,
 
     // Actions
     onSelectGroup: groupID => {
