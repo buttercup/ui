@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Archive, Entry } from 'buttercup';
 import { FIELD_VALUE_TYPE_OTP } from '@buttercup/facades';
 import { ThemeProvider } from 'styled-components';
@@ -53,6 +54,14 @@ const View = styled.div`
 `;
 
 export default class VaultStory extends Component {
+  static propTypes = {
+    sharing: PropTypes.bool.isRequired
+  };
+
+  static defaultProps = {
+    sharing: false
+  };
+
   constructor(...args) {
     super(...args);
     this.state = {
@@ -67,6 +76,7 @@ export default class VaultStory extends Component {
           <VaultProvider
             vault={this.state.facade}
             onUpdate={vault => this.setState({ facade: vault })}
+            sharing={this.props.sharing}
           >
             <VaultUI />
           </VaultProvider>

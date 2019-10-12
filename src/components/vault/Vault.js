@@ -13,7 +13,7 @@ export const VaultContext = React.createContext();
 export const VaultProvider = ({
   children,
   onRequestShareOptions = NOOP,
-  onShareOptionsUpdate = NOOP,
+  onShareOptionsUpdate = () => () => {},
   onUpdate,
   sharing = false,
   vault: vaultSource
@@ -26,6 +26,7 @@ export const VaultProvider = ({
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
   const [shareOptions, setShareOptions] = useState([]);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const initRef = useRef(false);
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
@@ -57,10 +58,12 @@ export const VaultProvider = ({
     expandedGroups,
     groupFilters,
     entriesFilters,
+
+    // Sharing
+    setShareDialogOpen,
+    shareDialogOpen,
     shareOptions,
     sharingEnabled: sharing,
-
-    // External
     onRequestShareOptions,
 
     // Actions

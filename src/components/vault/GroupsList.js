@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Tree as BaseTree, Button, Tag, Intent, Alignment } from '@blueprintjs/core';
+import {
+  Tree as BaseTree,
+  Button,
+  Tag,
+  Intent,
+  Alignment,
+  ContextMenu,
+  Menu,
+  MenuItem
+} from '@blueprintjs/core';
 import { GroupFacade } from './props';
-import { useGroups } from './hooks/vault';
+import { useGroups, useSharing } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
 
@@ -45,6 +54,33 @@ const GroupsList = () => {
     trashSelected,
     trashID
   } = useGroups();
+  const { onRequestShareOptions, setShareDialogOpen, sharingEnabled } = useSharing();
+
+  const showContextMenu = (node, nodePath, evt) => {
+    evt.preventDefault();
+    ContextMenu.show(
+      <Menu>
+        <Choose>
+          <When condition={node.isTrash}>
+            <MenuItem disabled text="Can't modify Trash group" />
+          </When>
+          <Otherwise>
+            <MenuItem
+              disabled={!sharingEnabled}
+              icon="share"
+              text="Share"
+              onClick={() => {
+                setShareDialogOpen(true);
+                onRequestShareOptions();
+              }}
+            />
+          </Otherwise>
+        </Choose>
+      </Menu>,
+      { left: evt.clientX, top: evt.clientY },
+      () => {}
+    );
+  };
 
   return (
     <PaneContainer primary>
@@ -59,6 +95,7 @@ const GroupsList = () => {
         <Tree
           contents={groups}
           onNodeClick={group => onSelectGroup(group.id)}
+          onNodeContextMenu={showContextMenu}
           onNodeExpand={handleExpandGroup}
           onNodeCollapse={handleCollapseGroup}
         />

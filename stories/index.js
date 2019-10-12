@@ -109,6 +109,8 @@ storiesOf('Colored Digits', module)
   .add('styled digits', () => <Digits value="Hello123HowAre1You" />)
   .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
 
-storiesOf('Vault', module).add('default', () => <VaultStory />);
+storiesOf('Vault', module)
+  .add('basic', () => <VaultStory />)
+  .add('sharing', () => <VaultStory sharing={true} />);
 
 storiesOf('OTPDigits', module).add('6 digits', () => <OTPDigitsStory />);

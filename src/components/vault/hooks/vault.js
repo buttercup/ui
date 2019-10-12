@@ -108,3 +108,20 @@ export function useActions() {
     onAddEntry
   };
 }
+
+export function useSharing() {
+  const {
+    onRequestShareOptions,
+    setShareDialogOpen,
+    shareDialogOpen,
+    shareOptions,
+    sharingEnabled
+  } = useContext(VaultContext);
+  return {
+    onRequestShareOptions,
+    setShareDialogOpen,
+    shareDialogOpen,
+    shareOptions,
+    sharingEnabled
+  };
+}
