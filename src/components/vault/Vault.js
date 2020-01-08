@@ -53,6 +53,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
     },
+
     onGroupFilterTermChange: term => {
       dispatchGroupFilters({
         type: 'set-term',
