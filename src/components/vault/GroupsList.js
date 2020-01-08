@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -9,11 +9,11 @@ import {
   Alignment,
   ContextMenu,
   Menu,
-  MenuItem
+  MenuItem,
+  MenuDivider
 } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
-import { VaultContext } from './Vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
 
@@ -41,10 +41,10 @@ const Tree = styled(BaseTree)`
 `;
 
 const GroupsList = () => {
-  const { vault } = useContext(VaultContext);
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const {
     groups,
+    groupsRaw,
     selectedGroupID,
     onSelectGroup,
     expandedGroups,
@@ -59,7 +59,12 @@ const GroupsList = () => {
     trashID
   } = useGroups();
 
-  const renderGroupsMenu = (items, parentNode) => (
+  const handleMove = parentID => node => {
+    // @todo move group
+    // onMoveEntryToGroup(entry.id, parentID);
+  };
+
+  const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
     <>
       <If condition={parentNode}>
         <MenuItem
@@ -67,7 +72,7 @@ const GroupsList = () => {
           key={parentNode.id}
           icon={parentNode.icon}
           onClick={handleMove(parentNode.id)}
-          disabled={entry.parentID === parentNode.id}
+          disabled={selectedGroupID === parentNode.id}
         />
         <MenuDivider />
       </If>
@@ -80,7 +85,7 @@ const GroupsList = () => {
               icon={group.icon}
               onClick={handleMove(group.id)}
             >
-              {renderGroupsMenu(group.childNodes, group)}
+              {renderGroupsMenu(group.childNodes, group, selectedGroupID)}
             </MenuItem>
           </When>
           <Otherwise>
@@ -89,7 +94,7 @@ const GroupsList = () => {
               key={group.id}
               icon={group.icon}
               onClick={handleMove(group.id)}
-              disabled={entry.parentID === group.id}
+              disabled={selectedGroupID === group.id}
             />
           </Otherwise>
         </Choose>
@@ -99,16 +104,19 @@ const GroupsList = () => {
 
   const showContextMenu = (node, nodePath, evt) => {
     evt.preventDefault();
-    const groupFacade = vault.groups.find(group => group.id === node.id);
+    const groupFacade = groupsRaw.find(group => group.id === node.id);
     setContextMenuVisibility(true);
     ContextMenu.show(
       <Menu>
-        {/* <MenuItem text="Move to..." icon="add-to-folder">
-          {renderGroupsMenu(groups)}
-        </MenuItem> */}
+        <MenuItem text={groupFacade.title} disabled />
+        <MenuDivider />
         <MenuItem text="Add New Group" icon="add" onClick={() => {}} />
-        <MenuItem text={`Rename '${groupFacade.title}'`} icon="edit" onClick={() => {}} />
-        <MenuItem text={`Move '${groupFacade.title}' to Trash`} icon="trash" onClick={() => {}} />
+        <MenuItem text="Rename" icon="edit" onClick={() => {}} />
+        <MenuDivider />
+        <MenuItem text="Move to..." icon="add-to-folder">
+          {renderGroupsMenu(groups, null, node.id)}
+        </MenuItem>
+        <MenuItem text="Move to Trash" icon="trash" onClick={() => {}} />
       </Menu>,
       { left: evt.clientX, top: evt.clientY },
       () => {
@@ -123,10 +131,11 @@ const GroupsList = () => {
         title="Groups"
         count={groups.length}
         filter={filters}
+        onAddItem={() => {}}
         onTermChange={term => onGroupFilterTermChange(term)}
         onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
       />
-      <PaneContent>
+      <PaneContent onNodeContextMenu={(...args) => console.log(args)}>
         <Tree
           contents={groups}
           onNodeClick={group => onSelectGroup(group.id)}

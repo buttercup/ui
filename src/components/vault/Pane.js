@@ -14,6 +14,8 @@ import {
 } from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
 
+const NOOP = () => {};
+
 const createScrollShadow = color => css`
   /* Show shadow on scroll: https://gist.github.com/tbmiller/6675197 */
   background: linear-gradient(${color} 30%, hsla(0, 0%, 100%, 0)),
@@ -89,8 +91,9 @@ export const PaneHeader = ({
   count,
   title,
   filter = null,
-  onTermChange = () => {},
-  onSortModeChange = () => {}
+  onAddItem = NOOP,
+  onTermChange = NOOP,
+  onSortModeChange = NOOP
 }) => {
   const [filterInputVisible, toggleFilter] = useState(false);
   const inputRef = useRef(null);
@@ -161,6 +164,9 @@ export const PaneHeader = ({
           </Otherwise>
         </Choose>
       </ListHeadingContent>
+      <If condition={onAddItem !== NOOP}>
+        <Button minimal icon="add" small onClick={onAddItem} />
+      </If>
       <If condition={showFilter}>
         <Popover content={renderMenu}>
           <Button minimal icon="filter-list" small />
