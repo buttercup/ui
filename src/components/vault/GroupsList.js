@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
-  Tree as BaseTree,
-  Button,
-  Tag,
-  Intent,
   Alignment,
+  Button,
+  Classes,
   ContextMenu,
+  Dialog,
+  Intent,
   Menu,
+  MenuDivider,
   MenuItem,
-  MenuDivider
+  Tag,
+  Tree as BaseTree
 } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
@@ -42,6 +44,8 @@ const Tree = styled(BaseTree)`
 
 const GroupsList = () => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
+  const [groupEditID, setGroupEditID] = useState(null);
+  const [newGroupName, setNewGroupName] = useState('');
   const {
     groups,
     groupsRaw,
@@ -58,6 +62,16 @@ const GroupsList = () => {
     trashSelected,
     trashID
   } = useGroups();
+
+  const closeEditDialog = () => {
+    setGroupEditID(null);
+    setNewGroupName('');
+  };
+
+  const editGroup = groupFacade => {
+    setGroupEditID(groupFacade ? groupFacade.id : -1);
+    setNewGroupName(groupFacade ? groupFacade.title : '');
+  };
 
   const handleMove = parentID => node => {
     // @todo move group
@@ -111,7 +125,7 @@ const GroupsList = () => {
         <MenuItem text={groupFacade.title} disabled />
         <MenuDivider />
         <MenuItem text="Add New Group" icon="add" onClick={() => {}} />
-        <MenuItem text="Rename" icon="edit" onClick={() => {}} />
+        <MenuItem text="Rename" icon="edit" onClick={() => editGroup(groupFacade)} />
         <MenuDivider />
         <MenuItem text="Move to..." icon="add-to-folder">
           {renderGroupsMenu(groups, null, node.id)}
@@ -126,41 +140,61 @@ const GroupsList = () => {
   };
 
   return (
-    <PaneContainer primary>
-      <PaneHeader
-        title="Groups"
-        count={groups.length}
-        filter={filters}
-        onAddItem={() => {}}
-        onTermChange={term => onGroupFilterTermChange(term)}
-        onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
-      />
-      <PaneContent>
-        <Tree
-          contents={groups}
-          onNodeClick={group => onSelectGroup(group.id)}
-          onNodeContextMenu={showContextMenu}
-          onNodeExpand={handleExpandGroup}
-          onNodeCollapse={handleCollapseGroup}
+    <>
+      <PaneContainer primary>
+        <PaneHeader
+          title="Groups"
+          count={groups.length}
+          filter={filters}
+          onAddItem={() => editGroup()}
+          onTermChange={term => onGroupFilterTermChange(term)}
+          onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
         />
-      </PaneContent>
-      <PaneFooter>
-        <Button
-          rightIcon={
-            <Tag round minimal intent={trashCount > 0 ? Intent.WARNING : Intent.NONE}>
-              {trashCount}
-            </Tag>
-          }
-          icon="trash"
-          fill
-          minimal
-          text="Trash"
-          alignText={Alignment.LEFT}
-          active={trashSelected}
-          onClick={() => onSelectGroup(trashID)}
-        />
-      </PaneFooter>
-    </PaneContainer>
+        <PaneContent>
+          <Tree
+            contents={groups}
+            onNodeClick={group => onSelectGroup(group.id)}
+            onNodeContextMenu={showContextMenu}
+            onNodeExpand={handleExpandGroup}
+            onNodeCollapse={handleCollapseGroup}
+          />
+        </PaneContent>
+        <PaneFooter>
+          <Button
+            rightIcon={
+              <Tag round minimal intent={trashCount > 0 ? Intent.WARNING : Intent.NONE}>
+                {trashCount}
+              </Tag>
+            }
+            icon="trash"
+            fill
+            minimal
+            text="Trash"
+            alignText={Alignment.LEFT}
+            active={trashSelected}
+            onClick={() => onSelectGroup(trashID)}
+          />
+        </PaneFooter>
+      </PaneContainer>
+      <Dialog
+        icon="manually-entered-data"
+        onClose={closeEditDialog}
+        title={groupEditID === -1 ? 'Create Group' : 'Rename Group'}
+        isOpen={groupEditID !== null}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>Enter group title:</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button onClick={closeEditDialog}>Cancel</Button>
+            <Button intent={Intent.PRIMARY} onClick={closeEditDialog}>
+              Save
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 };
 
