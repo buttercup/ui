@@ -135,7 +135,7 @@ const GroupsList = () => {
         onTermChange={term => onGroupFilterTermChange(term)}
         onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
       />
-      <PaneContent onNodeContextMenu={(...args) => console.log(args)}>
+      <PaneContent>
         <Tree
           contents={groups}
           onNodeClick={group => onSelectGroup(group.id)}
