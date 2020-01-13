@@ -96,6 +96,13 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         });
       }
     },
+    onMoveGroup: (groupID, parentID) => {
+      dispatch({
+        type: 'move-group',
+        groupID,
+        parentID
+      });
+    },
     onRenameGroup: (groupID, title) => {
       dispatch({
         type: 'rename-group',

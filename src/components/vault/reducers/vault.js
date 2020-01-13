@@ -56,6 +56,19 @@ export function vaultReducer(state, action) {
           return group;
         })
       };
+    case 'move-group':
+      return {
+        ...state,
+        groups: state.groups.map(group => {
+          if (group.id === action.groupID) {
+            return {
+              ...group,
+              parentID: action.parentID
+            };
+          }
+          return group;
+        })
+      };
   }
 }
 

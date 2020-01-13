@@ -56,6 +56,7 @@ const GroupsList = () => {
     groupsRaw,
     selectedGroupID,
     onCreateGroup,
+    onMoveGroup,
     onRenameGroup,
     onSelectGroup,
     expandedGroups,
@@ -88,9 +89,8 @@ const GroupsList = () => {
     setParentGroupID(parentID);
   };
 
-  const handleMove = parentID => node => {
-    // @todo move group
-    // onMoveEntryToGroup(entry.id, parentID);
+  const moveGroupToGroup = (groupID, parentID) => {
+    onMoveGroup(groupID, parentID);
   };
 
   const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
@@ -100,7 +100,7 @@ const GroupsList = () => {
           text={`Move to ${parentNode.label}`}
           key={parentNode.id}
           icon={parentNode.icon}
-          onClick={handleMove(parentNode.id)}
+          onClick={() => moveGroupToGroup(selectedGroupID, parentNode.id)}
           disabled={selectedGroupID === parentNode.id}
         />
         <MenuDivider />
@@ -112,7 +112,8 @@ const GroupsList = () => {
               text={group.label}
               key={group.id}
               icon={group.icon}
-              onClick={handleMove(group.id)}
+              onClick={() => moveGroupToGroup(selectedGroupID, group.id)}
+              disabled={selectedGroupID === group.id}
             >
               {renderGroupsMenu(group.childNodes, group, selectedGroupID)}
             </MenuItem>
@@ -122,7 +123,7 @@ const GroupsList = () => {
               text={group.label}
               key={group.id}
               icon={group.icon}
-              onClick={handleMove(group.id)}
+              onClick={() => moveGroupToGroup(selectedGroupID, group.id)}
               disabled={selectedGroupID === group.id}
             />
           </Otherwise>
