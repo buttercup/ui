@@ -38,6 +38,24 @@ export function vaultReducer(state, action) {
         ...state,
         entries: state.entries.filter(entry => entry.id !== action.entryID)
       };
+    case 'create-group':
+      return {
+        ...state,
+        groups: [...state.groups, action.payload]
+      };
+    case 'rename-group':
+      return {
+        ...state,
+        groups: state.groups.map(group => {
+          if (group.id === action.groupID) {
+            return {
+              ...group,
+              title: action.title
+            };
+          }
+          return group;
+        })
+      };
   }
 }
 

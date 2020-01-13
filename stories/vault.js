@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import uuid from 'uuid/v4';
 import { Archive, Entry } from 'buttercup';
 import { FIELD_VALUE_TYPE_OTP } from '@buttercup/facades';
 import { ThemeProvider } from 'styled-components';
@@ -47,6 +48,16 @@ function createArchive() {
   return archive;
 }
 
+function normaliseFacade(vault) {
+  // Set UUIDs for new groups, or else we get collisions
+  vault.groups.forEach(group => {
+    if (!group.id) {
+      group.id = uuid();
+    }
+  });
+  return vault;
+}
+
 const View = styled.div`
   height: calc(100vh - 1rem);
   width: 100%;
@@ -66,7 +77,7 @@ export default class VaultStory extends Component {
         <View>
           <VaultProvider
             vault={this.state.facade}
-            onUpdate={vault => this.setState({ facade: vault })}
+            onUpdate={vault => this.setState({ facade: normaliseFacade(vault) })}
           >
             <VaultUI />
           </VaultProvider>

@@ -59,8 +59,10 @@ export function useCurrentEntries() {
 export function useGroups() {
   const {
     vault,
+    onCreateGroup,
     onSelectGroup,
     onMoveEntryToGroup,
+    onRenameGroup,
     selectedGroupID,
     expandedGroups,
     handleCollapseGroup,
@@ -87,8 +89,10 @@ export function useGroups() {
     ),
     groupsRaw: vault.groups,
     filters: groupFilters,
+    onCreateGroup,
     onGroupFilterTermChange,
     onGroupFilterSortModeChange,
+    onRenameGroup,
     onSelectGroup,
     selectedGroupID,
     expandedGroups,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -7,6 +7,7 @@ import {
   Classes,
   ContextMenu,
   Dialog,
+  InputGroup,
   Intent,
   Menu,
   MenuDivider,
@@ -18,6 +19,8 @@ import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
+
+const KEYCODE_ENTER = 13;
 
 const Tree = styled(BaseTree)`
   .node {
@@ -45,11 +48,15 @@ const Tree = styled(BaseTree)`
 const GroupsList = () => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const [groupEditID, setGroupEditID] = useState(null);
+  const [parentGroupID, setParentGroupID] = useState(null);
   const [newGroupName, setNewGroupName] = useState('');
+  const groupTitleInputRef = useRef(null);
   const {
     groups,
     groupsRaw,
     selectedGroupID,
+    onCreateGroup,
+    onRenameGroup,
     onSelectGroup,
     expandedGroups,
     handleCollapseGroup,
@@ -63,14 +70,22 @@ const GroupsList = () => {
     trashID
   } = useGroups();
 
+  useEffect(() => {
+    if (groupTitleInputRef && groupTitleInputRef.current) {
+      groupTitleInputRef.current.focus();
+    }
+  }, [groupTitleInputRef.current]);
+
   const closeEditDialog = () => {
     setGroupEditID(null);
     setNewGroupName('');
+    setParentGroupID(null);
   };
 
-  const editGroup = groupFacade => {
+  const editGroup = (groupFacade, parentID = null) => {
     setGroupEditID(groupFacade ? groupFacade.id : -1);
     setNewGroupName(groupFacade ? groupFacade.title : '');
+    setParentGroupID(parentID);
   };
 
   const handleMove = parentID => node => {
@@ -124,7 +139,7 @@ const GroupsList = () => {
       <Menu>
         <MenuItem text={groupFacade.title} disabled />
         <MenuDivider />
-        <MenuItem text="Add New Group" icon="add" onClick={() => {}} />
+        <MenuItem text="Add New Group" icon="add" onClick={() => editGroup(null, groupFacade.id)} />
         <MenuItem text="Rename" icon="edit" onClick={() => editGroup(groupFacade)} />
         <MenuDivider />
         <MenuItem text="Move to..." icon="add-to-folder">
@@ -137,6 +152,15 @@ const GroupsList = () => {
         setContextMenuVisibility(false);
       }
     );
+  };
+
+  const submitGroupChange = () => {
+    if (groupEditID !== null && groupEditID !== -1) {
+      onRenameGroup(groupEditID, newGroupName);
+    } else {
+      onCreateGroup(parentGroupID, newGroupName);
+    }
+    closeEditDialog();
   };
 
   return (
@@ -184,11 +208,22 @@ const GroupsList = () => {
       >
         <div className={Classes.DIALOG_BODY}>
           <p>Enter group title:</p>
+          <InputGroup
+            leftIcon={groupEditID === -1 ? 'folder-new' : 'add-to-folder'}
+            onChange={evt => setNewGroupName(evt.target.value)}
+            value={newGroupName}
+            inputRef={groupTitleInputRef}
+            onKeyDown={evt => {
+              if (evt.keyCode === KEYCODE_ENTER) {
+                submitGroupChange();
+              }
+            }}
+          />
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Button onClick={closeEditDialog}>Cancel</Button>
-            <Button intent={Intent.PRIMARY} onClick={closeEditDialog}>
+            <Button intent={Intent.PRIMARY} onClick={submitGroupChange}>
               Save
             </Button>
           </div>
