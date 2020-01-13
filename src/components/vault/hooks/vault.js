@@ -94,6 +94,13 @@ export function useGroups() {
     onGroupFilterTermChange,
     onGroupFilterSortModeChange,
     onMoveGroup,
+    onMoveGroupToTrash: groupID => {
+      if (!trashID) {
+        console.error('No trash group found');
+        return;
+      }
+      return onMoveGroup(groupID, trashID);
+    },
     onRenameGroup,
     onSelectGroup,
     selectedGroupID,

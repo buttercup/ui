@@ -57,6 +57,7 @@ const GroupsList = () => {
     selectedGroupID,
     onCreateGroup,
     onMoveGroup,
+    onMoveGroupToTrash,
     onRenameGroup,
     onSelectGroup,
     expandedGroups,
@@ -91,6 +92,10 @@ const GroupsList = () => {
 
   const moveGroupToGroup = (groupID, parentID) => {
     onMoveGroup(groupID, parentID);
+  };
+
+  const moveToTrash = groupID => {
+    onMoveGroupToTrash(groupID);
   };
 
   const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
@@ -146,7 +151,7 @@ const GroupsList = () => {
         <MenuItem text="Move to..." icon="add-to-folder">
           {renderGroupsMenu(groups, null, node.id)}
         </MenuItem>
-        <MenuItem text="Move to Trash" icon="trash" onClick={() => {}} />
+        <MenuItem text="Move to Trash" icon="trash" onClick={() => moveToTrash(selectedGroupID)} />
       </Menu>,
       { left: evt.clientX, top: evt.clientY },
       () => {
