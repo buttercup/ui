@@ -2,6 +2,27 @@ import { sortBy, prop, compose, toLower, reverse } from 'ramda';
 
 export const isTrashGroup = group => group.attributes && group.attributes.bc_group_role === 'trash';
 
+export const getAllEntriesInGroup = (facade, groupID) => {
+  const allGroups = [
+    ...getAllGroupsInGroup(facade, groupID),
+    facade.groups.find(group => group.id === groupID)
+  ];
+  return allGroups.reduce((output, group) => {
+    return [...output, ...facade.entries.filter(entry => entry.parentID === group.id)];
+  }, []);
+};
+
+export const getAllGroupsInGroup = (facade, groupID) => {
+  const targetIDs = [groupID];
+  return facade.groups.reduce((output, nextGroup) => {
+    if (targetIDs.includes(nextGroup.id)) {
+      output.push(nextGroup);
+      targetIDs.push(nextGroup.id);
+    }
+    return output;
+  }, []);
+};
+
 export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
   return groups
     .filter(group => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')

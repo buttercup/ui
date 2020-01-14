@@ -1,6 +1,13 @@
 import { useContext } from 'react';
 import { VaultContext } from '../Vault';
-import { filterNestedGroups, getNestedGroups, isTrashGroup, sortGroups } from '../utils/groups';
+import {
+  filterNestedGroups,
+  getAllEntriesInGroup,
+  getAllGroupsInGroup,
+  getNestedGroups,
+  isTrashGroup,
+  sortGroups
+} from '../utils/groups';
 import { filterEntries, sortEntries } from '../utils/entries';
 
 export function useCurrentEntry() {
@@ -59,6 +66,7 @@ export function useCurrentEntries() {
 export function useGroups() {
   const {
     vault,
+    batchDeleteItems,
     onCreateGroup,
     onSelectGroup,
     onMoveEntryToGroup,
@@ -78,6 +86,15 @@ export function useGroups() {
   const trashSelected = selectedGroupID === trashID;
   const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
   const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
+  const emptyTrash = () => {
+    if (!trashID) return;
+    const trashEntries = getAllEntriesInGroup(vault, trashID);
+    const trashGroups = getAllGroupsInGroup(vault, trashID);
+    batchDeleteItems({
+      groupIDs: trashGroups.map(group => group.id),
+      entryIDs: trashEntries.map(entry => entry.id)
+    });
+  };
 
   return {
     groups: filterNestedGroups(
@@ -89,6 +106,7 @@ export function useGroups() {
       groupFilters.term
     ),
     groupsRaw: vault.groups,
+    emptyTrash,
     filters: groupFilters,
     onCreateGroup,
     onGroupFilterTermChange,

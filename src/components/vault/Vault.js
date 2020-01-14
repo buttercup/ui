@@ -41,6 +41,13 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     entriesFilters,
 
     // Actions
+    batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
+      dispatch({
+        type: 'batch-delete',
+        groups: groupIDs,
+        entries: entryIDs
+      });
+    },
     onSelectGroup: groupID => {
       setSelectedGroupID(groupID);
       setSelectedEntryID(null);

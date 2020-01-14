@@ -69,6 +69,12 @@ export function vaultReducer(state, action) {
           return group;
         })
       };
+    case 'batch-delete':
+      return {
+        ...state,
+        groups: state.groups.filter(group => action.groups.includes(group.id) === false),
+        entries: state.entries.filter(entry => action.entries.includes(entry.id) === false)
+      };
   }
 }
 

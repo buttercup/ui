@@ -46,7 +46,7 @@ const Tree = styled(BaseTree)`
 `;
 
 const GroupsList = () => {
-  const [contextMenuOpen, setContextMenuVisibility] = useState(false);
+  const [groupsContextOpen, setGroupsContextOpen] = useState(false);
   const [groupEditID, setGroupEditID] = useState(null);
   const [parentGroupID, setParentGroupID] = useState(null);
   const [newGroupName, setNewGroupName] = useState('');
@@ -54,6 +54,7 @@ const GroupsList = () => {
   const {
     groups,
     groupsRaw,
+    // emptyTrash,
     selectedGroupID,
     onCreateGroup,
     onMoveGroup,
@@ -82,6 +83,10 @@ const GroupsList = () => {
     setGroupEditID(null);
     setNewGroupName('');
     setParentGroupID(null);
+  };
+
+  const confirmEmptyTrash = () => {
+    // @todo empty trash
   };
 
   const editGroup = (groupFacade, parentID = null) => {
@@ -137,10 +142,10 @@ const GroupsList = () => {
     </>
   );
 
-  const showContextMenu = (node, nodePath, evt) => {
+  const showGroupContextMenu = (node, nodePath, evt) => {
     evt.preventDefault();
     const groupFacade = groupsRaw.find(group => group.id === node.id);
-    setContextMenuVisibility(true);
+    setGroupsContextOpen(true);
     ContextMenu.show(
       <Menu>
         <MenuItem text={groupFacade.title} disabled />
@@ -155,7 +160,7 @@ const GroupsList = () => {
       </Menu>,
       { left: evt.clientX, top: evt.clientY },
       () => {
-        setContextMenuVisibility(false);
+        setGroupsContextOpen(false);
       }
     );
   };
@@ -184,7 +189,7 @@ const GroupsList = () => {
           <Tree
             contents={groups}
             onNodeClick={group => onSelectGroup(group.id)}
-            onNodeContextMenu={showContextMenu}
+            onNodeContextMenu={showGroupContextMenu}
             onNodeExpand={handleExpandGroup}
             onNodeCollapse={handleCollapseGroup}
           />
