@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid/v4';
-import { Archive, Entry } from 'buttercup';
+import { Archive, Entry } from 'buttercup/dist/buttercup-web.min.js';
+import '@buttercup/app-env/web';
 import { FIELD_VALUE_TYPE_OTP } from '@buttercup/facades';
 import { ThemeProvider } from 'styled-components';
 import { createArchiveFacade } from '@buttercup/facades';
@@ -13,10 +14,13 @@ function createArchive() {
   general
     .createEntry('Home wi-fi')
     .setProperty('username', 'somehow')
+    .setProperty('password', 'idsfio49v-1')
+    .setProperty('password', 'h78.dI2m;110')
     .setProperty('password', 'x8v@mId01')
     .setProperty('url', 'https://google.com');
   general
-    .createEntry('Social website')
+    .createEntry('Social')
+    .setProperty('title', 'Social website')
     .setProperty('username', 'user@test.com')
     .setProperty('password', 'vdfs867sd5')
     .setProperty(
@@ -28,12 +32,15 @@ function createArchive() {
       'otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30'
     )
     .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, FIELD_VALUE_TYPE_OTP)
+    .setProperty('url', 'https://site.com/setup/create-account.php?token=123')
+    .setProperty('url', 'https://site.com/login.php')
     .setProperty('url', 'https://site.com')
     .setProperty('Recovery pin', '1234');
   general
     .createEntry('Gate lock combination')
     .setProperty('username', 'test')
-    .setProperty('password', '4812');
+    .setProperty('password', '4812')
+    .setProperty('password', 'passw0rd');
   const notes = archive.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
