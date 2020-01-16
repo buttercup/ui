@@ -54,7 +54,6 @@ const GroupsList = () => {
   const {
     groups,
     groupsRaw,
-    // emptyTrash,
     selectedGroupID,
     onCreateGroup,
     onMoveGroup,
