@@ -134,10 +134,34 @@ const FieldTextWrapper = styled.span`
   }
 `;
 
-const FieldText = ({ field }) => {
+const FieldText = ({ entryFacade, field }) => {
   const [visible, toggleVisibility] = useState(false);
   const otpRef = useRef(field.value);
   const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
+  const { _history: history = [] } = entryFacade;
+  const historyItems = history.filter(
+    item => item.property === field.property && item.propertyType === field.propertyType
+  );
+  if (historyItems.length > 0 && historyItems[historyItems.length - 1].newValue === field.value) {
+    // Remove last item as it just shows the current value
+    historyItems.pop();
+  }
+  const historyMenu = (
+    <Menu>
+      <For each="historyItem" of={historyItems}>
+        <MenuItem text={`'${field.property}' was set to "${historyItem.newValue}"`}>
+          <MenuItem text="Copy Historical Value" icon="clipboard" onClick={() => {}} />
+          <MenuDivider />
+          <MenuItem
+            text="Restore Historical Value"
+            icon="redo"
+            intent={Intent.DANGER}
+            onClick={() => {}}
+          />
+        </MenuItem>
+      </For>
+    </Menu>
+  );
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
@@ -184,6 +208,9 @@ const FieldText = ({ field }) => {
           />
         </If>
         <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
+        <Popover content={historyMenu} boundary="viewport" captureDismiss={false}>
+          <Button icon="history" small disabled={historyItems.length <= 0} />
+        </Popover>
       </FieldTextToolbar>
     </FieldTextWrapper>
   );
@@ -192,6 +219,7 @@ const FieldText = ({ field }) => {
 const FieldRow = ({
   field,
   editing,
+  entryFacade,
   onFieldNameUpdate,
   onFieldUpdate,
   onFieldSetValueType,
@@ -302,7 +330,7 @@ const FieldRow = ({
             </ControlGroup>
           </When>
           <Otherwise>
-            <FieldText field={field} />
+            <FieldText field={field} entryFacade={entryFacade} />
           </Otherwise>
         </Choose>
       </FieldRowChildren>
@@ -340,6 +368,7 @@ const EntryDetailsContent = () => {
           <For each="field" of={mainFields}>
             <FieldRow
               key={field.id}
+              entryFacade={entry}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
@@ -357,6 +386,7 @@ const EntryDetailsContent = () => {
           <For each="field" of={removeableFields}>
             <FieldRow
               key={field.id}
+              entryFacade={entry}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
