@@ -188,6 +188,14 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         value
       });
     },
+    onFieldUpdateInPlace: (entryID, field, value) => {
+      dispatch({
+        type: 'set-entry-field',
+        entryID,
+        field,
+        value
+      });
+    },
     onFieldSetValueType: (changedField, valueType) => {
       dispatchEditing({
         type: 'set-field-value-type',

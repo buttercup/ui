@@ -137,6 +137,7 @@ const FieldTextWrapper = styled.span`
 const FieldText = ({ entryFacade, field }) => {
   const [visible, toggleVisibility] = useState(false);
   const otpRef = useRef(field.value);
+  const { onFieldUpdateInPlace } = useCurrentEntry();
   const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
   const { _history: history = [] } = entryFacade;
   const historyItems = history.filter(
@@ -148,15 +149,24 @@ const FieldText = ({ entryFacade, field }) => {
   }
   const historyMenu = (
     <Menu>
-      <For each="historyItem" of={historyItems}>
-        <MenuItem text={`'${field.property}' was set to "${historyItem.newValue}"`}>
-          <MenuItem text="Copy Historical Value" icon="clipboard" onClick={() => {}} />
+      <For each="historyItem" of={historyItems} index="idx">
+        <MenuItem
+          text={`'${field.property}' was set to "${historyItem.newValue}"`}
+          key={`${field.property}:${idx}`}
+        >
+          <MenuItem
+            text="Copy Historical Value"
+            icon="clipboard"
+            onClick={() => copyToClipboard(historyItem.newValue)}
+          />
           <MenuDivider />
           <MenuItem
             text="Restore Historical Value"
             icon="redo"
             intent={Intent.DANGER}
-            onClick={() => {}}
+            onClick={() => {
+              onFieldUpdateInPlace(entryFacade.id, field, historyItem.newValue);
+            }}
           />
         </MenuItem>
       </For>
@@ -208,7 +218,7 @@ const FieldText = ({ entryFacade, field }) => {
           />
         </If>
         <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
-        <Popover content={historyMenu} boundary="viewport" captureDismiss={false}>
+        <Popover content={historyMenu} boundary="viewport">
           <Button icon="history" small disabled={historyItems.length <= 0} />
         </Popover>
       </FieldTextToolbar>

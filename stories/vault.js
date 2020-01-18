@@ -84,7 +84,10 @@ export default class VaultStory extends Component {
         <View>
           <VaultProvider
             vault={this.state.facade}
-            onUpdate={vault => this.setState({ facade: normaliseFacade(vault) })}
+            onUpdate={vault => {
+              console.log('Saving vault...');
+              this.setState({ facade: normaliseFacade(vault) });
+            }}
           >
             <VaultUI />
           </VaultProvider>
