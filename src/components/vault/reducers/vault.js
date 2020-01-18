@@ -38,6 +38,43 @@ export function vaultReducer(state, action) {
         ...state,
         entries: state.entries.filter(entry => entry.id !== action.entryID)
       };
+    case 'create-group':
+      return {
+        ...state,
+        groups: [...state.groups, action.payload]
+      };
+    case 'rename-group':
+      return {
+        ...state,
+        groups: state.groups.map(group => {
+          if (group.id === action.groupID) {
+            return {
+              ...group,
+              title: action.title
+            };
+          }
+          return group;
+        })
+      };
+    case 'move-group':
+      return {
+        ...state,
+        groups: state.groups.map(group => {
+          if (group.id === action.groupID) {
+            return {
+              ...group,
+              parentID: action.parentID
+            };
+          }
+          return group;
+        })
+      };
+    case 'batch-delete':
+      return {
+        ...state,
+        groups: state.groups.filter(group => action.groups.includes(group.id) === false),
+        entries: state.entries.filter(entry => action.entries.includes(entry.id) === false)
+      };
   }
 }
 

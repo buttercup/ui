@@ -1,7 +1,7 @@
 import React, { useReducer, useState, useEffect, useRef } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
-import { createEntryFacade } from '@buttercup/facades';
+import { createEntryFacade, createGroupFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
@@ -23,11 +23,9 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
 
   useEffect(() => {
     if (initRef.current === false) {
-      console.log('Init call. Do not call onUpdate');
       initRef.current = true;
       return;
     }
-    console.log('Debug: Running on Update function. Yay!');
     onUpdate(vault);
   }, [vault]);
 
@@ -43,6 +41,13 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     entriesFilters,
 
     // Actions
+    batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
+      dispatch({
+        type: 'batch-delete',
+        groups: groupIDs,
+        entries: entryIDs
+      });
+    },
     onSelectGroup: groupID => {
       setSelectedGroupID(groupID);
       setSelectedEntryID(null);
@@ -52,6 +57,15 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     },
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
+    },
+    onCreateGroup: (parentID, groupTitle) => {
+      const parentGroupID = parentID ? parentID : undefined;
+      const group = createGroupFacade(null, parentGroupID);
+      group.title = groupTitle;
+      dispatch({
+        type: 'create-group',
+        payload: group
+      });
     },
     onGroupFilterTermChange: term => {
       dispatchGroupFilters({
@@ -88,6 +102,20 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
           type: 'stop-editing'
         });
       }
+    },
+    onMoveGroup: (groupID, parentID) => {
+      dispatch({
+        type: 'move-group',
+        groupID,
+        parentID
+      });
+    },
+    onRenameGroup: (groupID, title) => {
+      dispatch({
+        type: 'rename-group',
+        groupID,
+        title
+      });
     },
     onAddEntry: type => {
       const facade = createEntryFacade(null, { type });
