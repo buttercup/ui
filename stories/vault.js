@@ -65,10 +65,8 @@ function createArchive() {
 }
 
 function processVaultUpdate(archive, facade) {
-  // console.log("UPDATE", archive, facade);
   consumeArchiveFacade(archive, facade);
   const out = createArchiveFacade(archive);
-  // console.log("UPDATE OUT", out);
   return out;
 }
 
