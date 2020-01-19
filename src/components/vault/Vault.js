@@ -5,6 +5,8 @@ import { createEntryFacade, createGroupFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
+import { useDeepEffect } from './hooks/compare';
+import { hashVaultFacade } from '@buttercup/facades';
 
 export const VaultContext = React.createContext();
 
@@ -21,9 +23,15 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
 
-  useEffect(() => {
+  useDeepEffect(() => {
     if (initRef.current === false) {
       initRef.current = true;
+      return;
+    }
+    if (hashVaultFacade(vaultSource) === hashVaultFacade(vault)) {
+      // We only call external on-update if the vaults are actually different..
+      // If they remain the same (identical hash) then there's no need to save
+      // the facade to the vault.
       return;
     }
     onUpdate(vault);
