@@ -1,5 +1,9 @@
 export function vaultReducer(state, action) {
   switch (action.type) {
+    case 'reset':
+      return {
+        ...action.payload
+      };
     case 'save-entry': {
       const { entry: baseEntry } = action;
       const { isNew, ...entry } = baseEntry;

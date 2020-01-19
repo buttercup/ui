@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import uuid from 'uuid/v4';
 import { Archive, Entry } from 'buttercup/dist/buttercup-web.min.js';
 import '@buttercup/app-env/web';
-import { FIELD_VALUE_TYPE_OTP } from '@buttercup/facades';
 import { ThemeProvider } from 'styled-components';
-import { createArchiveFacade } from '@buttercup/facades';
+import {
+  FIELD_VALUE_TYPE_OTP,
+  consumeArchiveFacade,
+  createArchiveFacade
+} from '@buttercup/facades';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
 function createArchive() {
@@ -16,6 +19,12 @@ function createArchive() {
     .setProperty('username', 'somehow')
     .setProperty('password', 'idsfio49v-1')
     .setProperty('password', 'h78.dI2m;110')
+    .setProperty('password', '[5LC-j_"C7b;"nbn')
+    .setProperty('password', '8rE7=Xkm<z5~b/[Q')
+    .setProperty('password', 'ReGKd4H5?D5;=y~D')
+    .setProperty('password', 'f>ZSh-,!Ly7Hrd&:Cv^@~,d')
+    .setProperty('password', '7#eELw%GS^)/"')
+    .setProperty('password', 'K3"J8JSKHk|5hwks_^')
     .setProperty('password', 'x8v@mId01')
     .setProperty('url', 'https://google.com');
   general
@@ -55,14 +64,12 @@ function createArchive() {
   return archive;
 }
 
-function normaliseFacade(vault) {
-  // Set UUIDs for new groups, or else we get collisions
-  vault.groups.forEach(group => {
-    if (!group.id) {
-      group.id = uuid();
-    }
-  });
-  return vault;
+function processVaultUpdate(archive, facade) {
+  // console.log("UPDATE", archive, facade);
+  consumeArchiveFacade(archive, facade);
+  const out = createArchiveFacade(archive);
+  // console.log("UPDATE OUT", out);
+  return out;
 }
 
 const View = styled.div`
@@ -73,8 +80,10 @@ const View = styled.div`
 export default class VaultStory extends Component {
   constructor(...args) {
     super(...args);
+    const archive = createArchive();
     this.state = {
-      facade: createArchiveFacade(createArchive())
+      archive,
+      facade: createArchiveFacade(archive)
     };
   }
 
@@ -86,7 +95,7 @@ export default class VaultStory extends Component {
             vault={this.state.facade}
             onUpdate={vault => {
               console.log('Saving vault...');
-              this.setState({ facade: normaliseFacade(vault) });
+              this.setState({ facade: processVaultUpdate(this.state.archive, vault) });
             }}
           >
             <VaultUI />
