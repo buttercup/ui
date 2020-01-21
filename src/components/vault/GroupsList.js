@@ -104,6 +104,17 @@ const GroupsList = () => {
 
   const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
     <>
+      <If condition={!parentNode}>
+        {/* Only show on first level */}
+        <MenuItem
+          text="Move to root level"
+          key="moveRoot"
+          icon="git-pull"
+          onClick={() => moveGroupToGroup(selectedGroupID, '0')}
+          disabled={groupsRaw.find(groupRaw => groupRaw.id === selectedGroupID).parentID === '0'}
+        />
+        <MenuDivider />
+      </If>
       <If condition={parentNode}>
         <MenuItem
           text={`Move to ${parentNode.label}`}

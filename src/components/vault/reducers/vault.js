@@ -1,5 +1,9 @@
 export function vaultReducer(state, action) {
   switch (action.type) {
+    case 'reset':
+      return {
+        ...action.payload
+      };
     case 'save-entry': {
       const { entry: baseEntry } = action;
       const { isNew, ...entry } = baseEntry;
@@ -43,6 +47,32 @@ export function vaultReducer(state, action) {
         ...state,
         groups: [...state.groups, action.payload]
       };
+    case 'set-entry-field': {
+      const { entryID, field, value } = action;
+      return {
+        ...state,
+        entries: state.entries.map(entry => {
+          if (entry.id === entryID) {
+            return {
+              ...entry,
+              fields: entry.fields.map(entryField => {
+                if (
+                  entryField.property === field.property &&
+                  entryField.propertyType === field.propertyType
+                ) {
+                  return {
+                    ...entryField,
+                    value: value
+                  };
+                }
+                return entryField;
+              })
+            };
+          }
+          return entry;
+        })
+      };
+    }
     case 'rename-group':
       return {
         ...state,

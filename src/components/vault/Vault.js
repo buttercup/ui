@@ -5,29 +5,38 @@ import { createEntryFacade, createGroupFacade } from '@buttercup/facades';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
+import { useDeepEffect } from './hooks/compare';
+import { hashVaultFacade } from '@buttercup/facades';
 
 export const VaultContext = React.createContext();
 
 export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
+  const vaultSourceHash = hashVaultFacade(vaultSource);
   const [vault, dispatch] = useReducer(vaultReducer, clone(vaultSource));
+  const [lastVaultSourceHash, setLastVaultSourceHash] = useState(vaultSourceHash);
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
   const [groupFilters, dispatchGroupFilters] = useReducer(filterReducer, defaultFilter);
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
-  const initRef = useRef(false);
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
 
-  useEffect(() => {
-    if (initRef.current === false) {
-      initRef.current = true;
-      return;
+  useDeepEffect(() => {
+    if (vaultSourceHash !== lastVaultSourceHash) {
+      // External updated, update internal state
+      dispatch({
+        type: 'reset',
+        payload: clone(vaultSource)
+      });
+      setLastVaultSourceHash(vaultSourceHash);
+    } else if (hashVaultFacade(vault) !== hashVaultFacade(vaultSource)) {
+      // Internal updated, fire update event for external save
+      onUpdate(vault);
     }
-    onUpdate(vault);
-  }, [vault]);
+  }, [vault, vaultSourceHash]);
 
   const context = {
     vault,
@@ -185,6 +194,14 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       dispatchEditing({
         type: 'update-field',
         field: changedField,
+        value
+      });
+    },
+    onFieldUpdateInPlace: (entryID, field, value) => {
+      dispatch({
+        type: 'set-entry-field',
+        entryID,
+        field,
         value
       });
     },

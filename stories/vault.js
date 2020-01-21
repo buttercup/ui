@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid/v4';
-import { Archive, Entry } from 'buttercup';
-import { FIELD_VALUE_TYPE_OTP } from '@buttercup/facades';
+import { Archive, Entry } from 'buttercup/dist/buttercup-web.min.js';
+import '@buttercup/app-env/web';
 import { ThemeProvider } from 'styled-components';
-import { createArchiveFacade } from '@buttercup/facades';
+import {
+  FIELD_VALUE_TYPE_OTP,
+  consumeArchiveFacade,
+  createArchiveFacade
+} from '@buttercup/facades';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
 function createArchive() {
@@ -13,10 +17,19 @@ function createArchive() {
   general
     .createEntry('Home wi-fi')
     .setProperty('username', 'somehow')
+    .setProperty('password', 'idsfio49v-1')
+    .setProperty('password', 'h78.dI2m;110')
+    .setProperty('password', '[5LC-j_"C7b;"nbn')
+    .setProperty('password', '8rE7=Xkm<z5~b/[Q')
+    .setProperty('password', 'ReGKd4H5?D5;=y~D')
+    .setProperty('password', 'f>ZSh-,!Ly7Hrd&:Cv^@~,d')
+    .setProperty('password', '7#eELw%GS^)/"')
+    .setProperty('password', 'K3"J8JSKHk|5hwks_^')
     .setProperty('password', 'x8v@mId01')
     .setProperty('url', 'https://google.com');
   general
-    .createEntry('Social website')
+    .createEntry('Social')
+    .setProperty('title', 'Social website')
     .setProperty('username', 'user@test.com')
     .setProperty('password', 'vdfs867sd5')
     .setProperty(
@@ -28,12 +41,15 @@ function createArchive() {
       'otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30'
     )
     .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, FIELD_VALUE_TYPE_OTP)
+    .setProperty('url', 'https://site.com/setup/create-account.php?token=123')
+    .setProperty('url', 'https://site.com/login.php')
     .setProperty('url', 'https://site.com')
     .setProperty('Recovery pin', '1234');
   general
     .createEntry('Gate lock combination')
     .setProperty('username', 'test')
-    .setProperty('password', '4812');
+    .setProperty('password', '4812')
+    .setProperty('password', 'passw0rd');
   const notes = archive.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
@@ -48,14 +64,10 @@ function createArchive() {
   return archive;
 }
 
-function normaliseFacade(vault) {
-  // Set UUIDs for new groups, or else we get collisions
-  vault.groups.forEach(group => {
-    if (!group.id) {
-      group.id = uuid();
-    }
-  });
-  return vault;
+function processVaultUpdate(archive, facade) {
+  consumeArchiveFacade(archive, facade);
+  const out = createArchiveFacade(archive);
+  return out;
 }
 
 const View = styled.div`
@@ -66,8 +78,10 @@ const View = styled.div`
 export default class VaultStory extends Component {
   constructor(...args) {
     super(...args);
+    const archive = createArchive();
     this.state = {
-      facade: createArchiveFacade(createArchive())
+      archive,
+      facade: createArchiveFacade(archive)
     };
   }
 
@@ -77,7 +91,10 @@ export default class VaultStory extends Component {
         <View>
           <VaultProvider
             vault={this.state.facade}
-            onUpdate={vault => this.setState({ facade: normaliseFacade(vault) })}
+            onUpdate={vault => {
+              console.log('Saving vault...');
+              this.setState({ facade: processVaultUpdate(this.state.archive, vault) });
+            }}
           >
             <VaultUI />
           </VaultProvider>

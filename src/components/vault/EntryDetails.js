@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   Classes,
   ControlGroup,
+  Dialog,
   EditableText,
   HTMLSelect,
   Icon,
@@ -133,11 +134,33 @@ const FieldTextWrapper = styled.span`
     }
   }
 `;
+const HistoryTable = styled.table`
+  width: 100%;
+`;
+const HistoryScrollContainer = styled.div`
+  width: 100%;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+`;
 
-const FieldText = ({ field }) => {
+const FieldText = ({ entryFacade, field }) => {
   const [visible, toggleVisibility] = useState(false);
+  const [historyDialogVisible, setHistoryDialogVisible] = useState(false);
   const otpRef = useRef(field.value);
+  const { onFieldUpdateInPlace } = useCurrentEntry();
   const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
+  const { _history: history = [] } = entryFacade;
+  const historyItems = useMemo(() => {
+    const items = history.filter(
+      item => item.property === field.property && item.propertyType === field.propertyType
+    );
+    if (items.length > 0 && items[items.length - 1].newValue === field.value) {
+      // Remove last item as it just shows the current value
+      items.pop();
+    }
+    return items;
+  }, [history]);
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
@@ -184,7 +207,60 @@ const FieldText = ({ field }) => {
           />
         </If>
         <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
+        <Button
+          icon="history"
+          small
+          disabled={historyItems.length <= 0}
+          onClick={() => setHistoryDialogVisible(true)}
+        />
       </FieldTextToolbar>
+      <Dialog
+        icon="history"
+        onClose={() => setHistoryDialogVisible(false)}
+        title="Entry field history"
+        isOpen={historyDialogVisible}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <HistoryScrollContainer>
+            <HistoryTable className={cx(Classes.HTML_TABLE, Classes.HTML_TABLE_CONDENSED)}>
+              <thead>
+                <tr>
+                  <th>Previous Value</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <For each="change" of={historyItems} index="idx">
+                  <tr key={`history-${idx}`}>
+                    <td>
+                      <code>{change.newValue}</code>
+                    </td>
+                    <td>
+                      <ButtonGroup>
+                        <Button icon="clipboard" onClick={() => copyToClipboard(change.newValue)} />
+                        <Button
+                          icon="redo"
+                          onClick={() => {
+                            setHistoryDialogVisible(false);
+                            onFieldUpdateInPlace(entryFacade.id, field, change.newValue);
+                          }}
+                        />
+                      </ButtonGroup>
+                    </td>
+                  </tr>
+                </For>
+              </tbody>
+            </HistoryTable>
+          </HistoryScrollContainer>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button intent={Intent.PRIMARY} onClick={() => setHistoryDialogVisible(false)}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </FieldTextWrapper>
   );
 };
@@ -192,6 +268,7 @@ const FieldText = ({ field }) => {
 const FieldRow = ({
   field,
   editing,
+  entryFacade,
   onFieldNameUpdate,
   onFieldUpdate,
   onFieldSetValueType,
@@ -302,7 +379,7 @@ const FieldRow = ({
             </ControlGroup>
           </When>
           <Otherwise>
-            <FieldText field={field} />
+            <FieldText field={field} entryFacade={entryFacade} />
           </Otherwise>
         </Choose>
       </FieldRowChildren>
@@ -340,6 +417,7 @@ const EntryDetailsContent = () => {
           <For each="field" of={mainFields}>
             <FieldRow
               key={field.id}
+              entryFacade={entry}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}
@@ -357,6 +435,7 @@ const EntryDetailsContent = () => {
           <For each="field" of={removeableFields}>
             <FieldRow
               key={field.id}
+              entryFacade={entry}
               field={field}
               onFieldNameUpdate={onFieldNameUpdate}
               onFieldUpdate={onFieldUpdate}

@@ -20,6 +20,7 @@ export function useCurrentEntry() {
     onEdit,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldUpdateInPlace,
     onFieldSetValueType,
     onRemoveField,
     onSaveEdit
@@ -34,6 +35,7 @@ export function useCurrentEntry() {
     onEdit,
     onFieldNameUpdate,
     onFieldUpdate,
+    onFieldUpdateInPlace,
     onFieldSetValueType,
     onRemoveField,
     onSaveEdit
