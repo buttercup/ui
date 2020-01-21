@@ -31,6 +31,7 @@ import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
+import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 
 const FIELD_TYPE_OPTIONS = [
@@ -483,22 +484,24 @@ const EntryDetailsContent = () => {
 const EntryDetails = () => {
   const { entry } = useCurrentEntry();
   return (
-    <PaneContainer>
-      <Choose>
-        <When condition={entry}>
-          <EntryDetailsContent />
-        </When>
-        <Otherwise>
-          <PaneContent>
-            <NonIdealState
-              icon="satellite"
-              title="No document selected"
-              description="Select or create a new document."
-            />
-          </PaneContent>
-        </Otherwise>
-      </Choose>
-    </PaneContainer>
+    <ErrorBoundary>
+      <PaneContainer>
+        <Choose>
+          <When condition={entry}>
+            <EntryDetailsContent />
+          </When>
+          <Otherwise>
+            <PaneContent>
+              <NonIdealState
+                icon="satellite"
+                title="No document selected"
+                description="Select or create a new document."
+              />
+            </PaneContent>
+          </Otherwise>
+        </Choose>
+      </PaneContainer>
+    </ErrorBoundary>
   );
 };
 
