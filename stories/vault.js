@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import {
   FIELD_VALUE_TYPE_OTP,
   consumeArchiveFacade,
-  createArchiveFacade
+  createArchiveFacade as _createArchiveFacade
 } from '@buttercup/facades';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
@@ -62,6 +62,10 @@ function createArchive() {
   const personal = notes.createGroup('Personal');
   personal.createGroup('Test');
   return archive;
+}
+
+function createArchiveFacade(archive) {
+  return JSON.parse(JSON.stringify(_createArchiveFacade(archive)));
 }
 
 function processVaultUpdate(archive, facade) {
