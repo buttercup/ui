@@ -12,7 +12,7 @@ export const VaultContext = React.createContext();
 
 export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const vaultSourceHash = hashVaultFacade(vaultSource);
-  const [vault, dispatch] = useReducer(vaultReducer, clone(vaultSource));
+  const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultSourceHash, setLastVaultSourceHash] = useState(vaultSourceHash);
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
@@ -29,7 +29,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       // External updated, update internal state
       dispatch({
         type: 'reset',
-        payload: clone(vaultSource)
+        payload: vaultSource
       });
       setLastVaultSourceHash(vaultSourceHash);
     } else if (hashVaultFacade(vault) !== hashVaultFacade(vaultSource)) {
