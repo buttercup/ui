@@ -6,14 +6,13 @@ import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
-import { hashVaultFacade } from '@buttercup/facades';
 
 export const VaultContext = React.createContext();
 
 export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
-  const vaultSourceHash = hashVaultFacade(vaultSource);
+  const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
-  const [lastVaultSourceHash, setLastVaultSourceHash] = useState(vaultSourceHash);
+  const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
   const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
   const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
@@ -25,18 +24,19 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
 
   useDeepEffect(() => {
-    if (vaultSourceHash !== lastVaultSourceHash) {
+    if (vaultFacadeTag !== lastVaultFacadeTag) {
       // External updated, update internal state
       dispatch({
         type: 'reset',
         payload: vaultSource
       });
-      setLastVaultSourceHash(vaultSourceHash);
-    } else if (hashVaultFacade(vault) !== hashVaultFacade(vaultSource)) {
+      setLastVaultFacadeTag(vaultFacadeTag);
+      // } else if (hashVaultFacade(vault) !== hashVaultFacade(vaultSource)) {
+    } else if (vault._tag === null) {
       // Internal updated, fire update event for external save
       onUpdate(vault);
     }
-  }, [vault, vaultSourceHash]);
+  }, [vault, vaultFacadeTag]);
 
   const context = {
     vault,
