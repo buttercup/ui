@@ -12,7 +12,7 @@ export default class OTPDigitsStory extends Component {
   render() {
     return (
       <View>
-        <OTPDigits otpURI="otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30" />
+        <OTPDigits otpURI={this.props.uri} />
       </View>
     );
   }

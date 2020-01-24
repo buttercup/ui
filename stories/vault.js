@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid/v4';
 import { Archive, Entry } from 'buttercup/dist/buttercup-web.min.js';
@@ -9,6 +9,7 @@ import {
   consumeArchiveFacade,
   createArchiveFacade as _createArchiveFacade
 } from '@buttercup/facades';
+import randomWords from 'random-words';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
 function createArchive() {
@@ -68,6 +69,29 @@ function createArchiveFacade(archive) {
   return JSON.parse(JSON.stringify(_createArchiveFacade(archive)));
 }
 
+function createHeavyArchive() {
+  const archive = Archive.createWithDefaults();
+  const groupCount = 15;
+  const depth = 1;
+  const entryCount = 20;
+  (function createAtLevel(cont, lvl = 0) {
+    console.log('RENDER LVL', lvl);
+    for (let g = 0; g < groupCount; g += 1) {
+      const group = cont.createGroup(randomWords());
+      for (let e = 0; e < entryCount; e += 1) {
+        const entry = group.createEntry(randomWords(2).join(' '));
+        entry.setProperty('username', randomWords(2).join('.'));
+        entry.setProperty('password', randomWords(4).join('-'));
+        entry.setProperty('URL', `https://${randomWords(3).join('.')}.com`);
+      }
+      if (lvl < depth) {
+        createAtLevel(group, lvl + 1);
+      }
+    }
+  })(archive);
+  return archive;
+}
+
 function processVaultUpdate(archive, facade) {
   consumeArchiveFacade(archive, facade);
   const out = createArchiveFacade(archive);
@@ -79,31 +103,60 @@ const View = styled.div`
   width: 100%;
 `;
 
-export default class VaultStory extends Component {
-  constructor(...args) {
-    super(...args);
-    const archive = createArchive();
-    this.state = {
-      archive,
-      facade: createArchiveFacade(archive)
-    };
-  }
+function VaultRender({ basic = true } = {}) {
+  const archive = useMemo(() => (basic ? createArchive() : createHeavyArchive()), []);
+  // const [archive, setArchive] = useState(initial);
+  const [archiveFacade, setArchiveFacade] = useState(createArchiveFacade(archive));
+  // const archiveFacade = useMemo(() => createArchiveFacade(archive), [archive]);
+  // const [archiveFacade, setArchiveFacade] = useState(createArchiveFacade(
 
-  render() {
-    return (
-      <ThemeProvider theme={themes.light}>
-        <View>
-          <VaultProvider
-            vault={this.state.facade}
-            onUpdate={vault => {
-              console.log('Saving vault...');
-              this.setState({ facade: processVaultUpdate(this.state.archive, vault) });
-            }}
-          >
-            <VaultUI />
-          </VaultProvider>
-        </View>
-      </ThemeProvider>
-    );
-  }
+  // ));
+  return (
+    <ThemeProvider theme={themes.light}>
+      <View>
+        <VaultProvider
+          vault={archiveFacade}
+          onUpdate={vault => {
+            console.log('Saving vault...');
+            setArchiveFacade(processVaultUpdate(archive, vault));
+          }}
+        >
+          <VaultUI />
+        </VaultProvider>
+      </View>
+    </ThemeProvider>
+  );
 }
+
+export const BasicVault = () => <VaultRender />;
+
+export const HeavyVault = () => <VaultRender basic={false} />;
+
+// export default class VaultStory extends Component {
+//   constructor(...args) {
+//     super(...args);
+//     const archive = createArchive();
+//     this.state = {
+//       archive,
+//       facade: createArchiveFacade(archive)
+//     };
+//   }
+
+//   render() {
+//     return (
+//       <ThemeProvider theme={themes.light}>
+//         <View>
+//           <VaultProvider
+//             vault={this.state.facade}
+//             onUpdate={vault => {
+//               console.log('Saving vault...');
+//               this.setState({ facade: processVaultUpdate(this.state.archive, vault) });
+//             }}
+//           >
+//             <VaultUI />
+//           </VaultProvider>
+//         </View>
+//       </ThemeProvider>
+//     );
+//   }
+// }

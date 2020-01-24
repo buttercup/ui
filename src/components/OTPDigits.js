@@ -39,6 +39,7 @@ export default class OTPDigits extends Component {
 
   state = {
     digits: '',
+    error: false,
     otpRef: () => {},
     otpURI: null,
     period: 30,
@@ -61,16 +62,32 @@ export default class OTPDigits extends Component {
           leftDigits={this.state.digits.substring(0, this.state.digits.length / 2)}
           rightDigits={this.state.digits.substring(this.state.digits.length / 2)}
         >
-          <TimeLeftSpinner
-            intent={this.state.timeLeft > 7 ? Intent.PRIMARY : Intent.DANGER}
-            size={Spinner.SIZE_SMALL}
-            value={this.state.timeLeft / this.state.period}
-          />
-          <DigitsContainer>
-            <Digits>{leftDigits}</Digits>
-            &nbsp;
-            <Digits>{rightDigits}</Digits>
-          </DigitsContainer>
+          <Choose>
+            <When
+              condition={
+                this.state.error ||
+                typeof this.state.period !== 'number' ||
+                isNaN(this.state.timeLeft)
+              }
+            >
+              <TimeLeftSpinner intent={Intent.DANGER} size={Spinner.SIZE_SMALL} value={1} />
+              <DigitsContainer>
+                <Digits>ERROR</Digits>
+              </DigitsContainer>
+            </When>
+            <Otherwise>
+              <TimeLeftSpinner
+                intent={this.state.timeLeft > 7 ? Intent.PRIMARY : Intent.DANGER}
+                size={Spinner.SIZE_SMALL}
+                value={this.state.timeLeft / this.state.period}
+              />
+              <DigitsContainer>
+                <Digits>{leftDigits}</Digits>
+                &nbsp;
+                <Digits>{rightDigits}</Digits>
+              </DigitsContainer>
+            </Otherwise>
+          </Choose>
         </With>
       </Container>
     );
@@ -78,19 +95,25 @@ export default class OTPDigits extends Component {
 
   update(props = this.props) {
     let period = this.state.period;
-    if (this.state.otpURI !== props.otpURI) {
-      this.totp = OTPAuth.URI.parse(props.otpURI);
-      period = this.totp.period;
+    try {
+      if (this.state.otpURI !== props.otpURI) {
+        this.totp = OTPAuth.URI.parse(props.otpURI);
+        period = this.totp.period;
+        this.setState({
+          otpURI: props.otpURI,
+          period
+        });
+      }
+      const digits = this.totp.generate();
       this.setState({
-        otpURI: props.otpURI,
-        period
+        digits,
+        timeLeft: period - (Math.floor(Date.now() / 1000) % period)
       });
+      this.props.otpRef(digits);
+    } catch (err) {
+      console.error(err);
+      clearInterval(this.interval);
+      this.setState({ error: true });
     }
-    const digits = this.totp.generate();
-    this.setState({
-      digits,
-      timeLeft: period - (Math.floor(Date.now() / 1000) % period)
-    });
-    this.props.otpRef(digits);
   }
 }

@@ -1,3 +1,5 @@
+const FLAG_VAULT_UPDATED = { _tag: null };
+
 export function vaultReducer(state, action) {
   switch (action.type) {
     case 'reset':
@@ -11,6 +13,7 @@ export function vaultReducer(state, action) {
       if (existingEntry) {
         return {
           ...state,
+          ...FLAG_VAULT_UPDATED,
           entries: state.entries.map(e => {
             if (e.id === entry.id) {
               return entry;
@@ -21,12 +24,14 @@ export function vaultReducer(state, action) {
       }
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         entries: [...state.entries, entry]
       };
     }
     case 'move-entry':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         entries: state.entries.map(entry => {
           if (entry.id === action.entryID) {
             return {
@@ -40,17 +45,20 @@ export function vaultReducer(state, action) {
     case 'delete-entry':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         entries: state.entries.filter(entry => entry.id !== action.entryID)
       };
     case 'create-group':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         groups: [...state.groups, action.payload]
       };
     case 'set-entry-field': {
       const { entryID, field, value } = action;
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         entries: state.entries.map(entry => {
           if (entry.id === entryID) {
             return {
@@ -76,6 +84,7 @@ export function vaultReducer(state, action) {
     case 'rename-group':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         groups: state.groups.map(group => {
           if (group.id === action.groupID) {
             return {
@@ -89,6 +98,7 @@ export function vaultReducer(state, action) {
     case 'move-group':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         groups: state.groups.map(group => {
           if (group.id === action.groupID) {
             return {
@@ -102,6 +112,7 @@ export function vaultReducer(state, action) {
     case 'batch-delete':
       return {
         ...state,
+        ...FLAG_VAULT_UPDATED,
         groups: state.groups.filter(group => action.groups.includes(group.id) === false),
         entries: state.entries.filter(entry => action.entries.includes(entry.id) === false)
       };

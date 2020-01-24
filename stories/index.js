@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
-import VaultStory from './vault';
+import { BasicVault, HeavyVault } from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
 
@@ -109,6 +109,17 @@ storiesOf('Colored Digits', module)
   .add('styled digits', () => <Digits value="Hello123HowAre1You" />)
   .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
 
-storiesOf('Vault', module).add('default', () => <VaultStory />);
+storiesOf('Vault', module)
+  .add('default', () => <BasicVault />)
+  .add('heavy', () => <HeavyVault />);
 
-storiesOf('OTPDigits', module).add('6 digits', () => <OTPDigitsStory />);
+storiesOf('OTPDigits', module)
+  .add('6 digits', () => (
+    <OTPDigitsStory uri="otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30" />
+  ))
+  .add('8 digits', () => (
+    <OTPDigitsStory uri="otpauth://totp/Perry?secret=ababab&issuer=EA&algorithm=SHA1&digits=8&period=30" />
+  ))
+  .add('HOTP', () => (
+    <OTPDigitsStory uri="otpauth://hotp/Gaming%20Login?secret=NBQWQYJAGIZTIM3W&issuer=EA&counter=0" />
+  ));
