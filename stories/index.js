@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
-import VaultStory from './vault';
+import { BasicVault, HeavyVault } from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
 
@@ -109,6 +109,8 @@ storiesOf('Colored Digits', module)
   .add('styled digits', () => <Digits value="Hello123HowAre1You" />)
   .add('concealed digits', () => <Digits value="Hello123HowAre1You" concealed />);
 
-storiesOf('Vault', module).add('default', () => <VaultStory />);
+storiesOf('Vault', module)
+  .add('default', () => <BasicVault />)
+  .add('heavy', () => <HeavyVault />);
 
 storiesOf('OTPDigits', module).add('6 digits', () => <OTPDigitsStory />);
