@@ -1,20 +1,19 @@
 import React, { Component, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import uuid from 'uuid/v4';
-import { Archive, Entry } from 'buttercup/dist/buttercup-web.min.js';
-import '@buttercup/app-env/web';
-import { ThemeProvider } from 'styled-components';
 import {
   FIELD_VALUE_TYPE_OTP,
-  consumeArchiveFacade,
-  createArchiveFacade as _createArchiveFacade
-} from '@buttercup/facades';
+  Entry,
+  Vault,
+  consumeVaultFacade,
+  createVaultFacade
+} from 'buttercup/web';
+import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
 function createArchive() {
-  const archive = Archive.createWithDefaults();
-  const [general] = archive.findGroupsByTitle('General');
+  const vault = Vault.createWithDefaults();
+  const [general] = vault.findGroupsByTitle('General');
   general
     .createEntry('Home wi-fi')
     .setProperty('username', 'somehow')
@@ -51,7 +50,7 @@ function createArchive() {
     .setProperty('username', 'test')
     .setProperty('password', '4812')
     .setProperty('password', 'passw0rd');
-  const notes = archive.createGroup('Notes');
+  const notes = vault.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
     .setAttribute(Entry.Attributes.FacadeType, 'note')
@@ -62,15 +61,15 @@ function createArchive() {
   notes.createGroup('Meetings');
   const personal = notes.createGroup('Personal');
   personal.createGroup('Test');
-  return archive;
+  return vault;
 }
 
-function createArchiveFacade(archive) {
-  return JSON.parse(JSON.stringify(_createArchiveFacade(archive)));
+function createArchiveFacade(vault) {
+  return JSON.parse(JSON.stringify(createVaultFacade(vault)));
 }
 
 function createHeavyArchive() {
-  const archive = Archive.createWithDefaults();
+  const vault = Vault.createWithDefaults();
   const groupCount = 15;
   const depth = 1;
   const entryCount = 20;
@@ -88,13 +87,13 @@ function createHeavyArchive() {
         createAtLevel(group, lvl + 1);
       }
     }
-  })(archive);
-  return archive;
+  })(vault);
+  return vault;
 }
 
 function processVaultUpdate(archive, facade) {
-  consumeArchiveFacade(archive, facade);
-  const out = createArchiveFacade(archive);
+  consumeVaultFacade(archive, facade);
+  const out = createVaultFacade(archive);
   return out;
 }
 
@@ -105,12 +104,7 @@ const View = styled.div`
 
 function VaultRender({ basic = true } = {}) {
   const archive = useMemo(() => (basic ? createArchive() : createHeavyArchive()), []);
-  // const [archive, setArchive] = useState(initial);
   const [archiveFacade, setArchiveFacade] = useState(createArchiveFacade(archive));
-  // const archiveFacade = useMemo(() => createArchiveFacade(archive), [archive]);
-  // const [archiveFacade, setArchiveFacade] = useState(createArchiveFacade(
-
-  // ));
   return (
     <ThemeProvider theme={themes.light}>
       <View>
@@ -131,32 +125,3 @@ function VaultRender({ basic = true } = {}) {
 export const BasicVault = () => <VaultRender />;
 
 export const HeavyVault = () => <VaultRender basic={false} />;
-
-// export default class VaultStory extends Component {
-//   constructor(...args) {
-//     super(...args);
-//     const archive = createArchive();
-//     this.state = {
-//       archive,
-//       facade: createArchiveFacade(archive)
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <ThemeProvider theme={themes.light}>
-//         <View>
-//           <VaultProvider
-//             vault={this.state.facade}
-//             onUpdate={vault => {
-//               console.log('Saving vault...');
-//               this.setState({ facade: processVaultUpdate(this.state.archive, vault) });
-//             }}
-//           >
-//             <VaultUI />
-//           </VaultProvider>
-//         </View>
-//       </ThemeProvider>
-//     );
-//   }
-// }

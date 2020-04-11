@@ -1,7 +1,7 @@
 import React, { useReducer, useState, useEffect, useRef } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
-import { createEntryFacade, createGroupFacade } from '@buttercup/facades';
+import { createEntryFacade, createGroupFacade } from 'buttercup/web';
 import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';

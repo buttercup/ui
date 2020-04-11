@@ -1,4 +1,4 @@
-import { createFieldDescriptor } from '@buttercup/facades';
+import { createFieldDescriptor } from 'buttercup/web';
 
 export function entryReducer(state, action) {
   // return state;
