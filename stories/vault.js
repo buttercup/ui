@@ -5,11 +5,14 @@ import {
   Entry,
   Vault,
   consumeVaultFacade,
-  createVaultFacade
+  createVaultFacade,
+  init as initButtercup
 } from 'buttercup/web';
 import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
 import { VaultProvider, VaultUI, themes } from '../src/index';
+
+initButtercup();
 
 function createArchive() {
   const vault = Vault.createWithDefaults();
