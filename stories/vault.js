@@ -12,7 +12,9 @@ import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
-initButtercup();
+try {
+  initButtercup();
+} catch (err) {}
 
 function createArchive() {
   const vault = Vault.createWithDefaults();
