@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect, useRef } from 'react';
+import React, { useReducer, useState } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
 import { createEntryFacade, createGroupFacade } from 'buttercup/web';
