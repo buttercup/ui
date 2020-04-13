@@ -8,7 +8,7 @@ import { Pane } from './Pane';
 import { getThemeProp } from '../../utils';
 
 const Container = styled(ReflexContainer)`
-  background-color: ${p => getThemeProp(p, 'colors.uiBackground')};
+  background-color: ${(p) => getThemeProp(p, 'colors.uiBackground')};
 `;
 
 export default () => {

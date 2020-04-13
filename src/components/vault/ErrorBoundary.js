@@ -15,7 +15,7 @@ const PreForm = styled.pre`
 function stripBlanks(txt = '') {
   return txt
     .split(/(\r\n|\n)/g)
-    .filter(ln => ln.trim().length > 0)
+    .filter((ln) => ln.trim().length > 0)
     .join('\n');
 }
 
@@ -26,7 +26,7 @@ export default class ErrorBoundary extends Component {
 
   state = {
     error: null,
-    errorStack: null
+    errorStack: null,
   };
 
   componentDidCatch(error, errorInfo) {

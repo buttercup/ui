@@ -87,7 +87,7 @@ function getLoadingState(props) {
   `;
 }
 
-const BaseButton = props => (
+const BaseButton = (props) => (
   <button type={props.type || 'button'} {...filterReactDomProps(props)}>
     {props.icon}
     {props.children}
@@ -96,21 +96,21 @@ const BaseButton = props => (
 
 export const Button = styled(BaseButton)`
   display: inline-block;
-  ${props => getSizes(props)};
-  font-size: ${props => (props.large ? '.85rem' : '.75rem')};
+  ${(props) => getSizes(props)};
+  font-size: ${(props) => (props.large ? '.85rem' : '.75rem')};
   font-weight: 400;
   text-transform: uppercase;
   border: 0;
   cursor: pointer !important;
   outline: none;
   transition: background-color 0.2s ease;
-  background-color: ${props => getBackgroundColor(props)};
-  color: ${props => getTextColor(props)};
+  background-color: ${(props) => getBackgroundColor(props)};
+  color: ${(props) => getTextColor(props)};
   box-sizing: border-box;
   position: relative;
 
   &:hover {
-    background-color: ${props => getHoverColor(props)};
+    background-color: ${(props) => getHoverColor(props)};
   }
 
   &:active {
@@ -123,7 +123,7 @@ export const Button = styled(BaseButton)`
     cursor: default;
   }
 
-  ${props => getLoadingState(props)};
+  ${(props) => getLoadingState(props)};
 `;
 
 Button.propTypes = {
@@ -136,7 +136,7 @@ Button.propTypes = {
   danger: PropTypes.bool,
   dark: PropTypes.bool,
   transparent: PropTypes.bool,
-  icon: PropTypes.node
+  icon: PropTypes.node,
 };
 
 export const ButtonRow = styled.div`

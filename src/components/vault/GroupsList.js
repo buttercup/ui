@@ -13,7 +13,7 @@ import {
   MenuDivider,
   MenuItem,
   Tag,
-  Tree as BaseTree
+  Tree as BaseTree,
 } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
@@ -26,11 +26,11 @@ const Tree = styled(BaseTree)`
   .node {
     &[class*='node-selected'] {
       > [class*='node-content'] {
-        background-color: ${props =>
+        background-color: ${(props) =>
           getThemeProp(props, 'tree.selectedBackgroundColor')} !important;
-        color: ${props => getThemeProp(props, 'tree.selectedTextColor')};
+        color: ${(props) => getThemeProp(props, 'tree.selectedTextColor')};
         > [icon] {
-          color: ${props => getThemeProp(props, 'tree.selectedIconColor')} !important;
+          color: ${(props) => getThemeProp(props, 'tree.selectedIconColor')} !important;
         }
       }
     }
@@ -39,7 +39,7 @@ const Tree = styled(BaseTree)`
       cursor: pointer;
 
       &:hover {
-        background-color: ${props => getThemeProp(props, 'tree.hoverBackgroundColor')};
+        background-color: ${(props) => getThemeProp(props, 'tree.hoverBackgroundColor')};
       }
     }
   }
@@ -69,7 +69,7 @@ const GroupsList = () => {
     onGroupFilterSortModeChange,
     trashCount,
     trashSelected,
-    trashID
+    trashID,
   } = useGroups();
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const GroupsList = () => {
     onMoveGroup(groupID, parentID);
   };
 
-  const moveToTrash = groupID => {
+  const moveToTrash = (groupID) => {
     onMoveGroupToTrash(groupID);
   };
 
@@ -111,7 +111,7 @@ const GroupsList = () => {
           key="moveRoot"
           icon="git-pull"
           onClick={() => moveGroupToGroup(selectedGroupID, '0')}
-          disabled={groupsRaw.find(groupRaw => groupRaw.id === selectedGroupID).parentID === '0'}
+          disabled={groupsRaw.find((groupRaw) => groupRaw.id === selectedGroupID).parentID === '0'}
         />
         <MenuDivider />
       </If>
@@ -154,7 +154,7 @@ const GroupsList = () => {
 
   const showGroupContextMenu = (node, nodePath, evt) => {
     evt.preventDefault();
-    const groupFacade = groupsRaw.find(group => group.id === node.id);
+    const groupFacade = groupsRaw.find((group) => group.id === node.id);
     setGroupsContextOpen(true);
     ContextMenu.show(
       <Menu>
@@ -192,13 +192,13 @@ const GroupsList = () => {
           count={groups.length}
           filter={filters}
           onAddItem={() => editGroup()}
-          onTermChange={term => onGroupFilterTermChange(term)}
-          onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
+          onTermChange={(term) => onGroupFilterTermChange(term)}
+          onSortModeChange={(sortMode) => onGroupFilterSortModeChange(sortMode)}
         />
         <PaneContent>
           <Tree
             contents={groups}
-            onNodeClick={group => onSelectGroup(group.id)}
+            onNodeClick={(group) => onSelectGroup(group.id)}
             onNodeContextMenu={showGroupContextMenu}
             onNodeExpand={handleExpandGroup}
             onNodeCollapse={handleCollapseGroup}
@@ -231,10 +231,10 @@ const GroupsList = () => {
           <p>Enter group title:</p>
           <InputGroup
             leftIcon={groupEditID === -1 ? 'folder-new' : 'add-to-folder'}
-            onChange={evt => setNewGroupName(evt.target.value)}
+            onChange={(evt) => setNewGroupName(evt.target.value)}
             value={newGroupName}
             inputRef={groupTitleInputRef}
-            onKeyDown={evt => {
+            onKeyDown={(evt) => {
               if (evt.keyCode === KEYCODE_ENTER) {
                 submitGroupChange();
               }

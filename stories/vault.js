@@ -6,7 +6,7 @@ import {
   Vault,
   consumeVaultFacade,
   createVaultFacade,
-  init as initButtercup
+  init as initButtercup,
 } from 'buttercup/web';
 import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
@@ -115,7 +115,7 @@ function VaultRender({ basic = true } = {}) {
       <View>
         <VaultProvider
           vault={archiveFacade}
-          onUpdate={vault => {
+          onUpdate={(vault) => {
             console.log('Saving vault...');
             setArchiveFacade(processVaultUpdate(archive, vault));
           }}

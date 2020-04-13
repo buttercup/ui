@@ -18,5 +18,5 @@ export const ColoredDigits = ({ value, concealed, ...props }) => {
 
 ColoredDigits.propTypes = {
   value: PropTypes.string,
-  concealed: PropTypes.bool
+  concealed: PropTypes.bool,
 };

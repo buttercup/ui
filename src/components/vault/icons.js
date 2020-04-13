@@ -8,7 +8,7 @@ export function getIconForDomain(domain) {
   const iconFilename = path.basename(getIconFilename(domain));
   const contextKey = __iconsContext
     .keys()
-    .find(depFilename => path.basename(depFilename) === iconFilename);
+    .find((depFilename) => path.basename(depFilename) === iconFilename);
   if (!contextKey) {
     return null;
   }

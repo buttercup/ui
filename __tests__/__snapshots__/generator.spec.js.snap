@@ -183,7 +183,7 @@ exports[`generator initial render remains consistent 1`] = `
 <Generator
   isOpen={true}
 >
-  <GlobalStyleComponent />
+  <Memo(GlobalStyleComponent) />
   <Popover
     appendTarget={
       .c9 {
@@ -733,896 +733,219 @@ exports[`generator initial render remains consistent 1`] = `
             onGenerate={[Function]}
           >
             <styled.div>
-              <StyledComponent
-                forwardedComponent={
-                  Object {
-                    "$$typeof": Symbol(react.forward_ref),
-                    "attrs": Array [],
-                    "componentStyle": ComponentStyle {
-                      "componentId": "sc-EHOje",
-                      "isStatic": true,
-                      "lastClassName": "c0",
-                      "rules": Array [
-                        "
-  background: ",
-                        "#31353D",
-                        ";
-  padding: 12px;
-  color: #fff;
-  border-radius: 5px;
-  font-weight: 300;
-",
-                      ],
-                    },
-                    "displayName": "styled.div",
-                    "foldedComponentIds": Array [],
-                    "render": [Function],
-                    "styledComponentId": "sc-EHOje",
-                    "target": "div",
-                    "toString": [Function],
-                    "warnTooManyClasses": [Function],
-                    "withComponent": [Function],
-                  }
-                }
-                forwardedRef={null}
+              <div
+                className="c0"
               >
-                <div
-                  className="c0"
+                <styled.pre
+                  onClick={[Function]}
+                  role="content"
                 >
-                  <styled.pre
+                  <pre
+                    className="c1"
                     onClick={[Function]}
                     role="content"
                   >
-                    <StyledComponent
-                      forwardedComponent={
-                        Object {
-                          "$$typeof": Symbol(react.forward_ref),
-                          "attrs": Array [],
-                          "componentStyle": ComponentStyle {
-                            "componentId": "sc-bZQynM",
-                            "isStatic": true,
-                            "lastClassName": "c1",
-                            "rules": Array [
-                              "
-  font-size: 0.9rem;
-  padding: 6px;
-  margin: 0;
-  background-color: ",
-                              "rgba(0,0,0,.25)",
-                              ";
-  border-radius: 3px;
-  overflow: hidden;
-  font-weight: 400;
-  cursor: copy;
-",
-                            ],
-                          },
-                          "displayName": "styled.pre",
-                          "foldedComponentIds": Array [],
-                          "render": [Function],
-                          "styledComponentId": "sc-bZQynM",
-                          "target": "pre",
-                          "toString": [Function],
-                          "warnTooManyClasses": [Function],
-                          "withComponent": [Function],
-                        }
-                      }
-                      forwardedRef={null}
+                    <Styled(ColoredDigits)
+                      value=""
+                    >
+                      <ColoredDigits
+                        className="c2"
+                        value=""
+                      >
+                        <span
+                          className="c2"
+                        >
+                          <span
+                            className="str"
+                            key="0"
+                          />
+                        </span>
+                      </ColoredDigits>
+                    </Styled(ColoredDigits)>
+                  </pre>
+                </styled.pre>
+                <styled.div>
+                  <div
+                    className="c3"
+                  >
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="radio"
+                        />
+                         
+                        Characters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="radio"
+                        />
+                         
+                        Words
+                      </div>
+                    </styled.div>
+                  </div>
+                </styled.div>
+                <styled.fieldset>
+                  <fieldset
+                    className="c5"
+                  >
+                    <styled.legend>
+                      <legend
+                        className="c6"
+                      >
+                        Options
+                      </legend>
+                    </styled.legend>
+                    <styled.div>
+                      <div
+                        className="c7"
+                      >
+                        <input
+                          max="50"
+                          min="10"
+                          onChange={[Function]}
+                          type="range"
+                          value={20}
+                        />
+                        <span>
+                          20
+                        </span>
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Uppercase Letters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Lowercase Letters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Digits
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Space
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Underscore & Dash
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Symbols
+                      </div>
+                    </styled.div>
+                  </fieldset>
+                </styled.fieldset>
+                <styled.div>
+                  <div
+                    className="c8"
+                  >
+                    <Styled(BaseButton)
                       onClick={[Function]}
-                      role="content"
+                      primary={true}
                     >
-                      <pre
-                        className="c1"
+                      <BaseButton
+                        className="c9"
                         onClick={[Function]}
-                        role="content"
+                        primary={true}
                       >
-                        <Styled(ColoredDigits)
-                          value=""
-                        >
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-ifAKCX",
-                                  "isStatic": true,
-                                  "lastClassName": "c2",
-                                  "rules": Array [
-                                    "
-  .num {
-    color: ",
-                                    "#00B7AC",
-                                    ";
-  }
-",
-                                  ],
-                                },
-                                "displayName": "Styled(ColoredDigits)",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-ifAKCX",
-                                "target": [Function],
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                            value=""
-                          >
-                            <ColoredDigits
-                              className="c2"
-                              value=""
-                            >
-                              <span
-                                className="c2"
-                              >
-                                <span
-                                  className="str"
-                                  key="0"
-                                />
-                              </span>
-                            </ColoredDigits>
-                          </StyledComponent>
-                        </Styled(ColoredDigits)>
-                      </pre>
-                    </StyledComponent>
-                  </styled.pre>
-                  <styled.div>
-                    <StyledComponent
-                      forwardedComponent={
-                        Object {
-                          "$$typeof": Symbol(react.forward_ref),
-                          "attrs": Array [],
-                          "componentStyle": ComponentStyle {
-                            "componentId": "sc-gzVnrw",
-                            "isStatic": true,
-                            "lastClassName": "c3",
-                            "rules": Array [
-                              "
-  margin: 12px 0;
-  font-size: 0.9rem;
-
-  label {
-    display: block;
-  }
-
-  small {
-    color: ",
-                              "#777",
-                              ";
-  }
-",
-                            ],
-                          },
-                          "displayName": "styled.div",
-                          "foldedComponentIds": Array [],
-                          "render": [Function],
-                          "styledComponentId": "sc-gzVnrw",
-                          "target": "div",
-                          "toString": [Function],
-                          "warnTooManyClasses": [Function],
-                          "withComponent": [Function],
-                        }
-                      }
-                      forwardedRef={null}
-                    >
-                      <div
-                        className="c3"
-                      >
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={true}
-                                onChange={[Function]}
-                                type="radio"
-                              />
-                               
-                              Characters
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={false}
-                                onChange={[Function]}
-                                type="radio"
-                              />
-                               
-                              Words
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                      </div>
-                    </StyledComponent>
-                  </styled.div>
-                  <styled.fieldset>
-                    <StyledComponent
-                      forwardedComponent={
-                        Object {
-                          "$$typeof": Symbol(react.forward_ref),
-                          "attrs": Array [],
-                          "componentStyle": ComponentStyle {
-                            "componentId": "sc-iwsKbI",
-                            "isStatic": true,
-                            "lastClassName": "c5",
-                            "rules": Array [
-                              "
-  border-color: ",
-                              "rgba(255,255,255,.50)",
-                              ";
-  border-radius: 3px;
-",
-                            ],
-                          },
-                          "displayName": "styled.fieldset",
-                          "foldedComponentIds": Array [],
-                          "render": [Function],
-                          "styledComponentId": "sc-iwsKbI",
-                          "target": "fieldset",
-                          "toString": [Function],
-                          "warnTooManyClasses": [Function],
-                          "withComponent": [Function],
-                        }
-                      }
-                      forwardedRef={null}
-                    >
-                      <fieldset
-                        className="c5"
-                      >
-                        <styled.legend>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-gZMcBi",
-                                  "isStatic": true,
-                                  "lastClassName": "c6",
-                                  "rules": Array [
-                                    "
-  text-transform: uppercase;
-  padding: 0 6px;
-  font-size: 0.8em;
-",
-                                  ],
-                                },
-                                "displayName": "styled.legend",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-gZMcBi",
-                                "target": "legend",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <legend
-                              className="c6"
-                            >
-                              Options
-                            </legend>
-                          </StyledComponent>
-                        </styled.legend>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-dnqmqq",
-                                  "isStatic": true,
-                                  "lastClassName": "c7",
-                                  "rules": Array [
-                                    "
-  display: flex;
-
-  span {
-    flex: 0;
-    background-color: ",
-                                    "rgba(0,0,0,.25)",
-                                    ";
-    padding: 0 3px;
-    border-radius: 3px;
-    font-family: monospace;
-    width: 30px;
-    margin-left: 6px;
-  }
-
-  input {
-    flex: 1;
-  }
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-dnqmqq",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c7"
-                            >
-                              <input
-                                max="50"
-                                min="10"
-                                onChange={[Function]}
-                                type="range"
-                                value={20}
-                              />
-                              <span>
-                                20
-                              </span>
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={true}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Uppercase Letters
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={true}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Lowercase Letters
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={true}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Digits
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={false}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Space
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={true}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Underscore & Dash
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                        <styled.div>
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-htoDjs",
-                                  "isStatic": true,
-                                  "lastClassName": "c4",
-                                  "rules": Array [
-                                    "
-  display: block;
-",
-                                  ],
-                                },
-                                "displayName": "styled.div",
-                                "foldedComponentIds": Array [],
-                                "render": [Function],
-                                "styledComponentId": "sc-htoDjs",
-                                "target": "div",
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                          >
-                            <div
-                              className="c4"
-                            >
-                              <input
-                                checked={false}
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                               
-                              Symbols
-                            </div>
-                          </StyledComponent>
-                        </styled.div>
-                      </fieldset>
-                    </StyledComponent>
-                  </styled.fieldset>
-                  <styled.div>
-                    <StyledComponent
-                      forwardedComponent={
-                        Object {
-                          "$$typeof": Symbol(react.forward_ref),
-                          "attrs": Array [],
-                          "componentStyle": ComponentStyle {
-                            "componentId": "sc-gqjmRU",
-                            "isStatic": true,
-                            "lastClassName": "c8",
-                            "rules": Array [
-                              "
-  display: flex;
-  margin-top: 12px;
-  align-items: flex-start;
-  flex-direction: row;
-
-  button {
-    width: 50%;
-
-    &:first-child {
-      margin-right: 6px;
-    }
-  }
-",
-                            ],
-                          },
-                          "displayName": "styled.div",
-                          "foldedComponentIds": Array [],
-                          "render": [Function],
-                          "styledComponentId": "sc-gqjmRU",
-                          "target": "div",
-                          "toString": [Function],
-                          "warnTooManyClasses": [Function],
-                          "withComponent": [Function],
-                        }
-                      }
-                      forwardedRef={null}
-                    >
-                      <div
-                        className="c8"
-                      >
-                        <Styled(BaseButton)
+                        <button
+                          className="c9"
                           onClick={[Function]}
-                          primary={true}
+                          type="button"
                         >
-                          <StyledComponent
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-bdVaJa",
-                                  "isStatic": false,
-                                  "lastClassName": "c10",
-                                  "rules": Array [
-                                    "
-  display: inline-block;
-  ",
-                                    [Function],
-                                    ";
-  font-size: ",
-                                    [Function],
-                                    ";
-  font-weight: 400;
-  text-transform: uppercase;
-  border: 0;
-  cursor: pointer !important;
-  outline: none;
-  transition: background-color 0.2s ease;
-  background-color: ",
-                                    [Function],
-                                    ";
-  color: ",
-                                    [Function],
-                                    ";
-  box-sizing: border-box;
-  position: relative;
-
-  &:hover {
-    background-color: ",
-                                    [Function],
-                                    ";
-  }
-
-  &:active {
-    position: relative;
-    top: 1px;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  ",
-                                    [Function],
-                                    ";
-",
-                                  ],
-                                },
-                                "displayName": "Styled(BaseButton)",
-                                "foldedComponentIds": Array [],
-                                "propTypes": Object {
-                                  "children": [Function],
-                                  "className": [Function],
-                                  "danger": [Function],
-                                  "dark": [Function],
-                                  "disabled": [Function],
-                                  "full": [Function],
-                                  "icon": [Function],
-                                  "primary": [Function],
-                                  "transparent": [Function],
-                                  "type": [Function],
-                                },
-                                "render": [Function],
-                                "styledComponentId": "sc-bdVaJa",
-                                "target": [Function],
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                            onClick={[Function]}
-                            primary={true}
-                          >
-                            <BaseButton
-                              className="c9"
-                              onClick={[Function]}
-                              primary={true}
-                            >
-                              <button
-                                className="c9"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                Generate
-                              </button>
-                            </BaseButton>
-                          </StyledComponent>
-                        </Styled(BaseButton)>
-                        <Styled(BaseButton)
-                          dark={true}
+                          Generate
+                        </button>
+                      </BaseButton>
+                    </Styled(BaseButton)>
+                    <Styled(BaseButton)
+                      dark={true}
+                      onClick={[Function]}
+                    >
+                      <BaseButton
+                        className="c10"
+                        dark={true}
+                        onClick={[Function]}
+                      >
+                        <button
+                          className="c10"
                           onClick={[Function]}
+                          type="button"
                         >
-                          <StyledComponent
-                            dark={true}
-                            forwardedComponent={
-                              Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "attrs": Array [],
-                                "componentStyle": ComponentStyle {
-                                  "componentId": "sc-bdVaJa",
-                                  "isStatic": false,
-                                  "lastClassName": "c10",
-                                  "rules": Array [
-                                    "
-  display: inline-block;
-  ",
-                                    [Function],
-                                    ";
-  font-size: ",
-                                    [Function],
-                                    ";
-  font-weight: 400;
-  text-transform: uppercase;
-  border: 0;
-  cursor: pointer !important;
-  outline: none;
-  transition: background-color 0.2s ease;
-  background-color: ",
-                                    [Function],
-                                    ";
-  color: ",
-                                    [Function],
-                                    ";
-  box-sizing: border-box;
-  position: relative;
-
-  &:hover {
-    background-color: ",
-                                    [Function],
-                                    ";
-  }
-
-  &:active {
-    position: relative;
-    top: 1px;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  ",
-                                    [Function],
-                                    ";
-",
-                                  ],
-                                },
-                                "displayName": "Styled(BaseButton)",
-                                "foldedComponentIds": Array [],
-                                "propTypes": Object {
-                                  "children": [Function],
-                                  "className": [Function],
-                                  "danger": [Function],
-                                  "dark": [Function],
-                                  "disabled": [Function],
-                                  "full": [Function],
-                                  "icon": [Function],
-                                  "primary": [Function],
-                                  "transparent": [Function],
-                                  "type": [Function],
-                                },
-                                "render": [Function],
-                                "styledComponentId": "sc-bdVaJa",
-                                "target": [Function],
-                                "toString": [Function],
-                                "warnTooManyClasses": [Function],
-                                "withComponent": [Function],
-                              }
-                            }
-                            forwardedRef={null}
-                            onClick={[Function]}
-                          >
-                            <BaseButton
-                              className="c10"
-                              dark={true}
-                              onClick={[Function]}
-                            >
-                              <button
-                                className="c10"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                Use This
-                              </button>
-                            </BaseButton>
-                          </StyledComponent>
-                        </Styled(BaseButton)>
-                      </div>
-                    </StyledComponent>
-                  </styled.div>
-                </div>
-              </StyledComponent>
+                          Use This
+                        </button>
+                      </BaseButton>
+                    </Styled(BaseButton)>
+                  </div>
+                </styled.div>
+              </div>
             </styled.div>
           </GeneratorUserInterface>
         </div>

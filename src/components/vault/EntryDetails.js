@@ -18,13 +18,13 @@ import {
   MenuItem,
   NonIdealState,
   Popover,
-  Text
+  Text,
 } from '@blueprintjs/core';
 import {
   FIELD_VALUE_TYPE_NOTE,
   FIELD_VALUE_TYPE_OTP,
   FIELD_VALUE_TYPE_PASSWORD,
-  FIELD_VALUE_TYPE_TEXT
+  FIELD_VALUE_TYPE_TEXT,
 } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { useCurrentEntry, useGroups } from './hooks/vault';
@@ -38,12 +38,12 @@ const FIELD_TYPE_OPTIONS = [
   { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
   { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
   { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
-  { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
+  { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' },
 ];
 
 function title(entry) {
   const titleField = entry.fields.find(
-    item => item.propertyType === 'property' && item.property === 'title'
+    (item) => item.propertyType === 'property' && item.property === 'title'
   );
   return titleField ? titleField.value : <i>(Untitled)</i>;
 }
@@ -61,14 +61,15 @@ const ValueWithNewLines = styled.span`
   white-space: pre-wrap;
 `;
 const FormContainer = styled.div`
-  background-color: ${p => (p.primary ? getThemeProp(p, 'entry.primaryContainer') : 'transparent')};
+  background-color: ${(p) =>
+    p.primary ? getThemeProp(p, 'entry.primaryContainer') : 'transparent'};
   border-radius: 5px;
   padding: 1rem;
   margin-bottom: 1rem;
 `;
 const CustomFieldsHeading = styled.h5`
   text-transform: uppercase;
-  color: ${p => getThemeProp(p, 'entry.separatorTextColor')};
+  color: ${(p) => getThemeProp(p, 'entry.separatorTextColor')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +81,7 @@ const CustomFieldsHeading = styled.h5`
     display: flex;
     content: '';
     height: 1px;
-    background-color: ${p => getThemeProp(p, 'entry.separatorBorder')};
+    background-color: ${(p) => getThemeProp(p, 'entry.separatorBorder')};
     width: 100%;
   }
 
@@ -97,7 +98,7 @@ const FieldRowLabel = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: ${p => getThemeProp(p, 'entry.separatorTextColor')};
+  color: ${(p) => getThemeProp(p, 'entry.separatorTextColor')};
   width: 100px;
   margin-right: 1rem;
 `;
@@ -125,13 +126,14 @@ const FieldTextWrapper = styled.span`
   align-items: center;
   padding: 2px;
   word-break: break-all;
-  pointer-events: ${p => (p.disabled ? 'none' : 'all')};
+  pointer-events: ${(p) => (p.disabled ? 'none' : 'all')};
 
   &:hover {
-    border-color: ${p => (p.disabled ? 'transparent' : getThemeProp(p, 'entry.fieldHoverBorder'))};
+    border-color: ${(p) =>
+      p.disabled ? 'transparent' : getThemeProp(p, 'entry.fieldHoverBorder')};
 
     ${FieldTextToolbar} {
-      opacity: ${p => (p.disabled ? 0 : 1)};
+      opacity: ${(p) => (p.disabled ? 0 : 1)};
     }
   }
 `;
@@ -154,7 +156,7 @@ const FieldText = ({ entryFacade, field }) => {
   const { _history: history = [] } = entryFacade;
   const historyItems = useMemo(() => {
     const items = history.filter(
-      item => item.property === field.property && item.propertyType === field.propertyType
+      (item) => item.property === field.property && item.propertyType === field.propertyType
     );
     if (items.length > 0 && items[items.length - 1].newValue === field.value) {
       // Remove last item as it just shows the current value
@@ -166,7 +168,7 @@ const FieldText = ({ entryFacade, field }) => {
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
         <When condition={field.valueType === FIELD_VALUE_TYPE_OTP}>
-          <OTPDigits otpURI={field.value} otpRef={value => (otpRef.current = value)} />
+          <OTPDigits otpURI={field.value} otpRef={(value) => (otpRef.current = value)} />
         </When>
         <When condition={!field.value}>
           <Text className={Classes.TEXT_MUTED}>Not set.</Text>
@@ -273,13 +275,13 @@ const FieldRow = ({
   onFieldNameUpdate,
   onFieldUpdate,
   onFieldSetValueType,
-  onRemoveField
+  onRemoveField,
 }) => {
   const label =
     editing && field.removeable ? (
       <EditableText
         value={field.property}
-        onChange={value => {
+        onChange={(value) => {
           onFieldNameUpdate(field, value);
         }}
       />
@@ -324,7 +326,7 @@ const FieldRow = ({
                   <TextArea
                     className={cx(Classes.INPUT, Classes.FILL)}
                     value={field.value}
-                    onChange={val => onFieldUpdate(field, val.target.value)}
+                    onChange={(val) => onFieldUpdate(field, val.target.value)}
                   />
                 </When>
                 <When condition={field.formatting && field.formatting.options}>
@@ -332,7 +334,7 @@ const FieldRow = ({
                     fill
                     defaultValue={field.value ? undefined : field.formatting.defaultOption}
                     value={field.value || undefined}
-                    onChange={event => onFieldUpdate(field, event.target.value)}
+                    onChange={(event) => onFieldUpdate(field, event.target.value)}
                   >
                     <Choose>
                       <When condition={typeof field.formatting.options === 'object'}>
@@ -400,15 +402,15 @@ const EntryDetailsContent = () => {
     onFieldUpdate,
     onFieldSetValueType,
     onRemoveField,
-    onSaveEdit
+    onSaveEdit,
   } = useCurrentEntry();
   const { onMoveEntryToTrash, trashID } = useGroups();
 
   const editableFields = editing
-    ? entry.fields.filter(item => item.propertyType === 'property')
-    : entry.fields.filter(item => item.propertyType === 'property' && item.property !== 'title');
-  const mainFields = editableFields.filter(field => !field.removeable);
-  const removeableFields = editableFields.filter(field => field.removeable);
+    ? entry.fields.filter((item) => item.propertyType === 'property')
+    : entry.fields.filter((item) => item.propertyType === 'property' && item.property !== 'title');
+  const mainFields = editableFields.filter((field) => !field.removeable);
+  const removeableFields = editableFields.filter((field) => field.removeable);
 
   return (
     <>

@@ -6,7 +6,7 @@ import {
   getAllGroupsInGroup,
   getNestedGroups,
   isTrashGroup,
-  sortGroups
+  sortGroups,
 } from '../utils/groups';
 import { filterEntries, sortEntries } from '../utils/entries';
 
@@ -23,7 +23,7 @@ export function useCurrentEntry() {
     onFieldUpdateInPlace,
     onFieldSetValueType,
     onRemoveField,
-    onSaveEdit
+    onSaveEdit,
   } = useContext(VaultContext);
 
   return {
@@ -38,7 +38,7 @@ export function useCurrentEntry() {
     onFieldUpdateInPlace,
     onFieldSetValueType,
     onRemoveField,
-    onSaveEdit
+    onSaveEdit,
   };
 }
 
@@ -49,7 +49,7 @@ export function useCurrentEntries() {
     selectedEntryID,
     entriesFilters,
     onEntriesFilterTermChange,
-    onEntriesFilterSortModeChange
+    onEntriesFilterSortModeChange,
   } = useContext(VaultContext);
   const { sortMode } = entriesFilters;
   const entries =
@@ -61,7 +61,7 @@ export function useCurrentEntries() {
     selectedEntryID,
     filters: entriesFilters,
     onEntriesFilterTermChange,
-    onEntriesFilterSortModeChange
+    onEntriesFilterSortModeChange,
   };
 }
 
@@ -80,21 +80,21 @@ export function useGroups() {
     handleExpandGroup,
     groupFilters,
     onGroupFilterTermChange,
-    onGroupFilterSortModeChange
+    onGroupFilterSortModeChange,
   } = useContext(VaultContext);
 
   const trashGroup = vault.groups.find(isTrashGroup);
   const trashID = trashGroup && trashGroup.id;
   const trashSelected = selectedGroupID === trashID;
-  const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
-  const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
+  const trashCount = vault.entries.filter((entry) => entry.parentID === trashID).length;
+  const onMoveEntryToTrash = (entryID) => onMoveEntryToGroup(entryID, trashID);
   const emptyTrash = () => {
     if (!trashID) return;
     const trashEntries = getAllEntriesInGroup(vault, trashID);
     const trashGroups = getAllGroupsInGroup(vault, trashID);
     batchDeleteItems({
-      groupIDs: trashGroups.map(group => group.id),
-      entryIDs: trashEntries.map(entry => entry.id)
+      groupIDs: trashGroups.map((group) => group.id),
+      entryIDs: trashEntries.map((entry) => entry.id),
     });
   };
 
@@ -114,7 +114,7 @@ export function useGroups() {
     onGroupFilterTermChange,
     onGroupFilterSortModeChange,
     onMoveGroup,
-    onMoveGroupToTrash: groupID => {
+    onMoveGroupToTrash: (groupID) => {
       if (!trashID) {
         console.error('No trash group found');
         return;
@@ -131,7 +131,7 @@ export function useGroups() {
     onMoveEntryToTrash,
     trashID,
     trashSelected,
-    trashCount
+    trashCount,
   };
 }
 
@@ -139,6 +139,6 @@ export function useActions() {
   const { onAddEntry } = useContext(VaultContext);
 
   return {
-    onAddEntry
+    onAddEntry,
   };
 }

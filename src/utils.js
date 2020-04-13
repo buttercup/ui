@@ -46,7 +46,7 @@ export const generateHighlightedText = (text, regions) => {
 
 export function getFacadeField(facade, fieldName, matches) {
   const fieldIndex = facade.fields.findIndex(
-    field => field.propertyType === 'property' && field.property === fieldName.toLowerCase()
+    (field) => field.propertyType === 'property' && field.property === fieldName.toLowerCase()
   );
   if (fieldIndex < 0) {
     return `No ${fieldName}`;
@@ -55,7 +55,7 @@ export function getFacadeField(facade, fieldName, matches) {
   const field = facade.fields[fieldIndex];
   let value = field.value;
   if (Array.isArray(matches)) {
-    const match = matches.find(match => match.arrayIndex === fieldIndex);
+    const match = matches.find((match) => match.arrayIndex === fieldIndex);
     if (match) {
       return generateHighlightedText(value, match.indices);
     }

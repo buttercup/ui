@@ -30,20 +30,21 @@ const EntryWrapper = styled.div`
   align-items: center;
 
   &:focus {
-    background-color: ${props => getThemeProp(props, 'list.focusedBackgroundColor')};
+    background-color: ${(props) => getThemeProp(props, 'list.focusedBackgroundColor')};
   }
 
-  ${props =>
+  ${(props) =>
     props.focused &&
     css`
-      background-color: ${props => getThemeProp(props, 'list.focusedBackgroundColor')};
+      background-color: ${(props) => getThemeProp(props, 'list.focusedBackgroundColor')};
     `}
 
-  ${props =>
+  ${(props) =>
     props.selected &&
     css`
-      background-color: ${props => getThemeProp(props, 'list.selectedBackgroundColor')} !important;
-      color: ${props => getThemeProp(props, 'list.selectedTextColor')};
+      background-color: ${(props) =>
+        getThemeProp(props, 'list.selectedBackgroundColor')} !important;
+      color: ${(props) => getThemeProp(props, 'list.selectedTextColor')};
     `}
 `;
 
@@ -91,7 +92,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
     return () => (mounted.current = false);
   });
 
-  const handleMove = parentID => e => {
+  const handleMove = (parentID) => (e) => {
     onMoveEntryToGroup(entry.id, parentID);
   };
 
@@ -133,7 +134,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
     </>
   );
 
-  const showContextMenu = e => {
+  const showContextMenu = (e) => {
     e.preventDefault();
     setContextMenuVisibility(true);
     ContextMenu.show(
@@ -184,7 +185,7 @@ Entry.propTypes = {
   entry: EntryFacade,
   onClick: PropTypes.func.isRequired,
   innerRef: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired
+  selected: PropTypes.bool.isRequired,
 };
 
 export default Entry;

@@ -20,15 +20,15 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
 
-  const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
-  const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
+  const selectedEntry = vault.entries.find((entry) => entry.id === selectedEntryID);
+  const currentEntries = vault.entries.filter((entry) => entry.parentID === selectedGroupID);
 
   useDeepEffect(() => {
     if (vaultFacadeTag !== lastVaultFacadeTag) {
       // External updated, update internal state
       dispatch({
         type: 'reset',
-        payload: vaultSource
+        payload: vaultSource,
       });
       setLastVaultFacadeTag(vaultFacadeTag);
       // } else if (hashVaultFacade(vault) !== hashVaultFacade(vaultSource)) {
@@ -54,18 +54,18 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       dispatch({
         type: 'batch-delete',
         groups: groupIDs,
-        entries: entryIDs
+        entries: entryIDs,
       });
     },
-    onSelectGroup: groupID => {
+    onSelectGroup: (groupID) => {
       setSelectedGroupID(groupID);
       setSelectedEntryID(null);
     },
-    handleExpandGroup: group => {
+    handleExpandGroup: (group) => {
       setExpandedGroups([...expandedGroups, group.id]);
     },
-    handleCollapseGroup: group => {
-      setExpandedGroups(expandedGroups.filter(id => id !== group.id));
+    handleCollapseGroup: (group) => {
+      setExpandedGroups(expandedGroups.filter((id) => id !== group.id));
     },
     onCreateGroup: (parentID, groupTitle) => {
       const parentGroupID = parentID ? parentID : undefined;
@@ -73,42 +73,42 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       group.title = groupTitle;
       dispatch({
         type: 'create-group',
-        payload: group
+        payload: group,
       });
     },
-    onGroupFilterTermChange: term => {
+    onGroupFilterTermChange: (term) => {
       dispatchGroupFilters({
         type: 'set-term',
-        term
+        term,
       });
     },
-    onGroupFilterSortModeChange: sortMode => {
+    onGroupFilterSortModeChange: (sortMode) => {
       dispatchGroupFilters({
         type: 'set-sort-mode',
-        sortMode
+        sortMode,
       });
     },
-    onEntriesFilterTermChange: term => {
+    onEntriesFilterTermChange: (term) => {
       dispatchEntriesFilters({
         type: 'set-term',
-        term
+        term,
       });
     },
-    onEntriesFilterSortModeChange: sortMode => {
+    onEntriesFilterSortModeChange: (sortMode) => {
       dispatchEntriesFilters({
         type: 'set-sort-mode',
-        sortMode
+        sortMode,
       });
     },
     onMoveEntryToGroup: (entryID, parentID) => {
       dispatch({
         type: 'move-entry',
         entryID,
-        parentID
+        parentID,
       });
       if (editingEntry && entryID === editingEntry.id) {
         dispatchEditing({
-          type: 'stop-editing'
+          type: 'stop-editing',
         });
       }
     },
@@ -116,34 +116,34 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       dispatch({
         type: 'move-group',
         groupID,
-        parentID
+        parentID,
       });
     },
     onRenameGroup: (groupID, title) => {
       dispatch({
         type: 'rename-group',
         groupID,
-        title
+        title,
       });
     },
-    onAddEntry: type => {
+    onAddEntry: (type) => {
       const facade = createEntryFacade(null, { type });
       facade.parentID = selectedGroupID;
       facade.id = null;
       facade.isNew = true;
       dispatchEditing({
         type: 'set-entry',
-        payload: facade
+        payload: facade,
       });
       setSelectedEntryID(null);
     },
-    onDeleteEntry: entryID => {
+    onDeleteEntry: (entryID) => {
       dispatch({
         type: 'delete-entry',
-        entryID
+        entryID,
       });
       dispatchEditing({
-        type: 'stop-editing'
+        type: 'stop-editing',
       });
     },
     onEdit: () => {
@@ -152,7 +152,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       }
       dispatchEditing({
         type: 'set-entry',
-        payload: clone(selectedEntry)
+        payload: clone(selectedEntry),
       });
       setSelectedEntryID(null);
     },
@@ -162,10 +162,10 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
       }
       dispatch({
         type: 'save-entry',
-        entry: editingEntry
+        entry: editingEntry,
       });
       dispatchEditing({
-        type: 'stop-editing'
+        type: 'stop-editing',
       });
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
@@ -173,13 +173,13 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     },
     onCancelEdit: () => {
       dispatchEditing({
-        type: 'stop-editing'
+        type: 'stop-editing',
       });
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
       }
     },
-    onSelectEntry: entryID => {
+    onSelectEntry: (entryID) => {
       if (editingEntry) {
         return;
       }
@@ -187,14 +187,14 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     },
     onAddField: () => {
       dispatchEditing({
-        type: 'add-field'
+        type: 'add-field',
       });
     },
     onFieldUpdate: (changedField, value) => {
       dispatchEditing({
         type: 'update-field',
         field: changedField,
-        value
+        value,
       });
     },
     onFieldUpdateInPlace: (entryID, field, value) => {
@@ -202,38 +202,38 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
         type: 'set-entry-field',
         entryID,
         field,
-        value
+        value,
       });
     },
     onFieldSetValueType: (changedField, valueType) => {
       dispatchEditing({
         type: 'set-field-value-type',
         field: changedField,
-        valueType
+        valueType,
       });
     },
     onFieldNameUpdate: (changedField, property) => {
       dispatchEditing({
         type: 'update-field',
         field: changedField,
-        property
+        property,
       });
     },
-    onRemoveField: field => {
+    onRemoveField: (field) => {
       dispatchEditing({
         type: 'remove-field',
-        field
+        field,
       });
-    }
+    },
   };
   return <VaultContext.Provider value={context}>{children}</VaultContext.Provider>;
 };
 
 VaultProvider.propTypes = {
   onUpdate: PropTypes.func.isRequired,
-  vault: VaultFacade.isRequired
+  vault: VaultFacade.isRequired,
 };
 
 VaultProvider.defaultProps = {
-  onUpdate: () => {}
+  onUpdate: () => {},
 };

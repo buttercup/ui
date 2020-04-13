@@ -19,25 +19,25 @@ export const EntryFacadeField = PropTypes.shape({
   secret: PropTypes.bool,
   multiline: PropTypes.bool,
   formatting: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  maxLength: PropTypes.number
+  maxLength: PropTypes.number,
 });
 export const EntryFacade = PropTypes.shape({
   id: UUIDValue,
   type: PropTypes.string.isRequired,
   fields: PropTypes.arrayOf(EntryFacadeField),
-  parentID: PropTypes.string.isRequired
+  parentID: PropTypes.string.isRequired,
 });
 export const GroupFacade = PropTypes.shape({
   id: UUIDValue,
   type: PropTypes.oneOf(['group']),
   title: PropTypes.string.isRequired,
   attributes: PropTypes.object.isRequired,
-  parentID: PropTypes.string.isRequired
+  parentID: PropTypes.string.isRequired,
 });
 export const VaultFacade = PropTypes.shape({
   id: UUIDValue,
   type: PropTypes.oneOf(['vault']),
   attributes: PropTypes.object.isRequired,
   groups: PropTypes.arrayOf(GroupFacade),
-  entries: PropTypes.arrayOf(EntryFacade)
+  entries: PropTypes.arrayOf(EntryFacade),
 });
