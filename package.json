@@ -1,13 +1,14 @@
 {
   "name": "@buttercup/ui",
-  "version": "2.4.0",
+  "version": "2.4.1-0",
   "description": "Buttercup UI Components in React",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "git@github.com:buttercup/buttercup-ui.git",
   "author": "Sallar Kaboli <sallar.kaboli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && webpack --mode production --config webpack.config.js",
+    "build": "npm run clean && webpack --mode production --config webpack.config.js && tsc",
     "build:storybook": "build-storybook",
     "clean": "rimraf dist",
     "dev": "npm run clean && webpack --mode development --config webpack.config.js --progress --watch",
@@ -56,6 +57,8 @@
     "@storybook/addon-actions": "^4.1.11",
     "@storybook/addons": "^4.1.11",
     "@storybook/react": "^4.1.11",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "babel-loader": "^8.0.6",
     "babel-plugin-jsx-control-statements": "^4.0.0",
     "babel-plugin-ramda": "^2.0.0",
@@ -87,6 +90,7 @@
     "style-loader": "^0.23.1",
     "styled-components": "^4.3.2",
     "terser-webpack-plugin": "^1.4.1",
+    "typescript": "^3.8.3",
     "uuid": "^3.3.3",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"
