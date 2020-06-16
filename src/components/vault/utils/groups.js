@@ -1,15 +1,14 @@
 import { sortBy, prop, compose, toLower, reverse } from 'ramda';
 
-export const isTrashGroup = (group) =>
-  group.attributes && group.attributes.bc_group_role === 'trash';
+export const isTrashGroup = group => group.attributes && group.attributes.bc_group_role === 'trash';
 
 export const getAllEntriesInGroup = (facade, groupID) => {
   const allGroups = [
     ...getAllGroupsInGroup(facade, groupID),
-    facade.groups.find((group) => group.id === groupID),
+    facade.groups.find(group => group.id === groupID)
   ];
   return allGroups.reduce((output, group) => {
-    return [...output, ...facade.entries.filter((entry) => entry.parentID === group.id)];
+    return [...output, ...facade.entries.filter(entry => entry.parentID === group.id)];
   }, []);
 };
 
@@ -26,8 +25,8 @@ export const getAllGroupsInGroup = (facade, groupID) => {
 
 export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
   return groups
-    .filter((group) => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')
-    .map((group) => {
+    .filter(group => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')
+    .map(group => {
       const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
       const isExpanded = expandedGroups.includes(group.id);
       const isTrash = isTrashGroup(group);
@@ -40,7 +39,7 @@ export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, pa
         isExpanded,
         childNodes,
         className: 'node',
-        isTrash,
+        isTrash
       };
     });
 };
@@ -50,7 +49,7 @@ export const filterNestedGroups = (groups = [], term = '') => {
     return groups;
   }
 
-  return groups.filter((group) => {
+  return groups.filter(group => {
     if (Array.isArray(group.childNodes) && group.childNodes.length > 0) {
       group.childNodes = filterNestedGroups(group.childNodes, term);
     }

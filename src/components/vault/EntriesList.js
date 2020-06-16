@@ -14,15 +14,15 @@ const EntriesList = ({ className }) => {
     onSelectEntry,
     filters,
     onEntriesFilterTermChange,
-    onEntriesFilterSortModeChange,
+    onEntriesFilterSortModeChange
   } = useCurrentEntries();
   const { trashSelected } = useGroups();
   const ref = useRef(null);
-  const currentIndex = entries.findIndex((entry) => entry.id === selectedEntryID);
+  const currentIndex = entries.findIndex(entry => entry.id === selectedEntryID);
   const keyMap = {
     arrowUp: 'up',
     arrowDown: 'down',
-    enter: 'enter',
+    enter: 'enter'
   };
   const handleNavigation = (event, step) => {
     event.preventDefault();
@@ -36,13 +36,13 @@ const EntriesList = ({ className }) => {
     }
   };
   const handlers = {
-    arrowUp: (event) => handleNavigation(event, -1),
-    arrowDown: (event) => handleNavigation(event, 1),
-    enter: (event) => {
+    arrowUp: event => handleNavigation(event, -1),
+    arrowDown: event => handleNavigation(event, 1),
+    enter: event => {
       if (document.activeElement !== ref.current) {
         document.activeElement.click();
       }
-    },
+    }
   };
 
   return (
@@ -51,8 +51,8 @@ const EntriesList = ({ className }) => {
         title={trashSelected ? 'Trash' : 'Documents'}
         count={entries.length}
         filter={filters}
-        onTermChange={(term) => onEntriesFilterTermChange(term)}
-        onSortModeChange={(sortMode) => onEntriesFilterSortModeChange(sortMode)}
+        onTermChange={term => onEntriesFilterTermChange(term)}
+        onSortModeChange={sortMode => onEntriesFilterSortModeChange(sortMode)}
       />
       <PaneContent>
         <Choose>
@@ -63,9 +63,9 @@ const EntriesList = ({ className }) => {
                   tabIndex={entryIndex + 2}
                   entry={entry}
                   key={entry.id}
-                  onClick={(e) => onSelectEntry(entry.id)}
+                  onClick={e => onSelectEntry(entry.id)}
                   selected={selectedEntryID === entry.id}
-                  innerRef={(el) => {
+                  innerRef={el => {
                     if (selectedEntryID === entry.id) {
                       ref.current = el;
                     }
@@ -97,11 +97,11 @@ const EntriesList = ({ className }) => {
 };
 
 EntriesList.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 EntriesList.defaultProps = {
-  className: null,
+  className: null
 };
 
 export default EntriesList;

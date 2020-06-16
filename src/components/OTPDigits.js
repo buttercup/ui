@@ -29,12 +29,12 @@ const TimeLeftSpinner = styled(Spinner)`
 
 export default class OTPDigits extends Component {
   static defaultProps = {
-    otpRef: (n) => n,
+    otpRef: n => n
   };
 
   static propTypes = {
     otpRef: PropTypes.func.isRequired,
-    otpURI: PropTypes.string.isRequired,
+    otpURI: PropTypes.string.isRequired
   };
 
   state = {
@@ -43,7 +43,7 @@ export default class OTPDigits extends Component {
     otpRef: () => {},
     otpURI: null,
     period: 30,
-    timeLeft: 30,
+    timeLeft: 30
   };
 
   componentDidMount() {
@@ -101,13 +101,13 @@ export default class OTPDigits extends Component {
         period = this.totp.period;
         this.setState({
           otpURI: props.otpURI,
-          period,
+          period
         });
       }
       const digits = this.totp.generate();
       this.setState({
         digits,
-        timeLeft: period - (Math.floor(Date.now() / 1000) % period),
+        timeLeft: period - (Math.floor(Date.now() / 1000) % period)
       });
       this.props.otpRef(digits);
     } catch (err) {

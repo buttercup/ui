@@ -1,7 +1,7 @@
 export const spacing = {
   HALF: '6px',
   ONE: '12px',
-  INPUT_HEIGHT: '35px',
+  INPUT_HEIGHT: '35px'
 };
 
 export const colors = {
@@ -25,5 +25,5 @@ export const colors = {
   LEVEL_3: '#8FBC94',
   LEVEL_2: '#FFBC42',
   LEVEL_1: '#E71D36',
-  LEVEL_0: '#E71D36',
+  LEVEL_0: '#E71D36'
 };

@@ -20,12 +20,12 @@ const Input = styled.input`
 
 export default class MeterStory extends Component {
   state = {
-    input: '',
+    input: ''
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
-      input: e.target.value,
+      input: e.target.value
     });
   };
 

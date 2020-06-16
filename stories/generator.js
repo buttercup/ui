@@ -15,7 +15,7 @@ const View = styled.div`
 
 export class GeneratorTrigger extends Component {
   state = {
-    isOpen: false,
+    isOpen: false
   };
 
   handleClick = () => {

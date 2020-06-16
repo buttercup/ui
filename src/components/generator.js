@@ -105,16 +105,16 @@ const GeneratorControls = styled.div`
  */
 export class GeneratorUserInterface extends PureComponent {
   static propTypes = {
-    onGenerate: PropTypes.func.isRequired,
+    onGenerate: PropTypes.func.isRequired
   };
 
   static defaultProps = {
-    onGenerate: NOOP,
+    onGenerate: NOOP
   };
 
   state = {
     config: getConfig(),
-    password: '',
+    password: ''
   };
 
   characterSetEnabled(setName) {
@@ -127,12 +127,12 @@ export class GeneratorUserInterface extends PureComponent {
 
   generatePassword() {
     generatePassword(this.state.config)
-      .then((password) => {
+      .then(password => {
         this.setState({
-          password,
+          password
         });
       })
-      .catch((err) => {
+      .catch(err => {
         // Errors for no selected character sets and max retries exceeded occur
         // when the user selects too-restrictive options - we don't really care
         // about the error, we just don't generate a password:
@@ -157,9 +157,9 @@ export class GeneratorUserInterface extends PureComponent {
           ...this.state.config,
           randomCharacters: {
             ...this.state.config.randomCharacters,
-            enabledCharacterSets: currentCharacterSets,
-          },
-        },
+            enabledCharacterSets: currentCharacterSets
+          }
+        }
       },
       () => {
         this.generatePassword();
@@ -174,9 +174,9 @@ export class GeneratorUserInterface extends PureComponent {
           ...this.state.config,
           randomCharacters: {
             ...this.state.config.randomCharacters,
-            length: parseInt(e.target.value, 10),
-          },
-        },
+            length: parseInt(e.target.value, 10)
+          }
+        }
       },
       () => {
         this.generatePassword();
@@ -189,8 +189,8 @@ export class GeneratorUserInterface extends PureComponent {
       {
         config: {
           ...this.state.config,
-          mode,
-        },
+          mode
+        }
       },
       () => {
         this.generatePassword();
@@ -208,7 +208,7 @@ export class GeneratorUserInterface extends PureComponent {
   render() {
     return (
       <Body className={this.props.className}>
-        <PasswordContainer role="content" onClick={(e) => selectElementContents(e.target)}>
+        <PasswordContainer role="content" onClick={e => selectElementContents(e.target)}>
           <Password value={this.state.password} />
         </PasswordContainer>
         <GenerationTypes>
@@ -238,7 +238,7 @@ export class GeneratorUserInterface extends PureComponent {
                 value={this.state.config.randomCharacters.length}
                 min="10"
                 max="50"
-                onChange={(e) => this.changeLength(e)}
+                onChange={e => this.changeLength(e)}
               />
               <span>{this.state.config.randomCharacters.length}</span>
             </GeneratorRangeLabel>

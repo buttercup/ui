@@ -10,11 +10,11 @@ import { colors } from '../variables';
 class Meter extends Component {
   static propTypes = {
     input: PropTypes.string,
-    className: PropTypes.string,
+    className: PropTypes.string
   };
 
   state = {
-    details: true,
+    details: true
   };
 
   render() {
@@ -26,7 +26,7 @@ class Meter extends Component {
           <div
             className={cx('barContent', `level${result.score}`)}
             style={{
-              right: `${100 - result.score * 25}%`,
+              right: `${100 - result.score * 25}%`
             }}
           />
         </div>
@@ -37,7 +37,7 @@ class Meter extends Component {
               this.state.details &&
               (result.feedback.warning || result.feedback.suggestions.length > 0)
                 ? 'block'
-                : 'none',
+                : 'none'
           }}
         >
           {result.feedback.warning && (

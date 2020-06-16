@@ -77,7 +77,7 @@
     "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "prettier": "^2.0.4",
+    "prettier": "^1.19.1",
     "prettier-check": "^2.0.0",
     "random-words": "^1.1.1",
     "react": "^16.13.1",

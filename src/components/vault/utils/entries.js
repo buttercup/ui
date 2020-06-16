@@ -5,7 +5,7 @@ import { getFacadeField } from '../../../utils';
 const options = {
   keys: ['fields.value'],
   includeMatches: true,
-  minMatchCharLength: 3,
+  minMatchCharLength: 3
 };
 
 export const filterEntries = (entries = [], term = '') => {
@@ -13,7 +13,7 @@ export const filterEntries = (entries = [], term = '') => {
     return entries;
   }
   const fuse = new Fuse(entries, options);
-  return fuse.search(term).map((hit) => ({ ...hit.item, matches: hit.matches }));
+  return fuse.search(term).map(hit => ({ ...hit.item, matches: hit.matches }));
 };
 
 export const sortEntries = (entries = [], asc = true) => {

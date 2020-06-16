@@ -10,13 +10,13 @@ import {
   MenuItem,
   InputGroup,
   Classes,
-  Icon,
+  Icon
 } from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
 
 const NOOP = () => {};
 
-const createScrollShadow = (color) => css`
+const createScrollShadow = color => css`
   /* Show shadow on scroll: https://gist.github.com/tbmiller/6675197 */
   background: linear-gradient(${color} 30%, hsla(0, 0%, 100%, 0)),
     linear-gradient(hsla(0, 0%, 100%, 0) 0px, ${color} 70%) bottom,
@@ -32,7 +32,7 @@ const ListHeader = styled.header`
   align-items: center;
   padding: 1rem 1rem 0.5rem;
   grid-area: header;
-  border-bottom: 1px solid ${(props) => getThemeProp(props, 'colors.divider')};
+  border-bottom: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 const ListHeading = styled.h2`
   font-weight: 300;
@@ -55,13 +55,13 @@ export const Pane = styled(ReflexElement)`
 export const PaneContainer = styled.div`
   display: grid;
   overflow: hidden;
-  background-color: ${(props) => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
+  background-color: ${props => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
   grid-template-rows: 55px 1fr 40px;
   grid-template-areas:
     'header'
     'body'
     'footer';
-  ${(props) =>
+  ${props =>
     props.primary &&
     css`
       ${PaneContent} {
@@ -74,9 +74,9 @@ export const PaneContent = styled.div`
   grid-area: body;
   overflow: auto;
   padding: 0.5rem;
-  margin: 0 ${(p) => (p.bleed ? '-0.5rem' : 0)};
+  margin: 0 ${p => (p.bleed ? '-0.5rem' : 0)};
   width: 100%;
-  ${(props) => createScrollShadow(getThemeProp(props, 'colors.uiBackground'))}
+  ${props => createScrollShadow(getThemeProp(props, 'colors.uiBackground'))}
 `;
 
 export const PaneFooter = styled.div`
@@ -84,7 +84,7 @@ export const PaneFooter = styled.div`
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
-  border-top: 1px solid ${(props) => getThemeProp(props, 'colors.divider')};
+  border-top: 1px solid ${props => getThemeProp(props, 'colors.divider')};
 `;
 
 export const PaneHeader = ({
@@ -93,7 +93,7 @@ export const PaneHeader = ({
   filter = null,
   onAddItem = NOOP,
   onTermChange = NOOP,
-  onSortModeChange = NOOP,
+  onSortModeChange = NOOP
 }) => {
   const [filterInputVisible, toggleFilter] = useState(false);
   const inputRef = useRef(null);
@@ -106,7 +106,7 @@ export const PaneHeader = ({
   }, [filterInputVisible]);
 
   const clearSearch = () => onTermChange('');
-  const handleInputKeyPress = (e) => {
+  const handleInputKeyPress = e => {
     if (e.key.toLowerCase() === 'escape') {
       clearSearch();
       toggleFilter(false);
@@ -149,9 +149,9 @@ export const PaneHeader = ({
               type="search"
               placeholder="Filter..."
               value={filter.term}
-              onChange={(e) => onTermChange(e.target.value)}
+              onChange={e => onTermChange(e.target.value)}
               onKeyDown={handleInputKeyPress}
-              inputRef={(ref) => (inputRef.current = ref)}
+              inputRef={ref => (inputRef.current = ref)}
             />
           </When>
           <Otherwise>
