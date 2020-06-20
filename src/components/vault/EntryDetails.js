@@ -25,7 +25,7 @@ import {
   FIELD_VALUE_TYPE_OTP,
   FIELD_VALUE_TYPE_PASSWORD,
   FIELD_VALUE_TYPE_TEXT
-} from '@buttercup/facades';
+} from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';

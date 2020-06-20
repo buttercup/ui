@@ -78,6 +78,11 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({})
     ]
   },
-  externals: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)],
+  externals: [
+    ...Object.keys(pkg.dependencies),
+    ...Object.keys(pkg.peerDependencies),
+    "react",
+    "react-dom"
+  ],
   mode: 'production'
 };

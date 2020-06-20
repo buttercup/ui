@@ -36,7 +36,7 @@ export const GroupFacade = PropTypes.shape({
 });
 export const VaultFacade = PropTypes.shape({
   id: UUIDValue,
-  type: PropTypes.oneOf(['archive']),
+  type: PropTypes.oneOf(['vault']),
   attributes: PropTypes.object.isRequired,
   groups: PropTypes.arrayOf(GroupFacade),
   entries: PropTypes.arrayOf(EntryFacade)

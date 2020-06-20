@@ -4,7 +4,7 @@ import {
   ENTRY_TYPE_NOTE,
   ENTRY_TYPE_SSHKEY,
   ENTRY_TYPE_WEBSITE
-} from '@buttercup/facades';
+} from 'buttercup/web';
 
 export const defaultType = ENTRY_TYPE_LOGIN;
 

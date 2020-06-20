@@ -58,12 +58,7 @@ export const filterNestedGroups = (groups = [], term = '') => {
 };
 
 export const sortGroups = (groups = [], asc = true) => {
-  const sortByTitleCaseInsensitive = sortBy(
-    compose(
-      toLower,
-      prop('title')
-    )
-  );
+  const sortByTitleCaseInsensitive = sortBy(compose(toLower, prop('title')));
   const sorted = sortByTitleCaseInsensitive(groups);
   return asc ? sorted : reverse(sorted);
 };

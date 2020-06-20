@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { action } from '@storybook/react';
 import { OTPDigits } from '../src';
 import styled from 'styled-components';
 

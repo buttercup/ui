@@ -12,7 +12,7 @@ export function getIconForDomain(domain) {
   if (!contextKey) {
     return null;
   }
-  return __iconsContext(contextKey);
+  return __iconsContext(contextKey).default;
 }
 
 function prepareIcons() {

@@ -20,11 +20,7 @@ export const sortEntries = (entries = [], asc = true) => {
   const sortByTitleCaseInsensitive = R.sortBy(
     R.compose(
       R.toLower,
-      R.compose(
-        R.prop('value'),
-        R.find(R.propEq('property', 'title')),
-        R.prop('fields')
-      )
+      R.compose(R.prop('value'), R.find(R.propEq('property', 'title')), R.prop('fields'))
     )
   );
   const sorted = sortByTitleCaseInsensitive(entries);

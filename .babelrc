@@ -3,15 +3,13 @@
         "@babel/preset-react",
         ["@babel/preset-env", {
             "targets": {
-                "chrome": 66
+                "chrome": 70
             },
-            "useBuiltIns": "usage",
-            "loose": true
+            "useBuiltIns": false
         }]
     ],
     "plugins": [
         "ramda",
-        "@babel/plugin-transform-spread",
         "@babel/plugin-proposal-object-rest-spread",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-function-bind",

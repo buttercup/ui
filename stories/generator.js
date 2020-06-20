@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { action } from '@storybook/addon-actions';
 import MagicIcon from 'react-icons/lib/fa/magic';
 import { Button, Generator } from '../src';
