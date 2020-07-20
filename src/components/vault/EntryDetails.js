@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -88,8 +88,7 @@ const AttachmentDropZone = styled.div`
   }
 `;
 const AttachmentItem = styled(Card)`
-  margin-right: 8px;
-  margin-bottom: 8px;
+  margin: 4px;
   padding: 4px;
   width: 104px;
   height: 110px;
@@ -235,7 +234,7 @@ const Attachments = ({ entryFacade }) => {
     <AttachmentsContainer>
       <For each="attachment" of={attachments}>
         <AttachmentItem key={attachment.id} title={attachment.name}>
-          <Icon icon={attachment.icon} iconSize={60} color="rgba(0,0,0,0.7)" />
+          <Icon icon={attachment.icon} iconSize={56} color="rgba(0,0,0,0.6)" />
           <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
           <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
         </AttachmentItem>
@@ -502,20 +501,6 @@ const EntryDetailsContent = () => {
     onSaveEdit
   } = useCurrentEntry();
   const { onMoveEntryToTrash, trashID } = useGroups();
-  const {
-    onAddAttachments
-  } = useContext(VaultContext);
-  const {
-    // acceptedFiles,
-    getInputProps,
-    getRootProps,
-    isDragActive
-  } = useDropzone({
-    noClick: true,
-    onDrop: files => {
-      onAddAttachments(entry.id, files);
-    }
-  });
 
   const editableFields = editing
     ? entry.fields.filter(item => item.propertyType === 'property')
@@ -526,13 +511,7 @@ const EntryDetailsContent = () => {
   return (
     <>
       <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
-      <PaneContent {...(editing ? {} : getRootProps())} overflow={isDragActive ? "hidden" : undefined}>
-        <AttachmentDropZone
-          visible={isDragActive}
-        >
-          <Icon icon="compressed" iconSize={30} />
-          <span>Drop file(s) to add to vault</span>
-        </AttachmentDropZone>
+      <PaneContent>
         <FormContainer primary>
           <For each="field" of={mainFields}>
             <FieldRow
@@ -573,7 +552,6 @@ const EntryDetailsContent = () => {
             <span>Attachments</span>
           </CustomFieldsHeading>
           <Attachments entryFacade={entry} />
-          <input {...getInputProps()} />
         </If>
       </PaneContent>
       <PaneFooter>
@@ -608,10 +586,32 @@ const EntryDetailsContent = () => {
 };
 
 const EntryDetails = () => {
-  const { entry } = useCurrentEntry();
+  const { editing, entry } = useCurrentEntry();
+  const {
+    onAddAttachments
+  } = useContext(VaultContext);
+  const {
+    getInputProps,
+    getRootProps,
+    isDragActive
+  } = useDropzone({
+    noClick: true,
+    onDrop: files => {
+      onAddAttachments(entry.id, files);
+    }
+  });
   return (
     <ErrorBoundary>
-      <PaneContainer>
+      <PaneContainer {...(editing ? {} : getRootProps())}>
+        <If condition={!editing}>
+          <AttachmentDropZone
+            visible={isDragActive}
+          >
+            <Icon icon="compressed" iconSize={30} />
+            <span>Drop file(s) to add to vault</span>
+          </AttachmentDropZone>
+          <input {...getInputProps()} />
+        </If>
         <Choose>
           <When condition={entry}>
             <EntryDetailsContent />
