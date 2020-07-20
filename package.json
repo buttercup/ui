@@ -57,6 +57,7 @@
     "@storybook/react": "^5.3.19",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "arraybuffer-loader": "^1.0.8",
     "babel-loader": "^8.1.0",
     "babel-plugin-jsx-control-statements": "^4.1.0",
     "babel-plugin-ramda": "^2.0.0",
@@ -82,6 +83,7 @@
     "random-words": "^1.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.2",
     "react-hotkeys": "^1.1.4",
     "rimraf": "^3.0.2",
     "sass-loader": "^8.0.2",
@@ -90,7 +92,8 @@
     "terser-webpack-plugin": "^2.3.5",
     "typescript": "^3.9.7",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "xbytes": "^1.6.2"
   },
   "peerDependencies": {
     "buttercup": ">= 4.2",

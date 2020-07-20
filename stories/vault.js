@@ -1,9 +1,13 @@
-import React, { Component, useMemo, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   FIELD_VALUE_TYPE_OTP,
+  AttachmentManager,
+  Credentials,
   Entry,
   Vault,
+  VaultSource,
+  VaultManager,
   consumeVaultFacade,
   createVaultFacade,
   init as initButtercup
@@ -12,12 +16,14 @@ import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
 import { VaultProvider, VaultUI, themes } from '../src/index';
 
+import ATTACHMENT_BLOB from './resources/attachment.blob.dat';
+import ATTACHMENT_IMG from './resources/attachment.png.dat';
+
 try {
   initButtercup();
 } catch (err) {}
 
-function createArchive() {
-  const vault = Vault.createWithDefaults();
+async function createArchive(vault, source) {
   const [general] = vault.findGroupsByTitle('General');
   general
     .createEntry('Home wi-fi')
@@ -55,6 +61,28 @@ function createArchive() {
     .setProperty('username', 'test')
     .setProperty('password', '4812')
     .setProperty('password', 'passw0rd');
+  const attachmentEntry = general
+      .createEntry('Entry w/ Attachments')
+      .setProperty('username', 'jsc@test.org')
+      .setProperty('password', '34n54mlflml3')
+      .setProperty('url', 'https://test.com')
+      .setProperty('PIN', '1200');
+  await source.attachmentManager.setAttachment(
+    attachmentEntry,
+    AttachmentManager.newAttachmentID(),
+    ATTACHMENT_IMG,
+    "my-image.png",
+    "image/png",
+    ATTACHMENT_IMG.byteLength
+  );
+  await source.attachmentManager.setAttachment(
+    attachmentEntry,
+    AttachmentManager.newAttachmentID(),
+    ATTACHMENT_BLOB,
+    "special-file.blob",
+    "application/octet-stream",
+    ATTACHMENT_BLOB.byteLength
+  );
   const notes = vault.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
@@ -73,13 +101,12 @@ function createArchiveFacade(vault) {
   return JSON.parse(JSON.stringify(createVaultFacade(vault)));
 }
 
-function createHeavyArchive() {
-  const vault = Vault.createWithDefaults();
+async function createHeavyArchive(vault) {
   const groupCount = 15;
   const depth = 1;
   const entryCount = 20;
   (function createAtLevel(cont, lvl = 0) {
-    console.log('RENDER LVL', lvl);
+    // console.log('RENDER LVL', lvl);
     for (let g = 0; g < groupCount; g += 1) {
       const group = cont.createGroup(randomWords());
       for (let e = 0; e < entryCount; e += 1) {
@@ -107,26 +134,52 @@ const View = styled.div`
   width: 100%;
 `;
 
-function VaultRender({ basic = true } = {}) {
-  const archive = useMemo(() => (basic ? createArchive() : createHeavyArchive()), []);
-  const [archiveFacade, setArchiveFacade] = useState(createArchiveFacade(archive));
+function VaultRender({ dark = false, basic = true } = {}) {
+  const [vaultManager, setVaultManager] = useState(null);
+  const [archiveFacade, setArchiveFacade] = useState(null);
+  useEffect(() => {
+    async function createVaultManager() {
+      const manager = new VaultManager();
+      const creds = Credentials.fromDatasource({
+        type: 'memory',
+        property: 'test'
+      }, 'test');
+      const credStr = await creds.toSecureString();
+      const source = new VaultSource('test', 'memory', credStr);
+      manager.addSource(source);
+      await source.unlock(Credentials.fromPassword('test'), { initialiseRemote: true });
+      setVaultManager(vaultManager);
+      const { vault } = source;
+      if (basic) {
+        await createArchive(vault, source);
+      } else {
+        await createHeavyArchive(vault);
+      }
+      setArchiveFacade(createArchiveFacade(vault));
+    }
+    createVaultManager();
+  }, []);
   return (
-    <ThemeProvider theme={themes.light}>
+    <ThemeProvider theme={dark ? themes.dark : themes.light}>
       <View>
-        <VaultProvider
-          vault={archiveFacade}
-          onUpdate={vault => {
-            console.log('Saving vault...');
-            setArchiveFacade(processVaultUpdate(archive, vault));
-          }}
-        >
-          <VaultUI />
-        </VaultProvider>
+        <If condition={archiveFacade}>
+          <VaultProvider
+            vault={archiveFacade}
+            onUpdate={vault => {
+              console.log('Saving vault...');
+              setArchiveFacade(processVaultUpdate(archive, vault));
+            }}
+          >
+            <VaultUI />
+          </VaultProvider>
+        </If>
       </View>
     </ThemeProvider>
   );
 }
 
 export const BasicVault = () => <VaultRender />;
+
+export const BasicDarkVault = () => <VaultRender dark />;
 
 export const HeavyVault = () => <VaultRender basic={false} />;

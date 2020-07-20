@@ -20,6 +20,15 @@ module.exports = {
         ]
       },
       {
+        test: /\.dat$/,
+        use: [
+          {
+            loader: 'arraybuffer-loader',
+            options: {}
+          }
+        ]
+      },
+      {
         test: /\.(png|jpg|gif)$/,
         use: [
           {

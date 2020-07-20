@@ -5,6 +5,7 @@ import TextArea from 'react-textarea-autosize';
 import {
   Button,
   ButtonGroup,
+  Card,
   Classes,
   ControlGroup,
   Dialog,
@@ -24,9 +25,11 @@ import {
   FIELD_VALUE_TYPE_NOTE,
   FIELD_VALUE_TYPE_OTP,
   FIELD_VALUE_TYPE_PASSWORD,
-  FIELD_VALUE_TYPE_TEXT
+  FIELD_VALUE_TYPE_TEXT,
+  Entry
 } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
+import formatBytes from "xbytes";
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import ConfirmButton from './ConfirmButton';
@@ -34,12 +37,20 @@ import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 
+const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
   { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
   { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
   { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
   { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
 ];
+
+function iconName(mimeType) {
+  if (/^image\//.test(mimeType)) {
+    return "media";
+  }
+  return "document";
+}
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -56,6 +67,47 @@ const ActionBar = styled.div`
   > div button {
     margin-right: 10px;
   }
+`;
+const AttachmentItem = styled(Card)`
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 4px;
+  width: 104px;
+  height: 110px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0,0,0,0.04);
+  }
+`;
+const AttachmentItemSize = styled.div`
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  font-size: 10px;
+  user-select: none;
+  color: #888;
+`;
+const AttachmentItemTitle = styled.div`
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 11px;
+  user-select: none;
+`;
+const AttachmentsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
 `;
 const ValueWithNewLines = styled.span`
   white-space: pre-wrap;
@@ -144,6 +196,34 @@ const HistoryScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
 `;
+
+const Attachments = ({ entryFacade }) => {
+  const attachments = entryFacade.fields.reduce((output, field) => {
+    if (field.propertyType !== "attribute" || field.property.indexOf(ENTRY_ATTACHMENT_ATTRIB_PREFIX) !== 0) {
+      return output;
+    }
+    const attachment = JSON.parse(field.value);
+    return [
+      ...output,
+      {
+        ...attachment,
+        sizeFriendly: formatBytes(attachment.size, { iec: true }),
+        icon: iconName(attachment.type)
+      }
+    ];
+  }, []);
+  return (
+    <AttachmentsContainer>
+      <For each="attachment" of={attachments}>
+        <AttachmentItem key={attachment.id} title={attachment.name}>
+          <Icon icon={attachment.icon} iconSize={60} color="rgba(0,0,0,0.7)" />
+          <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
+          <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
+        </AttachmentItem>
+      </For>
+    </AttachmentsContainer>
+  );
+};
 
 const FieldText = ({ entryFacade, field }) => {
   const [visible, toggleVisibility] = useState(false);
@@ -429,7 +509,7 @@ const EntryDetailsContent = () => {
         </FormContainer>
         <If condition={editing || removeableFields.length > 0}>
           <CustomFieldsHeading>
-            <span>Custom Fields:</span>
+            <span>Custom Fields</span>
           </CustomFieldsHeading>
         </If>
         <FormContainer>
@@ -448,6 +528,12 @@ const EntryDetailsContent = () => {
         </FormContainer>
         <If condition={editing}>
           <Button onClick={onAddField} text="Add Custom Field" icon="small-plus" />
+        </If>
+        <If condition={!editing}>
+          <CustomFieldsHeading>
+            <span>Attachments</span>
+          </CustomFieldsHeading>
+          <Attachments entryFacade={entry} />
         </If>
       </PaneContent>
       <PaneFooter>
