@@ -8,8 +8,9 @@ import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
 
 export const VaultContext = React.createContext();
+const NOOP = () => {};
 
-export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
+export const VaultProvider = ({ onAddAttachments, onUpdate, vault: vaultSource, children }) => {
   const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
@@ -67,6 +68,7 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
     },
+    onAddAttachments,
     onCreateGroup: (parentID, groupTitle) => {
       const parentGroupID = parentID ? parentID : undefined;
       const group = createGroupFacade(null, parentGroupID);
@@ -235,5 +237,6 @@ VaultProvider.propTypes = {
 };
 
 VaultProvider.defaultProps = {
+  onAddAttachments: () => {},
   onUpdate: () => {}
 };

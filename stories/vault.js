@@ -71,16 +71,16 @@ async function createArchive(vault, source) {
     attachmentEntry,
     AttachmentManager.newAttachmentID(),
     ATTACHMENT_IMG,
-    "my-image.png",
-    "image/png",
+    'my-image.png',
+    'image/png',
     ATTACHMENT_IMG.byteLength
   );
   await source.attachmentManager.setAttachment(
     attachmentEntry,
     AttachmentManager.newAttachmentID(),
     ATTACHMENT_BLOB,
-    "special-file.blob",
-    "application/octet-stream",
+    'special-file.blob',
+    'application/octet-stream',
     ATTACHMENT_BLOB.byteLength
   );
   const notes = vault.createGroup('Notes');
@@ -148,7 +148,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
       const source = new VaultSource('test', 'memory', credStr);
       manager.addSource(source);
       await source.unlock(Credentials.fromPassword('test'), { initialiseRemote: true });
-      setVaultManager(vaultManager);
+      setVaultManager(manager);
       const { vault } = source;
       if (basic) {
         await createArchive(vault, source);
@@ -165,6 +165,22 @@ function VaultRender({ dark = false, basic = true } = {}) {
         <If condition={archiveFacade}>
           <VaultProvider
             vault={archiveFacade}
+            onAddAttachments={async (entryID, files) => {
+              const source = vaultManager.sources[0];
+              const entry = source.vault.findEntryByID(entryID);
+              for (const file of files) {
+                const buff = await file.arrayBuffer();
+                await source.attachmentManager.setAttachment(
+                  entry,
+                  AttachmentManager.newAttachmentID(),
+                  buff,
+                  file.name,
+                  file.type || 'application/octet-stream',
+                  file.size
+                );
+              }
+              setArchiveFacade(createVaultFacade(source.vault));
+            }}
             onUpdate={vault => {
               console.log('Saving vault...');
               setArchiveFacade(processVaultUpdate(archive, vault));

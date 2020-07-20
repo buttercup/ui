@@ -1,7 +1,8 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
+import { useDropzone } from 'react-dropzone';
 import {
   Button,
   ButtonGroup,
@@ -32,6 +33,7 @@ import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input'
 import formatBytes from "xbytes";
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
+import { VaultContext } from './Vault';
 import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
@@ -66,6 +68,23 @@ const ActionBar = styled.div`
 
   > div button {
     margin-right: 10px;
+  }
+`;
+const AttachmentDropZone = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: ${props => props.visible ? "flex" : "none"};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
   }
 `;
 const AttachmentItem = styled(Card)`
@@ -483,6 +502,20 @@ const EntryDetailsContent = () => {
     onSaveEdit
   } = useCurrentEntry();
   const { onMoveEntryToTrash, trashID } = useGroups();
+  const {
+    onAddAttachments
+  } = useContext(VaultContext);
+  const {
+    // acceptedFiles,
+    getInputProps,
+    getRootProps,
+    isDragActive
+  } = useDropzone({
+    noClick: true,
+    onDrop: files => {
+      onAddAttachments(entry.id, files);
+    }
+  });
 
   const editableFields = editing
     ? entry.fields.filter(item => item.propertyType === 'property')
@@ -493,7 +526,13 @@ const EntryDetailsContent = () => {
   return (
     <>
       <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
-      <PaneContent>
+      <PaneContent {...(editing ? {} : getRootProps())} overflow={isDragActive ? "hidden" : undefined}>
+        <AttachmentDropZone
+          visible={isDragActive}
+        >
+          <Icon icon="compressed" iconSize={30} />
+          <span>Drop file(s) to add to vault</span>
+        </AttachmentDropZone>
         <FormContainer primary>
           <For each="field" of={mainFields}>
             <FieldRow
@@ -534,6 +573,7 @@ const EntryDetailsContent = () => {
             <span>Attachments</span>
           </CustomFieldsHeading>
           <Attachments entryFacade={entry} />
+          <input {...getInputProps()} />
         </If>
       </PaneContent>
       <PaneFooter>
