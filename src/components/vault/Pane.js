@@ -72,7 +72,7 @@ export const PaneContainer = styled.div`
 
 export const PaneContent = styled.div`
   grid-area: body;
-  overflow: ${props => props.overflow ? props.overflow : "auto"};
+  overflow: auto;
   padding: 0.5rem;
   margin: 0 ${p => (p.bleed ? '-0.5rem' : 0)};
   width: 100%;
