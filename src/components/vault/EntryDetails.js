@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -10,6 +10,7 @@ import {
   Classes,
   ControlGroup,
   Dialog,
+  Drawer,
   EditableText,
   HTMLSelect,
   Icon,
@@ -20,6 +21,7 @@ import {
   MenuItem,
   NonIdealState,
   Popover,
+  Position,
   Text
 } from '@blueprintjs/core';
 import {
@@ -119,6 +121,11 @@ const AttachmentItemTitle = styled.div`
   font-size: 11px;
   user-select: none;
 `;
+const AttachmentPreviewContainer = styled.div`
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+`;
 const AttachmentsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -216,6 +223,11 @@ const HistoryScrollContainer = styled.div`
 `;
 
 const Attachments = ({ entryFacade }) => {
+  const [previewingAttachment, setPreviewingAttachment] = useState(null);
+  const onAttachmentItemClick = useCallback((evt, attachment) => {
+    evt.stopPropagation();
+    setPreviewingAttachment(attachment);
+  }, []);
   const attachments = entryFacade.fields.reduce((output, field) => {
     if (field.propertyType !== "attribute" || field.property.indexOf(ENTRY_ATTACHMENT_ATTRIB_PREFIX) !== 0) {
       return output;
@@ -233,12 +245,56 @@ const Attachments = ({ entryFacade }) => {
   return (
     <AttachmentsContainer>
       <For each="attachment" of={attachments}>
-        <AttachmentItem key={attachment.id} title={attachment.name}>
+        <AttachmentItem key={attachment.id} title={attachment.name} onClick={evt => onAttachmentItemClick(evt, attachment)}>
           <Icon icon={attachment.icon} iconSize={56} color="rgba(0,0,0,0.6)" />
           <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
           <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
         </AttachmentItem>
       </For>
+      <Drawer
+        icon={previewingAttachment && previewingAttachment.icon || undefined}
+        isOpen={previewingAttachment}
+        onClose={() => setPreviewingAttachment(null)}
+        position={Position.RIGHT}
+        size="45%"
+        title={previewingAttachment && previewingAttachment.name || ""}
+      >
+        <If condition={previewingAttachment}>
+          <AttachmentPreviewContainer className={Classes.DRAWER_BODY}>
+            <table className={cx(Classes.HTML_TABLE, Classes.HTML_TABLE_STRIPED, Classes.SMALL)}>
+              <tbody>
+                <tr>
+                  <td><strong>Filename</strong></td>
+                  <td><code>{previewingAttachment.name}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Type</strong></td>
+                  <td>{previewingAttachment.type}</td>
+                </tr>
+                <tr>
+                  <td><strong>Size</strong></td>
+                  <td>{previewingAttachment.sizeFriendly}</td>
+                </tr>
+                <tr>
+                  <td><strong>Added to vault</strong></td>
+                  <td>{previewingAttachment.created}</td>
+                </tr>
+              </tbody>
+            </table>
+          </AttachmentPreviewContainer>
+          <div className={Classes.DRAWER_FOOTER}>
+            <Button
+              intent={Intent.PRIMARY}
+              title="Download attachment"
+            >Download</Button>
+            &nbsp;
+            <Button
+              intent={Intent.DANGER}
+              title="Delete attachment"
+            >Delete</Button>
+          </div>
+        </If>
+      </Drawer>
     </AttachmentsContainer>
   );
 };
