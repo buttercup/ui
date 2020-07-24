@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   FIELD_VALUE_TYPE_OTP,
@@ -22,6 +22,16 @@ import ATTACHMENT_IMG from './resources/attachment.png.dat';
 try {
   initButtercup();
 } catch (err) {}
+
+function arrayBufferToBase64(buffer) {
+  let binary = '';
+  let bytes = new Uint8Array(buffer);
+  let len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+}
 
 async function createArchive(vault, source) {
   const [general] = vault.findGroupsByTitle('General');
@@ -137,6 +147,17 @@ const View = styled.div`
 function VaultRender({ dark = false, basic = true } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
+  const [attachmentPreviews, setAttachmentPreviews] = useState({});
+  const previewAttachment = useCallback(async (entryID, attachmentID) => {
+    if (attachmentPreviews[attachmentID]) return;
+    const source = vaultManager.sources[0];
+    const entry = source.vault.findEntryByID(entryID);
+    const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
+    setAttachmentPreviews({
+      ...attachmentPreviews,
+      [attachmentID]: arrayBufferToBase64(attachmentData)
+    });
+  }, [attachmentPreviews, vaultManager]);
   useEffect(() => {
     async function createVaultManager() {
       const manager = new VaultManager();
@@ -165,6 +186,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
         <If condition={archiveFacade}>
           <VaultProvider
             vault={archiveFacade}
+            attachmentPreviews={attachmentPreviews}
             onAddAttachments={async (entryID, files) => {
               const source = vaultManager.sources[0];
               const entry = source.vault.findEntryByID(entryID);
@@ -181,6 +203,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
               }
               setArchiveFacade(createVaultFacade(source.vault));
             }}
+            onPreviewAttachment={previewAttachment}
             onUpdate={vault => {
               console.log('Saving vault...');
               setArchiveFacade(processVaultUpdate(archive, vault));

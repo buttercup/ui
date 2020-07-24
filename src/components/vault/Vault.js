@@ -10,7 +10,7 @@ import { useDeepEffect } from './hooks/compare';
 export const VaultContext = React.createContext();
 const NOOP = () => {};
 
-export const VaultProvider = ({ onAddAttachments, onUpdate, vault: vaultSource, children }) => {
+export const VaultProvider = ({ attachmentPreviews, onAddAttachments, onPreviewAttachment, onUpdate, vault: vaultSource, children }) => {
   const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
@@ -49,6 +49,7 @@ export const VaultProvider = ({ onAddAttachments, onUpdate, vault: vaultSource, 
     expandedGroups,
     groupFilters,
     entriesFilters,
+    attachmentPreviews,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
@@ -69,6 +70,7 @@ export const VaultProvider = ({ onAddAttachments, onUpdate, vault: vaultSource, 
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
     },
     onAddAttachments,
+    onPreviewAttachment,
     onCreateGroup: (parentID, groupTitle) => {
       const parentGroupID = parentID ? parentID : undefined;
       const group = createGroupFacade(null, parentGroupID);
@@ -232,11 +234,16 @@ export const VaultProvider = ({ onAddAttachments, onUpdate, vault: vaultSource, 
 };
 
 VaultProvider.propTypes = {
+  attachmentPreviews: PropTypes.object,
+  onAddAttachments: PropTypes.func,
+  onPreviewAttachment: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
 };
 
 VaultProvider.defaultProps = {
+  attachmentPreviews: {},
   onAddAttachments: () => {},
+  onPreviewAttachment: () => {},
   onUpdate: () => {}
 };

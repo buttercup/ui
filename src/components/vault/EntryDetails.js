@@ -56,6 +56,13 @@ function iconName(mimeType) {
   return "document";
 }
 
+function mimeTypePreviewable(mimeType) {
+  if (/^image\//.test(mimeType)) {
+    return true;
+  }
+  return false;
+}
+
 function title(entry) {
   const titleField = entry.fields.find(
     item => item.propertyType === 'property' && item.property === 'title'
@@ -88,6 +95,11 @@ const AttachmentDropZone = styled.div`
     font-weight: bold;
     margin-top: 10px;
   }
+`;
+const AttachmentInfoContainer = styled.div`
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 `;
 const AttachmentItem = styled(Card)`
   margin: 4px;
@@ -123,8 +135,17 @@ const AttachmentItemTitle = styled.div`
 `;
 const AttachmentPreviewContainer = styled.div`
   width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
+  height: 300px;
+  overflow: hidden;
+  background: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+const AttachmentPreviewImage = styled.img`
+  max-height: 100%;
+  max-width: 100%;
 `;
 const AttachmentsContainer = styled.div`
   display: flex;
@@ -222,7 +243,7 @@ const HistoryScrollContainer = styled.div`
   overflow-y: scroll;
 `;
 
-const Attachments = ({ entryFacade }) => {
+const Attachments = ({ attachmentPreviews = {}, entryFacade, onPreviewAttachment = () => {} }) => {
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
     evt.stopPropagation();
@@ -245,7 +266,14 @@ const Attachments = ({ entryFacade }) => {
   return (
     <AttachmentsContainer>
       <For each="attachment" of={attachments}>
-        <AttachmentItem key={attachment.id} title={attachment.name} onClick={evt => onAttachmentItemClick(evt, attachment)}>
+        <AttachmentItem
+          key={attachment.id}
+          title={attachment.name}
+          onClick={evt => {
+            onPreviewAttachment(attachment);
+            onAttachmentItemClick(evt, attachment);
+          }}
+        >
           <Icon icon={attachment.icon} iconSize={56} color="rgba(0,0,0,0.6)" />
           <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
           <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
@@ -260,9 +288,25 @@ const Attachments = ({ entryFacade }) => {
         title={previewingAttachment && previewingAttachment.name || ""}
       >
         <If condition={previewingAttachment}>
-          <AttachmentPreviewContainer className={Classes.DRAWER_BODY}>
+          <AttachmentInfoContainer className={Classes.DRAWER_BODY}>
+            <If condition={mimeTypePreviewable(previewingAttachment.type)}>
+              <AttachmentPreviewContainer className={attachmentPreviews[previewingAttachment.id] ? "" : Classes.SKELETON}>
+                <If condition={attachmentPreviews[previewingAttachment.id]}>
+                  <If condition={/^image\//.test(previewingAttachment.type)}>
+                    <AttachmentPreviewImage
+                      src={`data:${previewingAttachment.type};base64,${attachmentPreviews[previewingAttachment.id]}`}
+                    />
+                  </If>
+                </If>
+              </AttachmentPreviewContainer>
+              <br />
+            </If>
             <table className={cx(Classes.HTML_TABLE, Classes.HTML_TABLE_STRIPED, Classes.SMALL)}>
               <tbody>
+                <tr>
+                  <td><strong>ID</strong></td>
+                  <td><code>{previewingAttachment.id}</code></td>
+                </tr>
                 <tr>
                   <td><strong>Filename</strong></td>
                   <td><code>{previewingAttachment.name}</code></td>
@@ -276,12 +320,12 @@ const Attachments = ({ entryFacade }) => {
                   <td>{previewingAttachment.sizeFriendly}</td>
                 </tr>
                 <tr>
-                  <td><strong>Added to vault</strong></td>
+                  <td><strong>Date added</strong></td>
                   <td>{previewingAttachment.created}</td>
                 </tr>
               </tbody>
             </table>
-          </AttachmentPreviewContainer>
+          </AttachmentInfoContainer>
           <div className={Classes.DRAWER_FOOTER}>
             <Button
               intent={Intent.PRIMARY}
@@ -544,6 +588,10 @@ const FieldRow = ({
 
 const EntryDetailsContent = () => {
   const {
+    attachmentPreviews,
+    onPreviewAttachment
+  } = useContext(VaultContext);
+  const {
     entry,
     editing,
     onAddField,
@@ -607,7 +655,11 @@ const EntryDetailsContent = () => {
           <CustomFieldsHeading>
             <span>Attachments</span>
           </CustomFieldsHeading>
-          <Attachments entryFacade={entry} />
+          <Attachments
+            attachmentPreviews={attachmentPreviews}
+            entryFacade={entry}
+            onPreviewAttachment={attachment => onPreviewAttachment(entry.id, attachment.id)}
+          />
         </If>
       </PaneContent>
       <PaneFooter>
