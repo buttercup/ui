@@ -10,7 +10,16 @@ import { useDeepEffect } from './hooks/compare';
 export const VaultContext = React.createContext();
 const NOOP = () => {};
 
-export const VaultProvider = ({ attachmentPreviews, onAddAttachments, onPreviewAttachment, onUpdate, vault: vaultSource, children }) => {
+export const VaultProvider = ({
+  attachments,
+  attachmentPreviews,
+  onAddAttachments,
+  onDeleteAttachment,
+  onPreviewAttachment,
+  onUpdate,
+  vault: vaultSource,
+  children
+}) => {
   const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
@@ -49,7 +58,13 @@ export const VaultProvider = ({ attachmentPreviews, onAddAttachments, onPreviewA
     expandedGroups,
     groupFilters,
     entriesFilters,
+
+    // Attachments
+    attachments,
     attachmentPreviews,
+    onAddAttachments,
+    onDeleteAttachment,
+    onPreviewAttachment,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
@@ -69,8 +84,6 @@ export const VaultProvider = ({ attachmentPreviews, onAddAttachments, onPreviewA
     handleCollapseGroup: group => {
       setExpandedGroups(expandedGroups.filter(id => id !== group.id));
     },
-    onAddAttachments,
-    onPreviewAttachment,
     onCreateGroup: (parentID, groupTitle) => {
       const parentGroupID = parentID ? parentID : undefined;
       const group = createGroupFacade(null, parentGroupID);
@@ -234,16 +247,20 @@ export const VaultProvider = ({ attachmentPreviews, onAddAttachments, onPreviewA
 };
 
 VaultProvider.propTypes = {
+  attachments: PropTypes.bool.isRequired,
   attachmentPreviews: PropTypes.object,
   onAddAttachments: PropTypes.func,
+  onDeleteAttachment: PropTypes.func,
   onPreviewAttachment: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
 };
 
 VaultProvider.defaultProps = {
+  attachments: false,
   attachmentPreviews: {},
   onAddAttachments: () => {},
+  onDeleteAttachment: () => {},
   onPreviewAttachment: () => {},
   onUpdate: () => {}
 };

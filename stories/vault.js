@@ -148,6 +148,12 @@ function VaultRender({ dark = false, basic = true } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
+  const deleteAttachment = useCallback(async (entryID, attachmentID) => {
+    const source = vaultManager.sources[0];
+    const entry = source.vault.findEntryByID(entryID);
+    await source.attachmentManager.removeAttachment(entry, attachmentID);
+    setArchiveFacade(createArchiveFacade(source.vault));
+  }, [attachmentPreviews, vaultManager]);
   const previewAttachment = useCallback(async (entryID, attachmentID) => {
     if (attachmentPreviews[attachmentID]) return;
     const source = vaultManager.sources[0];
@@ -186,6 +192,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
         <If condition={archiveFacade}>
           <VaultProvider
             vault={archiveFacade}
+            attachments
             attachmentPreviews={attachmentPreviews}
             onAddAttachments={async (entryID, files) => {
               const source = vaultManager.sources[0];
@@ -203,6 +210,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
               }
               setArchiveFacade(createVaultFacade(source.vault));
             }}
+            onDeleteAttachment={deleteAttachment}
             onPreviewAttachment={previewAttachment}
             onUpdate={vault => {
               console.log('Saving vault...');

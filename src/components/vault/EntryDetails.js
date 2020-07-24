@@ -243,7 +243,8 @@ const HistoryScrollContainer = styled.div`
   overflow-y: scroll;
 `;
 
-const Attachments = ({ attachmentPreviews = {}, entryFacade, onPreviewAttachment = () => {} }) => {
+const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment = () => {}, onPreviewAttachment = () => {} }) => {
+  const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
     evt.stopPropagation();
@@ -334,11 +335,44 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onPreviewAttachment
             &nbsp;
             <Button
               intent={Intent.DANGER}
+              onClick={() => setDeletingAttachment(previewingAttachment)}
               title="Delete attachment"
             >Delete</Button>
           </div>
         </If>
       </Drawer>
+      <Dialog
+        isOpen={deletingAttachment}
+        onClose={() => setDeletingAttachment(null)}
+      >
+        <If condition={deletingAttachment}>
+          <div className={Classes.DIALOG_HEADER}>
+          Delete "{deletingAttachment.name}"
+          </div>
+          <div className={Classes.DIALOG_BODY}>
+            <p>Deleting this attachment will permanently remove it from your vault.</p>
+            <p>Are you sure that you want to delete it?</p>
+          </div>
+          <div className={Classes.DIALOG_FOOTER}>
+            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+              <Button
+                intent={Intent.DANGER}
+                onClick={() => {
+                  const attachmentItem = deletingAttachment;
+                  setDeletingAttachment(null);
+                  setPreviewingAttachment(null);
+                  onDeleteAttachment(attachmentItem);
+                }}
+                title="Confirm attachment deletion"
+              >Delete</Button>
+              <Button
+                onClick={() => setDeletingAttachment(null)}
+                title="Cancel attachment deletion"
+              >Cancel</Button>
+            </div>
+          </div>
+        </If>
+      </Dialog>
     </AttachmentsContainer>
   );
 };
@@ -588,7 +622,9 @@ const FieldRow = ({
 
 const EntryDetailsContent = () => {
   const {
+    attachments: supportsAttachments,
     attachmentPreviews,
+    onDeleteAttachment,
     onPreviewAttachment
   } = useContext(VaultContext);
   const {
@@ -651,13 +687,14 @@ const EntryDetailsContent = () => {
         <If condition={editing}>
           <Button onClick={onAddField} text="Add Custom Field" icon="small-plus" />
         </If>
-        <If condition={!editing}>
+        <If condition={!editing && supportsAttachments}>
           <CustomFieldsHeading>
             <span>Attachments</span>
           </CustomFieldsHeading>
           <Attachments
             attachmentPreviews={attachmentPreviews}
             entryFacade={entry}
+            onDeleteAttachment={attachment => onDeleteAttachment(entry.id, attachment.id)}
             onPreviewAttachment={attachment => onPreviewAttachment(entry.id, attachment.id)}
           />
         </If>
@@ -696,6 +733,7 @@ const EntryDetailsContent = () => {
 const EntryDetails = () => {
   const { editing, entry } = useCurrentEntry();
   const {
+    attachments: supportsAttachments,
     onAddAttachments
   } = useContext(VaultContext);
   const {
@@ -710,7 +748,7 @@ const EntryDetails = () => {
   });
   return (
     <ErrorBoundary>
-      <PaneContainer {...(editing ? {} : getRootProps())}>
+      <PaneContainer {...(!editing && supportsAttachments ? getRootProps() : {})}>
         <If condition={!editing}>
           <AttachmentDropZone
             visible={isDragActive}
