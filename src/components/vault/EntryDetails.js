@@ -79,6 +79,16 @@ const ActionBar = styled.div`
     margin-right: 10px;
   }
 `;
+const AttachmentDropInstruction = styled.div`
+  padding: 20px;
+  width: 100%;
+  border: 2px dashed rgb(235, 235, 235);
+  border-radius: 6px;
+  background-color: rgb(250, 250, 250);
+  font-style: italic;
+  text-align: center;
+  color: rgb(180, 180, 180);
+`;
 const AttachmentDropZone = styled.div`
   width: 100%;
   height: 100%;
@@ -266,6 +276,9 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
   }, []);
   return (
     <AttachmentsContainer>
+      <If condition={attachments.length === 0}>
+        <AttachmentDropInstruction>Drag and drop to add attachments</AttachmentDropInstruction>
+      </If>
       <For each="attachment" of={attachments}>
         <AttachmentItem
           key={attachment.id}
