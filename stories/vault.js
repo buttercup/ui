@@ -116,7 +116,6 @@ async function createHeavyArchive(vault) {
   const depth = 1;
   const entryCount = 20;
   (function createAtLevel(cont, lvl = 0) {
-    // console.log('RENDER LVL', lvl);
     for (let g = 0; g < groupCount; g += 1) {
       const group = cont.createGroup(randomWords());
       for (let e = 0; e < entryCount; e += 1) {
