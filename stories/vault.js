@@ -154,6 +154,25 @@ function VaultRender({ dark = false, basic = true } = {}) {
     await source.attachmentManager.removeAttachment(entry, attachmentID);
     setArchiveFacade(createArchiveFacade(source.vault));
   }, [attachmentPreviews, vaultManager]);
+  const downloadAttachment = useCallback(async (entryID, attachmentID) => {
+    const source = vaultManager.sources[0];
+    const entry = source.vault.findEntryByID(entryID);
+    const attachmentDetails = await source.attachmentManager.getAttachmentDetails(entry, attachmentID);
+    const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
+    // Download
+    const blob = new Blob([attachmentData], { type: attachmentDetails.type });
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = attachmentDetails.name;
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(objectUrl);
+      document.body.removeChild(anchor);
+    }, 0);
+    // window.open(objectUrl);
+  }, [vaultManager]);
   const previewAttachment = useCallback(async (entryID, attachmentID) => {
     if (attachmentPreviews[attachmentID]) return;
     const source = vaultManager.sources[0];
@@ -211,6 +230,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
               setArchiveFacade(createVaultFacade(source.vault));
             }}
             onDeleteAttachment={deleteAttachment}
+            onDownloadAttachment={downloadAttachment}
             onPreviewAttachment={previewAttachment}
             onUpdate={vault => {
               console.log('Saving vault...');

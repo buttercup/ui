@@ -15,6 +15,7 @@ export const VaultProvider = ({
   attachmentPreviews,
   onAddAttachments,
   onDeleteAttachment,
+  onDownloadAttachment,
   onPreviewAttachment,
   onUpdate,
   vault: vaultSource,
@@ -64,6 +65,7 @@ export const VaultProvider = ({
     attachmentPreviews,
     onAddAttachments,
     onDeleteAttachment,
+    onDownloadAttachment,
     onPreviewAttachment,
 
     // Actions
@@ -251,6 +253,7 @@ VaultProvider.propTypes = {
   attachmentPreviews: PropTypes.object,
   onAddAttachments: PropTypes.func,
   onDeleteAttachment: PropTypes.func,
+  onDownloadAttachment: PropTypes.func,
   onPreviewAttachment: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
@@ -261,6 +264,7 @@ VaultProvider.defaultProps = {
   attachmentPreviews: {},
   onAddAttachments: () => {},
   onDeleteAttachment: () => {},
+  onDownloadAttachment: () => {},
   onPreviewAttachment: () => {},
   onUpdate: () => {}
 };

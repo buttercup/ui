@@ -243,7 +243,7 @@ const HistoryScrollContainer = styled.div`
   overflow-y: scroll;
 `;
 
-const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment = () => {}, onPreviewAttachment = () => {} }) => {
+const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment = () => {}, onDownloadAttachment = () => {}, onPreviewAttachment = () => {} }) => {
   const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
@@ -330,6 +330,7 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
           <div className={Classes.DRAWER_FOOTER}>
             <Button
               intent={Intent.PRIMARY}
+              onClick={() => onDownloadAttachment(previewingAttachment)}
               title="Download attachment"
             >Download</Button>
             &nbsp;
@@ -625,6 +626,7 @@ const EntryDetailsContent = () => {
     attachments: supportsAttachments,
     attachmentPreviews,
     onDeleteAttachment,
+    onDownloadAttachment,
     onPreviewAttachment
   } = useContext(VaultContext);
   const {
@@ -695,6 +697,7 @@ const EntryDetailsContent = () => {
             attachmentPreviews={attachmentPreviews}
             entryFacade={entry}
             onDeleteAttachment={attachment => onDeleteAttachment(entry.id, attachment.id)}
+            onDownloadAttachment={attachment => onDownloadAttachment(entry.id, attachment.id)}
             onPreviewAttachment={attachment => onPreviewAttachment(entry.id, attachment.id)}
           />
         </If>
