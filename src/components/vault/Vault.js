@@ -8,8 +8,19 @@ import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
 
 export const VaultContext = React.createContext();
+const NOOP = () => {};
 
-export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
+export const VaultProvider = ({
+  attachments,
+  attachmentPreviews,
+  onAddAttachments,
+  onDeleteAttachment,
+  onDownloadAttachment,
+  onPreviewAttachment,
+  onUpdate,
+  vault: vaultSource,
+  children
+}) => {
   const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
@@ -48,6 +59,14 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
     expandedGroups,
     groupFilters,
     entriesFilters,
+
+    // Attachments
+    attachments,
+    attachmentPreviews,
+    onAddAttachments,
+    onDeleteAttachment,
+    onDownloadAttachment,
+    onPreviewAttachment,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
@@ -230,10 +249,22 @@ export const VaultProvider = ({ onUpdate, vault: vaultSource, children }) => {
 };
 
 VaultProvider.propTypes = {
+  attachments: PropTypes.bool.isRequired,
+  attachmentPreviews: PropTypes.object,
+  onAddAttachments: PropTypes.func,
+  onDeleteAttachment: PropTypes.func,
+  onDownloadAttachment: PropTypes.func,
+  onPreviewAttachment: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
 };
 
 VaultProvider.defaultProps = {
+  attachments: false,
+  attachmentPreviews: {},
+  onAddAttachments: () => {},
+  onDeleteAttachment: () => {},
+  onDownloadAttachment: () => {},
+  onPreviewAttachment: () => {},
   onUpdate: () => {}
 };

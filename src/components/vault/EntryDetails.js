@@ -1,13 +1,16 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
+import { useDropzone } from 'react-dropzone';
 import {
   Button,
   ButtonGroup,
+  Card,
   Classes,
   ControlGroup,
   Dialog,
+  Drawer,
   EditableText,
   HTMLSelect,
   Icon,
@@ -18,28 +21,47 @@ import {
   MenuItem,
   NonIdealState,
   Popover,
+  Position,
   Text
 } from '@blueprintjs/core';
 import {
   FIELD_VALUE_TYPE_NOTE,
   FIELD_VALUE_TYPE_OTP,
   FIELD_VALUE_TYPE_PASSWORD,
-  FIELD_VALUE_TYPE_TEXT
+  FIELD_VALUE_TYPE_TEXT,
+  Entry
 } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
+import formatBytes from "xbytes";
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
+import { VaultContext } from './Vault';
 import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 
+const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
   { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
   { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
   { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
   { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
 ];
+
+function iconName(mimeType) {
+  if (/^image\//.test(mimeType)) {
+    return "media";
+  }
+  return "document";
+}
+
+function mimeTypePreviewable(mimeType) {
+  if (/^image\//.test(mimeType)) {
+    return true;
+  }
+  return false;
+}
 
 function title(entry) {
   const titleField = entry.fields.find(
@@ -56,6 +78,92 @@ const ActionBar = styled.div`
   > div button {
     margin-right: 10px;
   }
+`;
+const AttachmentDropInstruction = styled.div`
+  padding: 20px;
+  width: 100%;
+  border: 2px dashed rgb(235, 235, 235);
+  border-radius: 6px;
+  background-color: rgb(250, 250, 250);
+  font-style: italic;
+  text-align: center;
+  color: rgb(180, 180, 180);
+`;
+const AttachmentDropZone = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: ${props => props.visible ? "flex" : "none"};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+`;
+const AttachmentInfoContainer = styled.div`
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+`;
+const AttachmentItem = styled(Card)`
+  margin: 4px;
+  padding: 4px;
+  width: 104px;
+  height: 110px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0,0,0,0.04);
+  }
+`;
+const AttachmentItemSize = styled.div`
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  font-size: 10px;
+  user-select: none;
+  color: #888;
+`;
+const AttachmentItemTitle = styled.div`
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 11px;
+  user-select: none;
+`;
+const AttachmentPreviewContainer = styled.div`
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+const AttachmentPreviewImage = styled.img`
+  max-height: 100%;
+  max-width: 100%;
+`;
+const AttachmentsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
 `;
 const ValueWithNewLines = styled.span`
   white-space: pre-wrap;
@@ -144,6 +252,144 @@ const HistoryScrollContainer = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
 `;
+
+const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment = () => {}, onDownloadAttachment = () => {}, onPreviewAttachment = () => {} }) => {
+  const [deletingAttachment, setDeletingAttachment] = useState(null);
+  const [previewingAttachment, setPreviewingAttachment] = useState(null);
+  const onAttachmentItemClick = useCallback((evt, attachment) => {
+    evt.stopPropagation();
+    setPreviewingAttachment(attachment);
+  }, []);
+  const attachments = entryFacade.fields.reduce((output, field) => {
+    if (field.propertyType !== "attribute" || field.property.indexOf(ENTRY_ATTACHMENT_ATTRIB_PREFIX) !== 0) {
+      return output;
+    }
+    const attachment = JSON.parse(field.value);
+    return [
+      ...output,
+      {
+        ...attachment,
+        sizeFriendly: formatBytes(attachment.size, { iec: true }),
+        icon: iconName(attachment.type)
+      }
+    ];
+  }, []);
+  return (
+    <AttachmentsContainer>
+      <If condition={attachments.length === 0}>
+        <AttachmentDropInstruction>Drag and drop to add attachments</AttachmentDropInstruction>
+      </If>
+      <For each="attachment" of={attachments}>
+        <AttachmentItem
+          key={attachment.id}
+          title={attachment.name}
+          onClick={evt => {
+            onPreviewAttachment(attachment);
+            onAttachmentItemClick(evt, attachment);
+          }}
+        >
+          <Icon icon={attachment.icon} iconSize={56} color="rgba(0,0,0,0.6)" />
+          <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
+          <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
+        </AttachmentItem>
+      </For>
+      <Drawer
+        icon={previewingAttachment && previewingAttachment.icon || undefined}
+        isOpen={previewingAttachment}
+        onClose={() => setPreviewingAttachment(null)}
+        position={Position.RIGHT}
+        size="45%"
+        title={previewingAttachment && previewingAttachment.name || ""}
+      >
+        <If condition={previewingAttachment}>
+          <AttachmentInfoContainer className={Classes.DRAWER_BODY}>
+            <If condition={mimeTypePreviewable(previewingAttachment.type)}>
+              <AttachmentPreviewContainer className={attachmentPreviews[previewingAttachment.id] ? "" : Classes.SKELETON}>
+                <If condition={attachmentPreviews[previewingAttachment.id]}>
+                  <If condition={/^image\//.test(previewingAttachment.type)}>
+                    <AttachmentPreviewImage
+                      src={`data:${previewingAttachment.type};base64,${attachmentPreviews[previewingAttachment.id]}`}
+                    />
+                  </If>
+                </If>
+              </AttachmentPreviewContainer>
+              <br />
+            </If>
+            <table className={cx(Classes.HTML_TABLE, Classes.HTML_TABLE_STRIPED, Classes.SMALL)}>
+              <tbody>
+                <tr>
+                  <td><strong>ID</strong></td>
+                  <td><code>{previewingAttachment.id}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Filename</strong></td>
+                  <td><code>{previewingAttachment.name}</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Type</strong></td>
+                  <td>{previewingAttachment.type}</td>
+                </tr>
+                <tr>
+                  <td><strong>Size</strong></td>
+                  <td>{previewingAttachment.sizeFriendly}</td>
+                </tr>
+                <tr>
+                  <td><strong>Date added</strong></td>
+                  <td>{previewingAttachment.created}</td>
+                </tr>
+              </tbody>
+            </table>
+          </AttachmentInfoContainer>
+          <div className={Classes.DRAWER_FOOTER}>
+            <Button
+              intent={Intent.PRIMARY}
+              onClick={() => onDownloadAttachment(previewingAttachment)}
+              title="Download attachment"
+            >Download</Button>
+            &nbsp;
+            <Button
+              intent={Intent.DANGER}
+              onClick={() => setDeletingAttachment(previewingAttachment)}
+              title="Delete attachment"
+            >Delete</Button>
+          </div>
+        </If>
+      </Drawer>
+      <Dialog
+        isOpen={deletingAttachment}
+        onClose={() => setDeletingAttachment(null)}
+      >
+        <If condition={deletingAttachment}>
+          <div className={Classes.DIALOG_HEADER}>
+          Delete "{deletingAttachment.name}"
+          </div>
+          <div className={Classes.DIALOG_BODY}>
+            <p>Deleting this attachment will permanently remove it from your vault.</p>
+            <p>Are you sure that you want to delete it?</p>
+          </div>
+          <div className={Classes.DIALOG_FOOTER}>
+            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+              <Button
+                intent={Intent.DANGER}
+                onClick={() => {
+                  const attachmentItem = deletingAttachment;
+                  setDeletingAttachment(null);
+                  setPreviewingAttachment(null);
+                  onDeleteAttachment(attachmentItem);
+                }}
+                title="Confirm attachment deletion"
+              >Delete</Button>
+              <Button
+                onClick={() => setDeletingAttachment(null)}
+                title="Cancel attachment deletion"
+              >Cancel</Button>
+            </div>
+          </div>
+        </If>
+      </Dialog>
+    </AttachmentsContainer>
+  );
+};
 
 const FieldText = ({ entryFacade, field }) => {
   const [visible, toggleVisibility] = useState(false);
@@ -390,6 +636,13 @@ const FieldRow = ({
 
 const EntryDetailsContent = () => {
   const {
+    attachments: supportsAttachments,
+    attachmentPreviews,
+    onDeleteAttachment,
+    onDownloadAttachment,
+    onPreviewAttachment
+  } = useContext(VaultContext);
+  const {
     entry,
     editing,
     onAddField,
@@ -429,7 +682,7 @@ const EntryDetailsContent = () => {
         </FormContainer>
         <If condition={editing || removeableFields.length > 0}>
           <CustomFieldsHeading>
-            <span>Custom Fields:</span>
+            <span>Custom Fields</span>
           </CustomFieldsHeading>
         </If>
         <FormContainer>
@@ -448,6 +701,18 @@ const EntryDetailsContent = () => {
         </FormContainer>
         <If condition={editing}>
           <Button onClick={onAddField} text="Add Custom Field" icon="small-plus" />
+        </If>
+        <If condition={!editing && supportsAttachments}>
+          <CustomFieldsHeading>
+            <span>Attachments</span>
+          </CustomFieldsHeading>
+          <Attachments
+            attachmentPreviews={attachmentPreviews}
+            entryFacade={entry}
+            onDeleteAttachment={attachment => onDeleteAttachment(entry.id, attachment.id)}
+            onDownloadAttachment={attachment => onDownloadAttachment(entry.id, attachment.id)}
+            onPreviewAttachment={attachment => onPreviewAttachment(entry.id, attachment.id)}
+          />
         </If>
       </PaneContent>
       <PaneFooter>
@@ -482,10 +747,33 @@ const EntryDetailsContent = () => {
 };
 
 const EntryDetails = () => {
-  const { entry } = useCurrentEntry();
+  const { editing, entry } = useCurrentEntry();
+  const {
+    attachments: supportsAttachments,
+    onAddAttachments
+  } = useContext(VaultContext);
+  const {
+    getInputProps,
+    getRootProps,
+    isDragActive
+  } = useDropzone({
+    noClick: true,
+    onDrop: files => {
+      onAddAttachments(entry.id, files);
+    }
+  });
   return (
     <ErrorBoundary>
-      <PaneContainer>
+      <PaneContainer {...(!editing && supportsAttachments ? getRootProps() : {})}>
+        <If condition={!editing}>
+          <AttachmentDropZone
+            visible={isDragActive}
+          >
+            <Icon icon="compressed" iconSize={30} />
+            <span>Drop file(s) to add to vault</span>
+          </AttachmentDropZone>
+          <input {...getInputProps()} />
+        </If>
         <Choose>
           <When condition={entry}>
             <EntryDetailsContent />
