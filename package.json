@@ -61,7 +61,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-jsx-control-statements": "^4.1.0",
     "babel-plugin-ramda": "^2.0.0",
-    "buttercup": "^4.10.0",
+    "buttercup": "^4.13.0",
     "css-loader": "^3.6.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
@@ -96,7 +96,7 @@
     "xbytes": "^1.6.2"
   },
   "peerDependencies": {
-    "buttercup": ">= 4.10",
+    "buttercup": ">= 4.13",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^4.1.3"
