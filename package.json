@@ -8,7 +8,7 @@
   "author": "Sallar Kaboli <sallar.kaboli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && webpack --mode production --config webpack.config.js && tsc",
+    "build": "npm run clean && webpack --mode production --config webpack.config.js",
     "build:storybook": "build-storybook",
     "clean": "rimraf dist",
     "dev": "npm run clean && webpack --mode development --config webpack.config.js --progress --watch",
