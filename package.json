@@ -13,7 +13,6 @@
     "clean": "rimraf dist",
     "dev": "npm run clean && webpack --mode development --config webpack.config.js --progress --watch",
     "format": "prettier --write '{src,stories,__tests__}/**/*.js'",
-    "precommit": "lint-staged",
     "prepublishOnly": "npm run build",
     "storybook": "start-storybook -p 6006",
     "test": "run-s test:unit test:format",
@@ -26,9 +25,13 @@
   ],
   "lint-staged": {
     "{src,stories,__tests__}/**/*.js": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "moduleFileExtensions": [

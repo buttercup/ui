@@ -32,7 +32,7 @@ import {
   Entry
 } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
-import formatBytes from "xbytes";
+import formatBytes from 'xbytes';
 import { useCurrentEntry, useGroups } from './hooks/vault';
 import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import { VaultContext } from './Vault';
@@ -51,9 +51,9 @@ const FIELD_TYPE_OPTIONS = [
 
 function iconName(mimeType) {
   if (/^image\//.test(mimeType)) {
-    return "media";
+    return 'media';
   }
-  return "document";
+  return 'document';
 }
 
 function mimeTypePreviewable(mimeType) {
@@ -95,7 +95,7 @@ const AttachmentDropZone = styled.div`
   position: absolute;
   z-index: 2;
   background-color: rgba(255, 255, 255, 0.85);
-  display: ${props => props.visible ? "flex" : "none"};
+  display: ${props => (props.visible ? 'flex' : 'none')};
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -123,7 +123,7 @@ const AttachmentItem = styled(Card)`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: rgba(0,0,0,0.04);
+    background-color: rgba(0, 0, 0, 0.04);
   }
 `;
 const AttachmentItemSize = styled.div`
@@ -253,7 +253,13 @@ const HistoryScrollContainer = styled.div`
   overflow-y: scroll;
 `;
 
-const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment = () => {}, onDownloadAttachment = () => {}, onPreviewAttachment = () => {} }) => {
+const Attachments = ({
+  attachmentPreviews = {},
+  entryFacade,
+  onDeleteAttachment = () => {},
+  onDownloadAttachment = () => {},
+  onPreviewAttachment = () => {}
+}) => {
   const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
@@ -261,7 +267,10 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
     setPreviewingAttachment(attachment);
   }, []);
   const attachments = entryFacade.fields.reduce((output, field) => {
-    if (field.propertyType !== "attribute" || field.property.indexOf(ENTRY_ATTACHMENT_ATTRIB_PREFIX) !== 0) {
+    if (
+      field.propertyType !== 'attribute' ||
+      field.property.indexOf(ENTRY_ATTACHMENT_ATTRIB_PREFIX) !== 0
+    ) {
       return output;
     }
     const attachment = JSON.parse(field.value);
@@ -294,21 +303,25 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
         </AttachmentItem>
       </For>
       <Drawer
-        icon={previewingAttachment && previewingAttachment.icon || undefined}
+        icon={(previewingAttachment && previewingAttachment.icon) || undefined}
         isOpen={previewingAttachment}
         onClose={() => setPreviewingAttachment(null)}
         position={Position.RIGHT}
         size="45%"
-        title={previewingAttachment && previewingAttachment.name || ""}
+        title={(previewingAttachment && previewingAttachment.name) || ''}
       >
         <If condition={previewingAttachment}>
           <AttachmentInfoContainer className={Classes.DRAWER_BODY}>
             <If condition={mimeTypePreviewable(previewingAttachment.type)}>
-              <AttachmentPreviewContainer className={attachmentPreviews[previewingAttachment.id] ? "" : Classes.SKELETON}>
+              <AttachmentPreviewContainer
+                className={attachmentPreviews[previewingAttachment.id] ? '' : Classes.SKELETON}
+              >
                 <If condition={attachmentPreviews[previewingAttachment.id]}>
                   <If condition={/^image\//.test(previewingAttachment.type)}>
                     <AttachmentPreviewImage
-                      src={`data:${previewingAttachment.type};base64,${attachmentPreviews[previewingAttachment.id]}`}
+                      src={`data:${previewingAttachment.type};base64,${
+                        attachmentPreviews[previewingAttachment.id]
+                      }`}
                     />
                   </If>
                 </If>
@@ -318,23 +331,37 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
             <table className={cx(Classes.HTML_TABLE, Classes.HTML_TABLE_STRIPED, Classes.SMALL)}>
               <tbody>
                 <tr>
-                  <td><strong>ID</strong></td>
-                  <td><code>{previewingAttachment.id}</code></td>
+                  <td>
+                    <strong>ID</strong>
+                  </td>
+                  <td>
+                    <code>{previewingAttachment.id}</code>
+                  </td>
                 </tr>
                 <tr>
-                  <td><strong>Filename</strong></td>
-                  <td><code>{previewingAttachment.name}</code></td>
+                  <td>
+                    <strong>Filename</strong>
+                  </td>
+                  <td>
+                    <code>{previewingAttachment.name}</code>
+                  </td>
                 </tr>
                 <tr>
-                  <td><strong>Type</strong></td>
+                  <td>
+                    <strong>Type</strong>
+                  </td>
                   <td>{previewingAttachment.type}</td>
                 </tr>
                 <tr>
-                  <td><strong>Size</strong></td>
+                  <td>
+                    <strong>Size</strong>
+                  </td>
                   <td>{previewingAttachment.sizeFriendly}</td>
                 </tr>
                 <tr>
-                  <td><strong>Date added</strong></td>
+                  <td>
+                    <strong>Date added</strong>
+                  </td>
                   <td>{previewingAttachment.created}</td>
                 </tr>
               </tbody>
@@ -345,24 +372,23 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
               intent={Intent.PRIMARY}
               onClick={() => onDownloadAttachment(previewingAttachment)}
               title="Download attachment"
-            >Download</Button>
+            >
+              Download
+            </Button>
             &nbsp;
             <Button
               intent={Intent.DANGER}
               onClick={() => setDeletingAttachment(previewingAttachment)}
               title="Delete attachment"
-            >Delete</Button>
+            >
+              Delete
+            </Button>
           </div>
         </If>
       </Drawer>
-      <Dialog
-        isOpen={deletingAttachment}
-        onClose={() => setDeletingAttachment(null)}
-      >
+      <Dialog isOpen={deletingAttachment} onClose={() => setDeletingAttachment(null)}>
         <If condition={deletingAttachment}>
-          <div className={Classes.DIALOG_HEADER}>
-          Delete "{deletingAttachment.name}"
-          </div>
+          <div className={Classes.DIALOG_HEADER}>Delete "{deletingAttachment.name}"</div>
           <div className={Classes.DIALOG_BODY}>
             <p>Deleting this attachment will permanently remove it from your vault.</p>
             <p>Are you sure that you want to delete it?</p>
@@ -378,11 +404,15 @@ const Attachments = ({ attachmentPreviews = {}, entryFacade, onDeleteAttachment 
                   onDeleteAttachment(attachmentItem);
                 }}
                 title="Confirm attachment deletion"
-              >Delete</Button>
+              >
+                Delete
+              </Button>
               <Button
                 onClick={() => setDeletingAttachment(null)}
                 title="Cancel attachment deletion"
-              >Cancel</Button>
+              >
+                Cancel
+              </Button>
             </div>
           </div>
         </If>
@@ -748,15 +778,8 @@ const EntryDetailsContent = () => {
 
 const EntryDetails = () => {
   const { editing, entry } = useCurrentEntry();
-  const {
-    attachments: supportsAttachments,
-    onAddAttachments
-  } = useContext(VaultContext);
-  const {
-    getInputProps,
-    getRootProps,
-    isDragActive
-  } = useDropzone({
+  const { attachments: supportsAttachments, onAddAttachments } = useContext(VaultContext);
+  const { getInputProps, getRootProps, isDragActive } = useDropzone({
     noClick: true,
     onDrop: files => {
       onAddAttachments(entry.id, files);
@@ -766,9 +789,7 @@ const EntryDetails = () => {
     <ErrorBoundary>
       <PaneContainer {...(!editing && supportsAttachments ? getRootProps() : {})}>
         <If condition={!editing}>
-          <AttachmentDropZone
-            visible={isDragActive}
-          >
+          <AttachmentDropZone visible={isDragActive}>
             <Icon icon="compressed" iconSize={30} />
             <span>Drop file(s) to add to vault</span>
           </AttachmentDropZone>

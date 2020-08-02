@@ -28,7 +28,7 @@ function arrayBufferToBase64(buffer) {
   let bytes = new Uint8Array(buffer);
   let len = bytes.byteLength;
   for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
+    binary += String.fromCharCode(bytes[i]);
   }
   return window.btoa(binary);
 }
@@ -72,11 +72,11 @@ async function createArchive(vault, source) {
     .setProperty('password', '4812')
     .setProperty('password', 'passw0rd');
   const attachmentEntry = general
-      .createEntry('Entry w/ Attachments')
-      .setProperty('username', 'jsc@test.org')
-      .setProperty('password', '34n54mlflml3')
-      .setProperty('url', 'https://test.com')
-      .setProperty('PIN', '1200');
+    .createEntry('Entry w/ Attachments')
+    .setProperty('username', 'jsc@test.org')
+    .setProperty('password', '34n54mlflml3')
+    .setProperty('url', 'https://test.com')
+    .setProperty('PIN', '1200');
   await source.attachmentManager.setAttachment(
     attachmentEntry,
     AttachmentManager.newAttachmentID(),
@@ -89,7 +89,7 @@ async function createArchive(vault, source) {
     AttachmentManager.newAttachmentID(),
     ATTACHMENT_BLOB,
     'special-file.blob',
-    'application/octet-stream',
+    'application/octet-stream'
   );
   const notes = vault.createGroup('Notes');
   notes
@@ -145,47 +145,62 @@ function VaultRender({ dark = false, basic = true } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
-  const deleteAttachment = useCallback(async (entryID, attachmentID) => {
-    const source = vaultManager.sources[0];
-    const entry = source.vault.findEntryByID(entryID);
-    await source.attachmentManager.removeAttachment(entry, attachmentID);
-    setArchiveFacade(createArchiveFacade(source.vault));
-  }, [attachmentPreviews, vaultManager]);
-  const downloadAttachment = useCallback(async (entryID, attachmentID) => {
-    const source = vaultManager.sources[0];
-    const entry = source.vault.findEntryByID(entryID);
-    const attachmentDetails = await source.attachmentManager.getAttachmentDetails(entry, attachmentID);
-    const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
-    // Download
-    const blob = new Blob([attachmentData], { type: attachmentDetails.type });
-    const objectUrl = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = objectUrl;
-    anchor.download = attachmentDetails.name;
-    document.body.appendChild(anchor);
-    anchor.click();
-    setTimeout(() => {
-      URL.revokeObjectURL(objectUrl);
-      document.body.removeChild(anchor);
-    }, 0);
-  }, [vaultManager]);
-  const previewAttachment = useCallback(async (entryID, attachmentID) => {
-    if (attachmentPreviews[attachmentID]) return;
-    const source = vaultManager.sources[0];
-    const entry = source.vault.findEntryByID(entryID);
-    const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
-    setAttachmentPreviews({
-      ...attachmentPreviews,
-      [attachmentID]: arrayBufferToBase64(attachmentData)
-    });
-  }, [attachmentPreviews, vaultManager]);
+  const deleteAttachment = useCallback(
+    async (entryID, attachmentID) => {
+      const source = vaultManager.sources[0];
+      const entry = source.vault.findEntryByID(entryID);
+      await source.attachmentManager.removeAttachment(entry, attachmentID);
+      setArchiveFacade(createArchiveFacade(source.vault));
+    },
+    [attachmentPreviews, vaultManager]
+  );
+  const downloadAttachment = useCallback(
+    async (entryID, attachmentID) => {
+      const source = vaultManager.sources[0];
+      const entry = source.vault.findEntryByID(entryID);
+      const attachmentDetails = await source.attachmentManager.getAttachmentDetails(
+        entry,
+        attachmentID
+      );
+      const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
+      // Download
+      const blob = new Blob([attachmentData], { type: attachmentDetails.type });
+      const objectUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = attachmentDetails.name;
+      document.body.appendChild(anchor);
+      anchor.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(objectUrl);
+        document.body.removeChild(anchor);
+      }, 0);
+    },
+    [vaultManager]
+  );
+  const previewAttachment = useCallback(
+    async (entryID, attachmentID) => {
+      if (attachmentPreviews[attachmentID]) return;
+      const source = vaultManager.sources[0];
+      const entry = source.vault.findEntryByID(entryID);
+      const attachmentData = await source.attachmentManager.getAttachment(entry, attachmentID);
+      setAttachmentPreviews({
+        ...attachmentPreviews,
+        [attachmentID]: arrayBufferToBase64(attachmentData)
+      });
+    },
+    [attachmentPreviews, vaultManager]
+  );
   useEffect(() => {
     async function createVaultManager() {
       const manager = new VaultManager();
-      const creds = Credentials.fromDatasource({
-        type: 'memory',
-        property: 'test'
-      }, 'test');
+      const creds = Credentials.fromDatasource(
+        {
+          type: 'memory',
+          property: 'test'
+        },
+        'test'
+      );
       const credStr = await creds.toSecureString();
       const source = new VaultSource('test', 'memory', credStr);
       await manager.addSource(source);
