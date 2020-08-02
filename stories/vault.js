@@ -82,8 +82,7 @@ async function createArchive(vault, source) {
     AttachmentManager.newAttachmentID(),
     ATTACHMENT_IMG,
     'my-image.png',
-    'image/png',
-    ATTACHMENT_IMG.byteLength
+    'image/png'
   );
   await source.attachmentManager.setAttachment(
     attachmentEntry,
@@ -91,7 +90,6 @@ async function createArchive(vault, source) {
     ATTACHMENT_BLOB,
     'special-file.blob',
     'application/octet-stream',
-    ATTACHMENT_BLOB.byteLength
   );
   const notes = vault.createGroup('Notes');
   notes
@@ -170,7 +168,6 @@ function VaultRender({ dark = false, basic = true } = {}) {
       URL.revokeObjectURL(objectUrl);
       document.body.removeChild(anchor);
     }, 0);
-    // window.open(objectUrl);
   }, [vaultManager]);
   const previewAttachment = useCallback(async (entryID, attachmentID) => {
     if (attachmentPreviews[attachmentID]) return;
@@ -191,15 +188,16 @@ function VaultRender({ dark = false, basic = true } = {}) {
       }, 'test');
       const credStr = await creds.toSecureString();
       const source = new VaultSource('test', 'memory', credStr);
-      manager.addSource(source);
+      await manager.addSource(source);
       await source.unlock(Credentials.fromPassword('test'), { initialiseRemote: true });
-      setVaultManager(manager);
       const { vault } = source;
       if (basic) {
         await createArchive(vault, source);
       } else {
         await createHeavyArchive(vault);
       }
+      await source.save();
+      setVaultManager(manager);
       setArchiveFacade(createArchiveFacade(vault));
     }
     createVaultManager();
@@ -222,8 +220,7 @@ function VaultRender({ dark = false, basic = true } = {}) {
                   AttachmentManager.newAttachmentID(),
                   buff,
                   file.name,
-                  file.type || 'application/octet-stream',
-                  file.size
+                  file.type || 'application/octet-stream'
                 );
               }
               setArchiveFacade(createVaultFacade(source.vault));
