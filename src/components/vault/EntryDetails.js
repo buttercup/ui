@@ -82,12 +82,12 @@ const ActionBar = styled.div`
 const AttachmentDropInstruction = styled.div`
   padding: 20px;
   width: 100%;
-  border: 2px dashed rgb(235, 235, 235);
+  border: 2px dashed ${p => getThemeProp(p, 'attachment.dropBorder')};
   border-radius: 6px;
-  background-color: rgb(250, 250, 250);
+  background-color: ${p => getThemeProp(p, 'attachment.dropBackground')};
   font-style: italic;
   text-align: center;
-  color: rgb(180, 180, 180);
+  color: ${p => getThemeProp(p, 'attachment.dropText')};
 `;
 const AttachmentDropZone = styled.div`
   width: 100%;
@@ -278,7 +278,8 @@ const Attachments = ({
       ...output,
       {
         ...attachment,
-        sizeFriendly: formatBytes(attachment.size, { iec: true }),
+        sizeEncFriendly: formatBytes(attachment.sizeEncrypted, { iec: true }),
+        sizeOrigFriendly: formatBytes(attachment.sizeOriginal, { iec: true }),
         icon: iconName(attachment.type)
       }
     ];
@@ -298,7 +299,7 @@ const Attachments = ({
           }}
         >
           <Icon icon={attachment.icon} iconSize={56} color="rgba(0,0,0,0.6)" />
-          <AttachmentItemSize>{attachment.sizeFriendly}</AttachmentItemSize>
+          <AttachmentItemSize>{attachment.sizeEncFriendly}</AttachmentItemSize>
           <AttachmentItemTitle>{attachment.name}</AttachmentItemTitle>
         </AttachmentItem>
       </For>
@@ -356,7 +357,13 @@ const Attachments = ({
                   <td>
                     <strong>Size</strong>
                   </td>
-                  <td>{previewingAttachment.sizeFriendly}</td>
+                  <td>{previewingAttachment.sizeOrigFriendly}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Stored</strong>
+                  </td>
+                  <td>{previewingAttachment.sizeEncFriendly}</td>
                 </tr>
                 <tr>
                   <td>
