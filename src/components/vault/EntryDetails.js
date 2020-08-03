@@ -112,8 +112,8 @@ const AttachmentInfoContainer = styled.div`
   box-sizing: border-box;
 `;
 const AttachmentItem = styled(Card)`
-  margin: 4px;
-  padding: 4px;
+  margin: 4px !important;
+  padding: 4px !important;
   width: 104px;
   height: 110px;
   overflow: hidden;
