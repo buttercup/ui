@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import path from 'path';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';

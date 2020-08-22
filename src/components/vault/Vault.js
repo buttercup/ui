@@ -8,7 +8,6 @@ import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
 
 export const VaultContext = React.createContext();
-const NOOP = () => {};
 
 export const VaultProvider = ({
   attachments,

@@ -24,13 +24,7 @@ import {
   Position,
   Text
 } from '@blueprintjs/core';
-import {
-  FIELD_VALUE_TYPE_NOTE,
-  FIELD_VALUE_TYPE_OTP,
-  FIELD_VALUE_TYPE_PASSWORD,
-  FIELD_VALUE_TYPE_TEXT,
-  Entry
-} from 'buttercup/web';
+import { Entry, EntryChangeType, EntryPropertyValueType } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import formatBytes from 'xbytes';
 import { useCurrentEntry, useGroups } from './hooks/vault';
@@ -43,10 +37,10 @@ import { copyToClipboard, getThemeProp } from '../../utils';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
-  { type: FIELD_VALUE_TYPE_TEXT, title: 'Text (default)', icon: 'italic' },
-  { type: FIELD_VALUE_TYPE_NOTE, title: 'Note', icon: 'align-left' },
-  { type: FIELD_VALUE_TYPE_PASSWORD, title: 'Password', icon: 'key' },
-  { type: FIELD_VALUE_TYPE_OTP, title: 'OTP', icon: 'time' }
+  { type: EntryPropertyValueType.Text, title: 'Text (default)', icon: 'italic' },
+  { type: EntryPropertyValueType.Note, title: 'Note', icon: 'align-left' },
+  { type: EntryPropertyValueType.Password, title: 'Password', icon: 'key' },
+  { type: EntryPropertyValueType.OTP, title: 'OTP', icon: 'time' }
 ];
 
 function iconName(mimeType) {
@@ -433,28 +427,25 @@ const FieldText = ({ entryFacade, field }) => {
   const [historyDialogVisible, setHistoryDialogVisible] = useState(false);
   const otpRef = useRef(field.value);
   const { onFieldUpdateInPlace } = useCurrentEntry();
-  const Element = field.valueType === FIELD_VALUE_TYPE_PASSWORD ? 'code' : 'span';
-  const { _history: history = [] } = entryFacade;
+  const Element = field.valueType === EntryPropertyValueType.Password ? 'code' : 'span';
+  const { _changes: history = [] } = entryFacade;
   const historyItems = useMemo(() => {
+    console.log('HIST', field.property, history);
     const items = history.filter(
-      item => item.property === field.property && item.propertyType === field.propertyType
+      item => item.property === field.property && item.type !== EntryChangeType.Deleted
     );
-    if (items.length > 0 && items[items.length - 1].newValue === field.value) {
-      // Remove last item as it just shows the current value
-      items.pop();
-    }
     return items;
   }, [history]);
   return (
     <FieldTextWrapper role="content" disabled={!field.value}>
       <Choose>
-        <When condition={field.valueType === FIELD_VALUE_TYPE_OTP}>
+        <When condition={field.valueType === EntryPropertyValueType.OTP}>
           <OTPDigits otpURI={field.value} otpRef={value => (otpRef.current = value)} />
         </When>
         <When condition={!field.value}>
           <Text className={Classes.TEXT_MUTED}>Not set.</Text>
         </When>
-        <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
+        <When condition={field.valueType === EntryPropertyValueType.Note}>
           <ValueWithNewLines>{field.value}</ValueWithNewLines>
         </When>
         <When condition={field.formatting && field.formatting.options}>
@@ -465,7 +456,7 @@ const FieldText = ({ entryFacade, field }) => {
         <Otherwise>
           <Element>
             <Choose>
-              <When condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD && !visible}>
+              <When condition={field.valueType === EntryPropertyValueType.Password && !visible}>
                 ●●●●
               </When>
               <Otherwise>
@@ -483,7 +474,7 @@ const FieldText = ({ entryFacade, field }) => {
         </Otherwise>
       </Choose>
       <FieldTextToolbar>
-        <If condition={field.valueType === FIELD_VALUE_TYPE_PASSWORD}>
+        <If condition={field.valueType === EntryPropertyValueType.Password}>
           <Button
             text={visible ? 'Hide' : 'Reveal'}
             small
@@ -510,6 +501,7 @@ const FieldText = ({ entryFacade, field }) => {
               <thead>
                 <tr>
                   <th>Previous Value</th>
+                  <th>Created</th>
                   <th></th>
                 </tr>
               </thead>
@@ -517,16 +509,26 @@ const FieldText = ({ entryFacade, field }) => {
                 <For each="change" of={historyItems} index="idx">
                   <tr key={`history-${idx}`}>
                     <td>
-                      <code>{change.newValue}</code>
+                      <code>{change.value}</code>
+                    </td>
+                    <td>
+                      <If condition={change.ts}>
+                        {new Date(change.ts).toLocaleTimeString()}{' '}
+                        {new Date(change.ts).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'numeric',
+                          day: 'numeric'
+                        })}
+                      </If>
                     </td>
                     <td>
                       <ButtonGroup>
-                        <Button icon="clipboard" onClick={() => copyToClipboard(change.newValue)} />
+                        <Button icon="clipboard" onClick={() => copyToClipboard(change.value)} />
                         <Button
                           icon="redo"
                           onClick={() => {
                             setHistoryDialogVisible(false);
-                            onFieldUpdateInPlace(entryFacade.id, field, change.newValue);
+                            onFieldUpdateInPlace(entryFacade.id, field, change.value);
                           }}
                         />
                       </ButtonGroup>
@@ -595,7 +597,7 @@ const FieldRow = ({
   );
   return (
     <FieldRowContainer>
-      <If condition={!(field.valueType === FIELD_VALUE_TYPE_NOTE && !field.removeable)}>
+      <If condition={!(field.valueType === EntryPropertyValueType.Note && !field.removeable)}>
         <FieldRowLabel>{label}</FieldRowLabel>
       </If>
       <FieldRowChildren>
@@ -603,7 +605,7 @@ const FieldRow = ({
           <When condition={editing}>
             <ControlGroup>
               <Choose>
-                <When condition={field.valueType === FIELD_VALUE_TYPE_NOTE}>
+                <When condition={field.valueType === EntryPropertyValueType.Note}>
                   <TextArea
                     className={cx(Classes.INPUT, Classes.FILL)}
                     value={field.value}

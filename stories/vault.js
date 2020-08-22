@@ -1,16 +1,18 @@
-import React, { Component, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
-  FIELD_VALUE_TYPE_OTP,
   AttachmentManager,
   Credentials,
   Entry,
-  Vault,
+  EntryPropertyValueType,
+  VaultFormatA,
+  VaultFormatB,
   VaultSource,
   VaultManager,
   consumeVaultFacade,
   createVaultFacade,
-  init as initButtercup
+  init as initButtercup,
+  setDefaultFormat
 } from 'buttercup/web';
 import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
@@ -61,7 +63,7 @@ async function createArchive(vault, source) {
       'otpURL',
       'otpauth://totp/ACME%20Co:john.doe@email.com?secret=HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ&issuer=ACME%20Co&algorithm=SHA1&digits=6&period=30'
     )
-    .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, FIELD_VALUE_TYPE_OTP)
+    .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, EntryPropertyValueType.OTP)
     .setProperty('url', 'https://site.com/setup/create-account.php?token=123')
     .setProperty('url', 'https://site.com/login.php')
     .setProperty('url', 'https://site.com')
@@ -141,7 +143,7 @@ const View = styled.div`
   width: 100%;
 `;
 
-function VaultRender({ dark = false, basic = true } = {}) {
+function VaultRender({ formatB = false, dark = false, basic = true } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
@@ -193,6 +195,11 @@ function VaultRender({ dark = false, basic = true } = {}) {
   );
   useEffect(() => {
     async function createVaultManager() {
+      if (formatB) {
+        setDefaultFormat(VaultFormatB);
+      } else {
+        setDefaultFormat(VaultFormatA);
+      }
       const manager = new VaultManager();
       const creds = Credentials.fromDatasource(
         {
@@ -243,9 +250,10 @@ function VaultRender({ dark = false, basic = true } = {}) {
             onDeleteAttachment={deleteAttachment}
             onDownloadAttachment={downloadAttachment}
             onPreviewAttachment={previewAttachment}
-            onUpdate={vault => {
+            onUpdate={vaultFacade => {
               console.log('Saving vault...');
-              setArchiveFacade(processVaultUpdate(archive, vault));
+              const source = vaultManager.sources[0];
+              setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
             }}
           >
             <VaultUI />
@@ -257,6 +265,8 @@ function VaultRender({ dark = false, basic = true } = {}) {
 }
 
 export const BasicVault = () => <VaultRender />;
+
+export const BasicVaultFormatB = () => <VaultRender formatB />;
 
 export const BasicDarkVault = () => <VaultRender dark />;
 

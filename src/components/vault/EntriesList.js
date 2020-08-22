@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
+import { NonIdealState } from '@blueprintjs/core';
 import Entry from './Entry';
 import { useCurrentEntries, useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
-import { NonIdealState } from '@blueprintjs/core';
 
 const EntriesList = ({ className }) => {
   const {
