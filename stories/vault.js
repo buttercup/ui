@@ -66,7 +66,7 @@ async function createArchive(vault, source) {
     .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, EntryPropertyValueType.OTP)
     .setProperty('url', 'https://site.com/setup/create-account.php?token=123')
     .setProperty('url', 'https://site.com/login.php')
-    .setProperty('url', 'https://site.com')
+    .setProperty('url', 'https://joinmastodon.org/')
     .setProperty('Recovery pin', '1234');
   general
     .createEntry('Gate lock combination')
