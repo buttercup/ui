@@ -9,7 +9,7 @@ const ICON_LOOKUP = 'https://icon.buttercup.pw/icon/';
 const NOOP = () => {};
 
 const FallbackIcon = styled.img`
-  opacity: ${props => (props.loading ? '0.5' : '1.0')};
+  opacity: ${props => (props.dynamicLoading ? '0.5' : '1.0')};
 `;
 const IconContainer = styled.div`
   position: relative;
@@ -21,6 +21,7 @@ const IconContainer = styled.div`
 `;
 
 export default function SiteIcon(props) {
+  const { domain = null } = props;
   const imgRef = useRef(null);
   const [dynamicState, setDynamicState] = useState(DYNAMIC_STATE_LOADING);
   const onImgError = useMemo(
@@ -42,14 +43,14 @@ export default function SiteIcon(props) {
     [imgRef.current]
   );
   useEffect(() => {
-    if (!props.domain) {
+    if (!domain) {
       setDynamicState(DYNAMIC_STATE_FAILED);
       return NOOP;
     }
     if (!imgRef.current) return NOOP;
     imgRef.current.addEventListener('error', onImgError);
     imgRef.current.addEventListener('load', onImgLoad);
-    imgRef.current.setAttribute('src', `${ICON_LOOKUP}${encodeURIComponent(props.domain)}`);
+    imgRef.current.setAttribute('src', `${ICON_LOOKUP}${encodeURIComponent(domain)}`);
   }, [imgRef.current]);
   return (
     <IconContainer>
@@ -61,7 +62,7 @@ export default function SiteIcon(props) {
       <If
         condition={dynamicState === DYNAMIC_STATE_FAILED || dynamicState === DYNAMIC_STATE_LOADING}
       >
-        <FallbackIcon src={DEFAULT_IMAGE} loading={dynamicState === DYNAMIC_STATE_LOADING} />
+        <FallbackIcon src={DEFAULT_IMAGE} dynamicLoading={dynamicState === DYNAMIC_STATE_LOADING} />
       </If>
     </IconContainer>
   );

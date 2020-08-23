@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
@@ -7,6 +7,7 @@ import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
 import { useGroups } from './hooks/vault';
+import { VaultContext } from './Vault';
 
 function getEntryDomain(entry) {
   const url = getFacadeField(entry, 'url');
@@ -83,6 +84,7 @@ const ContentWrapper = styled.div`
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const { groups, onMoveEntryToGroup, onMoveEntryToTrash, trashID } = useGroups();
+  const { iconsEnabled } = useContext(VaultContext);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -167,7 +169,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
       {...props}
     >
       <ImageWrapper>
-        <SiteIcon domain={getEntryDomain(entry)} />
+        <SiteIcon domain={iconsEnabled ? getEntryDomain(entry) : null} />
       </ImageWrapper>
       <ContentWrapper>
         <Text ellipsize>{getFacadeField(entry, 'title', entry.matches)}</Text>

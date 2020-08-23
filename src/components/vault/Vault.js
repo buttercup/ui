@@ -12,6 +12,7 @@ export const VaultContext = React.createContext();
 export const VaultProvider = ({
   attachments,
   attachmentPreviews,
+  icons = false,
   onAddAttachments,
   onDeleteAttachment,
   onDownloadAttachment,
@@ -66,6 +67,9 @@ export const VaultProvider = ({
     onDeleteAttachment,
     onDownloadAttachment,
     onPreviewAttachment,
+
+    // Icons
+    iconsEnabled: icons,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {

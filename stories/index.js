@@ -5,7 +5,13 @@ import styled from 'styled-components';
 import { Button, ColoredDigits } from '../src';
 import { GeneratorTrigger, GeneratorUserInterface } from './generator';
 import MeterStory from './meter';
-import { BasicVault, BasicVaultFormatB, BasicDarkVault, HeavyVault } from './vault';
+import {
+  BasicVault,
+  BasicVaultFormatB,
+  BasicVaultNoIcons,
+  BasicDarkVault,
+  HeavyVault
+} from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
 
@@ -112,6 +118,7 @@ storiesOf('Colored Digits', module)
 storiesOf('Vault', module)
   .add('basic (format A)', () => <BasicVault />)
   .add('basic (format B)', () => <BasicVaultFormatB />)
+  .add('basic (no icons)', () => <BasicVaultNoIcons />)
   .add('dark', () => <BasicDarkVault />)
   .add('heavy', () => <HeavyVault />);
 
