@@ -66,7 +66,7 @@ async function createArchive(vault, source) {
     .setAttribute(`${Entry.Attributes.FieldTypePrefix}otpURI`, EntryPropertyValueType.OTP)
     .setProperty('url', 'https://site.com/setup/create-account.php?token=123')
     .setProperty('url', 'https://site.com/login.php')
-    .setProperty('url', 'https://site.com')
+    .setProperty('url', 'https://joinmastodon.org/')
     .setProperty('Recovery pin', '1234');
   general
     .createEntry('Gate lock combination')
@@ -143,7 +143,7 @@ const View = styled.div`
   width: 100%;
 `;
 
-function VaultRender({ formatB = false, dark = false, basic = true } = {}) {
+function VaultRender({ formatB = false, dark = false, basic = true, icons = true } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
@@ -232,6 +232,7 @@ function VaultRender({ formatB = false, dark = false, basic = true } = {}) {
             vault={archiveFacade}
             attachments
             attachmentPreviews={attachmentPreviews}
+            icons={icons}
             onAddAttachments={async (entryID, files) => {
               const source = vaultManager.sources[0];
               const entry = source.vault.findEntryByID(entryID);
@@ -267,6 +268,8 @@ function VaultRender({ formatB = false, dark = false, basic = true } = {}) {
 export const BasicVault = () => <VaultRender />;
 
 export const BasicVaultFormatB = () => <VaultRender formatB />;
+
+export const BasicVaultNoIcons = () => <VaultRender icons={false} />;
 
 export const BasicDarkVault = () => <VaultRender dark />;
 

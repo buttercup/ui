@@ -430,7 +430,6 @@ const FieldText = ({ entryFacade, field }) => {
   const Element = field.valueType === EntryPropertyValueType.Password ? 'code' : 'span';
   const { _changes: history = [] } = entryFacade;
   const historyItems = useMemo(() => {
-    console.log('HIST', field.property, history);
     const items = history.filter(
       item => item.property === field.property && item.type !== EntryChangeType.Deleted
     );
