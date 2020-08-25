@@ -24,7 +24,7 @@ import {
   Position,
   Text
 } from '@blueprintjs/core';
-import { Entry, EntryChangeType, EntryPropertyValueType } from 'buttercup/web';
+import { Entry, EntryChangeType, EntryPropertyValueType, EntryType } from 'buttercup/web';
 import { FormattedInput, FormattedText } from '@buttercup/react-formatted-input';
 import formatBytes from 'xbytes';
 import { useCurrentEntry, useGroups } from './hooks/vault';
@@ -34,6 +34,7 @@ import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
+import CreditCard from './CreditCard';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
@@ -705,6 +706,9 @@ const EntryDetailsContent = () => {
     <>
       <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
       <PaneContent>
+        <If condition={entry.type === EntryType.CreditCard}>
+          <CreditCard entry={entry} />
+        </If>
         <FormContainer primary>
           <For each="field" of={mainFields}>
             <FieldRow
