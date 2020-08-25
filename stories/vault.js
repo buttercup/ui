@@ -5,6 +5,7 @@ import {
   Credentials,
   Entry,
   EntryPropertyValueType,
+  EntryType,
   VaultFormatA,
   VaultFormatB,
   VaultSource,
@@ -73,6 +74,33 @@ async function createArchive(vault, source) {
     .setProperty('username', 'test')
     .setProperty('password', '4812')
     .setProperty('password', 'passw0rd');
+  general
+    .createEntry('Shopping - Tues')
+    .setProperty(
+      'note',
+      'Coke\nMusli\nMilk (full cream)\nCheese\nAvocado\n\nBread\nBagels\nMince\nJuice'
+    )
+    .setAttribute(Entry.Attributes.FacadeType, EntryType.Note);
+  general
+    .createEntry("Joan's Mastercard")
+    .setProperty('username', 'Joan Origami')
+    .setProperty('password', '5500 0000 0000 0004')
+    .setProperty('type', 'mastercard')
+    .setProperty('cvv', '019')
+    .setProperty('valid_from', '02/2019')
+    .setProperty('expiry', '02/2022')
+    .setAttribute(Entry.Attributes.FacadeType, EntryType.CreditCard);
+  general
+    .createEntry('Home server')
+    .setProperty(
+      'publicKey',
+      'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCAD2P7ez3arza7Vx7kUr0L42Q+efTCd2v+YbPUx1gDUT+dSwQjIheOXf1pjYZcgyK7fLfD7hVDf9DHHW6zL++WEBPQDtxRwwh/QcJOPGQF91VDfz/w5Ve/LfSX4DOy+Grk4NCTKEYlyue7LmyZUyyBesWVja9hAolQYZaurQCoWtiDF49vUUHGX9/H89f14eJUh5/RPELJyc2SteLMT+qVaPZYtMCk2lA7cvwaQjvmhrhea4sLdFp5fuHvng7rP24pRjqoBD+s81K3jpNXc0UmP4A1lQOqPz1NtCWX2QqLnyc2ESk76Y8q2P2eux5ZHo43TpQo6jO9vi1QN9/+bxFZ '
+    )
+    .setProperty(
+      'privateKey',
+      '-----BEGIN RSA PRIVATE KEY-----\nProc-Type: 4,ENCRYPTED\nDEK-Info: DES-EDE3-CBC,DA075FA7F84053C8\n\n3N+r51y+rS/ZLRquGTckU93Wt6gMSe9yznmk0Z+hmSmaxzLJHPdpXRozeSQDHqyl\nQCRX0IrL9zrHD0Eqg5SdhgFX3SOCN+uOLtXKoZpSkq39mcAMdE7pMDam/WAmuV63\ndaq45k8D9h4XmlTZb1/2TYdZpFpaN5H7xtOiY0SSd+6GmvMadRVuKcQmSAtcLv6I\nPYmdmDFEwVHxSZYB2u4Vn9brW+EDmKZi74EsrGUu5n80wVvTArssEl5sTZFJ9Uho\nVDySb8OtldCWLKee1ntRa01cp4VaW3X1ikt/46X18zGDie6uinUovExCPO/NWmen\nZIjsQs44nNih5WGYfYvj4Zk36ly9EnMf0GiPrGu2lisz6oup2zqBtSHoAShs+OSy\nFmQYHesMsaXkI1tcxuKAkC8Hsu8/4xePFil5O9NryC6MA/q5/L+6FbGX0Vu3e15s\neYZlVk39GfwuOjnZ2nzVKAm1bNINtz1OEyezFoejk3oFVyBt2NZD87oGgcZ17t1j\nW18cmFhwDHrPJqosI7A0RlUOyxPCoXZk44Kvi7B8N0Soz1x6zoX3rxu3m2SUs0YW\n14GWOUCux2vQqCCpvGtXh2WCNzZJ6ihbKR4nbvpwhfTTaPaPy9/6rYXIV7ZEgTBm\n2dW+0vunC6MfMtha+u+9L8Ut3SizT30nz2FMAWT9ymcaZMOIUWPBHJ6TPq1xIali\n3rvdSsM9iaAv4MrcoTwpcOU0NN8iLTiuUXRi8dQKnPmgoCZJh4WDZMLYFU+R7E7A\ndSzH72FdiKmu894lN6TNe2BzAkYkehcRDmSCULJN8KjLZX3GzIr2/UaKOorvktwB\n9nsbp3hNHIbQv9QmNtyqwkzq8w8JAQHeF10Q2OBnd/+BAO3XyM8K3GpAXV4gSDF7\nIJorwUWUg9fauCy7V1OwgAGJJFH1IVGwSxBUcd/FjnxGU9qf/By2Fu7qIGZ95621\nUtGOvaI9ManBlYRUct3AWBu1tJG6doSqpC9/APQBRUqwkaqLaFZRFayCevl26E+7\ngWK1LsSNWIZTogyB5Ywr0rLzuKgVIcPPBbpOB/u7w2XERZk3EmhOiuSO4IfLNpmZ\nqeEuKEpPmzKd4jDlp1sMWVz5OzoGsU3SzbsDR7WdMlIy3EWYTq/I7I0chhgrhJGc\nHst1YQ9du4BGxzWHXrPkI/vTd4LlIqet8TOasyUKqK9IKAZ92W8PcAlxzDhnVcmA\nG1TGxFmNqOz1tL9jrqxOziWTaTir36z0MB2+8+EF4Fg+UjaQ0yIwB0O9o6BLvMxZ\nd6pcacIdDRCNAizafxS8ez62Stvzao0ylEd69l/4JsHTgkco7AGfmOyU72FRSTzh\n2lfdWJmRn/e0c47WQE+2dPNiiqYEFhqOTStTZL5oN0c/bgn+Ke0fd6CzGQ7sED6m\nTQyzVL9XOegMMV6BF9pLa9mG3rzDjM18I4w0PtrlRsZijnWxCMjsaJg0rG/49n/k\n79Vzpdy/DF/ojN/y1JQKgz7KbGf9eYsC8n22LbJWVUinBNiFlSpViSPfSYIugQsI\n306CDDo1/UoSq/s1ezGDZK8+gMiZUPOslyl9E3R2T/F54wbtyRVpdw==\n-----END RSA PRIVATE KEY-----\n'
+    )
+    .setAttribute(Entry.Attributes.FacadeType, EntryType.SSHKey);
   const attachmentEntry = general
     .createEntry('Entry w/ Attachments')
     .setProperty('username', 'jsc@test.org')
@@ -96,7 +124,7 @@ async function createArchive(vault, source) {
   const notes = vault.createGroup('Notes');
   notes
     .createEntry('Meeting notes 2019-02-01')
-    .setAttribute(Entry.Attributes.FacadeType, 'note')
+    .setAttribute(Entry.Attributes.FacadeType, EntryType.Note)
     .setProperty(
       'note',
       'Team meeting\n\n - Cool item created\n   - To be released sometime\n   - Costs $$$\n - Bug found, oh noes\n   - Fire Tim\n   - Bye Tim!\n - Success ✌️\n\nAll done.\n'

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
+import { DEFAULT_ENTRY_TYPE } from 'buttercup/web';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
@@ -169,7 +170,10 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
       {...props}
     >
       <ImageWrapper>
-        <SiteIcon domain={iconsEnabled ? getEntryDomain(entry) : null} />
+        <SiteIcon
+          domain={iconsEnabled ? getEntryDomain(entry) : null}
+          type={entry.type || DEFAULT_ENTRY_TYPE}
+        />
       </ImageWrapper>
       <ContentWrapper>
         <Text ellipsize>{getFacadeField(entry, 'title', entry.matches)}</Text>

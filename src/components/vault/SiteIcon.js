@@ -1,11 +1,23 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import DEFAULT_IMAGE from '../../../resources/icons/site-default.png';
+import { DEFAULT_ENTRY_TYPE, EntryType } from 'buttercup/web';
+import ICON_LOGIN from '../../../resources/icons/login.png';
+import ICON_WEBSITE from '../../../resources/icons/website.png';
+import ICON_NOTE from '../../../resources/icons/note.png';
+import ICON_SSH from '../../../resources/icons/ssh.png';
+import ICON_CREDITCARD from '../../../resources/icons/credit-card.png';
 
 const DYNAMIC_STATE_FAILED = 2;
 const DYNAMIC_STATE_LOADED = 1;
 const DYNAMIC_STATE_LOADING = 0;
 const ICON_LOOKUP = 'https://icon.buttercup.pw/icon/';
+const ICON_TYPES = {
+  [EntryType.Login]: ICON_LOGIN,
+  [EntryType.Website]: ICON_WEBSITE,
+  [EntryType.SSHKey]: ICON_SSH,
+  [EntryType.Note]: ICON_NOTE,
+  [EntryType.CreditCard]: ICON_CREDITCARD
+};
 const NOOP = () => {};
 
 const FallbackIcon = styled.img`
@@ -21,7 +33,7 @@ const IconContainer = styled.div`
 `;
 
 export default function SiteIcon(props) {
-  const { domain = null } = props;
+  const { domain = null, type = DEFAULT_ENTRY_TYPE } = props;
   const imgRef = useRef(null);
   const [dynamicState, setDynamicState] = useState(DYNAMIC_STATE_LOADING);
   const onImgError = useMemo(
@@ -62,7 +74,10 @@ export default function SiteIcon(props) {
       <If
         condition={dynamicState === DYNAMIC_STATE_FAILED || dynamicState === DYNAMIC_STATE_LOADING}
       >
-        <FallbackIcon src={DEFAULT_IMAGE} dynamicLoading={dynamicState === DYNAMIC_STATE_LOADING} />
+        <FallbackIcon
+          src={ICON_TYPES[type]}
+          dynamicLoading={dynamicState === DYNAMIC_STATE_LOADING}
+        />
       </If>
     </IconContainer>
   );
