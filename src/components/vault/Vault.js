@@ -8,11 +8,11 @@ import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
 
 export const VaultContext = React.createContext();
-const NOOP = () => {};
 
 export const VaultProvider = ({
   attachments,
   attachmentPreviews,
+  icons = false,
   onAddAttachments,
   onDeleteAttachment,
   onDownloadAttachment,
@@ -67,6 +67,9 @@ export const VaultProvider = ({
     onDeleteAttachment,
     onDownloadAttachment,
     onPreviewAttachment,
+
+    // Icons
+    iconsEnabled: icons,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {

@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import path from 'path';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
+import { DEFAULT_ENTRY_TYPE, EntryType } from 'buttercup/web';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
 import { useGroups } from './hooks/vault';
+import { VaultContext } from './Vault';
 
 function getEntryDomain(entry) {
   const url = getFacadeField(entry, 'url');
@@ -15,8 +16,18 @@ function getEntryDomain(entry) {
 }
 
 function title(entry) {
-  const titleField = getFacadeField(entry, 'title');
-  return titleField || <i>(Untitled)</i>;
+  return getFacadeField(entry, 'title', entry.matches) || <i>(Untitled)</i>;
+}
+
+function username(entry) {
+  if (entry.type === EntryType.Note) {
+    const note = getFacadeField(entry, 'note');
+    return (note && note.slice(0, 60)) || <i>Empty</i>;
+  } else if (entry.type === EntryType.SSHKey) {
+    const key = getFacadeField(entry, 'publicKey');
+    return (key && key.slice(0, 60)) || <i>Empty</i>;
+  }
+  return getFacadeField(entry, 'username', entry.matches) || <i>No username</i>;
 }
 
 const EntryWrapper = styled.div`
@@ -84,6 +95,7 @@ const ContentWrapper = styled.div`
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const { groups, onMoveEntryToGroup, onMoveEntryToTrash, trashID } = useGroups();
+  const { iconsEnabled } = useContext(VaultContext);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -168,12 +180,19 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
       {...props}
     >
       <ImageWrapper>
-        <SiteIcon domain={getEntryDomain(entry)} />
+        <SiteIcon
+          domain={iconsEnabled ? getEntryDomain(entry) : null}
+          type={entry.type || DEFAULT_ENTRY_TYPE}
+        />
       </ImageWrapper>
       <ContentWrapper>
-        <Text ellipsize>{getFacadeField(entry, 'title', entry.matches)}</Text>
+        <Text ellipsize>
+          {/* {getFacadeField(entry, 'title', entry.matches)} */}
+          {title(entry)}
+        </Text>
         <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
-          {getFacadeField(entry, 'username', entry.matches)}
+          {/* {getFacadeField(entry, 'username', entry.matches)} */}
+          {username(entry)}
         </SecondaryText>
       </ContentWrapper>
     </EntryWrapper>
