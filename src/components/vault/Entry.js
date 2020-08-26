@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
 import extractDomain from 'extract-domain';
-import { DEFAULT_ENTRY_TYPE } from 'buttercup/web';
+import { DEFAULT_ENTRY_TYPE, EntryType } from 'buttercup/web';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
@@ -16,8 +16,18 @@ function getEntryDomain(entry) {
 }
 
 function title(entry) {
-  const titleField = getFacadeField(entry, 'title');
-  return titleField || <i>(Untitled)</i>;
+  return getFacadeField(entry, 'title', entry.matches) || <i>(Untitled)</i>;
+}
+
+function username(entry) {
+  if (entry.type === EntryType.Note) {
+    const note = getFacadeField(entry, 'note');
+    return (note && note.slice(0, 60)) || <i>Empty</i>;
+  } else if (entry.type === EntryType.SSHKey) {
+    const key = getFacadeField(entry, 'publicKey');
+    return (key && key.slice(0, 60)) || <i>Empty</i>;
+  }
+  return getFacadeField(entry, 'username', entry.matches) || <i>No username</i>;
 }
 
 const EntryWrapper = styled.div`
@@ -176,9 +186,13 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
         />
       </ImageWrapper>
       <ContentWrapper>
-        <Text ellipsize>{getFacadeField(entry, 'title', entry.matches)}</Text>
+        <Text ellipsize>
+          {/* {getFacadeField(entry, 'title', entry.matches)} */}
+          {title(entry)}
+        </Text>
         <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
-          {getFacadeField(entry, 'username', entry.matches)}
+          {/* {getFacadeField(entry, 'username', entry.matches)} */}
+          {username(entry)}
         </SecondaryText>
       </ContentWrapper>
     </EntryWrapper>

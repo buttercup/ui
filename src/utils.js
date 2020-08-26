@@ -1,5 +1,6 @@
 import React from 'react';
 import { pathOr } from 'ramda';
+import { EntryPropertyType } from 'buttercup/web';
 
 // http://stackoverflow.com/a/6150060/172805
 export function selectElementContents(el) {
@@ -46,10 +47,10 @@ export const generateHighlightedText = (text, regions) => {
 
 export function getFacadeField(facade, fieldName, matches) {
   const fieldIndex = facade.fields.findIndex(
-    field => field.propertyType === 'property' && field.property === fieldName.toLowerCase()
+    field => field.propertyType === EntryPropertyType.Property && field.property === fieldName
   );
   if (fieldIndex < 0) {
-    return `No ${fieldName}`;
+    return '';
   }
 
   const field = facade.fields[fieldIndex];
