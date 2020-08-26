@@ -106,7 +106,8 @@ async function createArchive(vault, source) {
     .setProperty('username', 'jsc@test.org')
     .setProperty('password', '34n54mlflml3')
     .setProperty('url', 'https://test.com')
-    .setProperty('PIN', '1200');
+    .setProperty('PIN', '1200')
+    .setAttribute(Entry.Attributes.FacadeType, EntryType.Website);
   await source.attachmentManager.setAttachment(
     attachmentEntry,
     AttachmentManager.newAttachmentID(),
