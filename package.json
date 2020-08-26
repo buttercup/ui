@@ -37,6 +37,10 @@
     "moduleFileExtensions": [
       "js"
     ],
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif)$": "<rootDir>__tests__/mocks/file.mock.js",
+      "\\.(scss|sass|css|less)$": "<rootDir>__tests__/mocks/file.mock.js"
+    },
     "moduleDirectories": [
       "src",
       "node_modules"
