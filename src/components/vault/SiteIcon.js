@@ -33,7 +33,7 @@ const IconContainer = styled.div`
 `;
 
 export default function SiteIcon(props) {
-  const { domain = null, type = DEFAULT_ENTRY_TYPE } = props;
+  const { className, domain = null, type = DEFAULT_ENTRY_TYPE } = props;
   const imgRef = useRef(null);
   const [dynamicState, setDynamicState] = useState(DYNAMIC_STATE_LOADING);
   const onImgError = useMemo(
@@ -65,7 +65,7 @@ export default function SiteIcon(props) {
     imgRef.current.setAttribute('src', `${ICON_LOOKUP}${encodeURIComponent(domain)}`);
   }, [imgRef.current]);
   return (
-    <IconContainer>
+    <IconContainer className={className}>
       <If
         condition={dynamicState === DYNAMIC_STATE_LOADED || dynamicState === DYNAMIC_STATE_LOADING}
       >
