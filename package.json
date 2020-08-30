@@ -1,6 +1,6 @@
 {
   "name": "@buttercup/ui",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Buttercup UI Components in React",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
