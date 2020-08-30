@@ -2,16 +2,26 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Colors, Text, Classes, Menu, MenuItem, ContextMenu, MenuDivider } from '@blueprintjs/core';
-import extractDomain from 'extract-domain';
-import { DEFAULT_ENTRY_TYPE, EntryType } from 'buttercup/web';
+import {
+  DEFAULT_ENTRY_TYPE,
+  EntryType,
+  EntryURLType,
+  fieldsToProperties,
+  getEntryURLs
+} from 'buttercup/web';
 import { EntryFacade } from './props';
 import { getFacadeField, getThemeProp } from '../../utils';
 import SiteIcon from './SiteIcon';
 import { useGroups } from './hooks/vault';
 import { VaultContext } from './Vault';
+import { extractDomain } from './utils/domain';
 
 function getEntryDomain(entry) {
-  const url = getFacadeField(entry, 'url');
+  const properties = fieldsToProperties(entry.fields);
+  const [url] = [
+    ...getEntryURLs(properties, EntryURLType.Icon),
+    ...getEntryURLs(properties, EntryURLType.Any)
+  ];
   return url ? extractDomain(url) : null;
 }
 
