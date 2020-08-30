@@ -69,7 +69,7 @@ export default function SiteIcon(props) {
       <If
         condition={dynamicState === DYNAMIC_STATE_LOADED || dynamicState === DYNAMIC_STATE_LOADING}
       >
-        <img ref={imgRef} />
+        <img ref={imgRef} loading="lazy" />
       </If>
       <If
         condition={dynamicState === DYNAMIC_STATE_FAILED || dynamicState === DYNAMIC_STATE_LOADING}
