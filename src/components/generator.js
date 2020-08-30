@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { generatePassword, getConfig } from '@buttercup/generator';
+import { generatePassword, getConfig, setRNG } from '@buttercup/generator';
 import { colors } from '../variables';
 import { selectElementContents } from '../utils';
 import Popover from 'react-popover';
@@ -100,6 +100,23 @@ const GeneratorControls = styled.div`
   }
 `;
 
+function browserBasedRNG(items) {
+  return Promise.resolve(
+    items.map(item => {
+      const range = Math.abs(item.max - item.min);
+      const totalBytes = calculateBytesForNumber(range);
+      const randArr = new Uint8Array(totalBytes);
+      window.crypto.getRandomValues(randArr);
+      const randNum = randArr.reduce((output, val) => output + val, 0);
+      return Math.round((randNum / (totalBytes * 256)) * range) + item.min;
+    })
+  );
+}
+
+function calculateBytesForNumber(num) {
+  return Math.max(Math.ceil(num / 256), 1);
+}
+
 /**
  * Generator component
  */
@@ -126,6 +143,7 @@ export class GeneratorUserInterface extends PureComponent {
   }
 
   generatePassword() {
+    setRNG(browserBasedRNG);
     generatePassword(this.state.config)
       .then(password => {
         this.setState({

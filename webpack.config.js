@@ -20,7 +20,6 @@ module.exports = {
   devtool: false,
   output: {
     libraryTarget: 'commonjs2',
-    // filename: '[name].[ext]',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
@@ -66,6 +65,7 @@ module.exports = {
     ]
   },
   node: {
+    crypto: "empty",
     fs: "empty"
   },
   optimization: {
