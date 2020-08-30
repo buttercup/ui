@@ -45,6 +45,7 @@
       "src",
       "node_modules"
     ],
+    "setupFilesAfterEnv": ["<rootDir>/__tests__/index.js"],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
