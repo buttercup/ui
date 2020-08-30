@@ -6,8 +6,8 @@ React UI Components used in [Buttercup](https://buttercup.pw) product series.
 ## Preview Components
 
 ```shell
-yarn install
-yarn storybook
+npm install
+npm run storybook
 ```
 
 Then head to [http://localhost:6006/](http://localhost:6006/).
