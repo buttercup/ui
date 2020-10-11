@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { DEFAULT_ENTRY_TYPE, EntryType } from 'buttercup/web';
+import path from 'path-posix';
 import ICON_LOGIN from '../../../resources/icons/login.png';
 import ICON_WEBSITE from '../../../resources/icons/website.png';
 import ICON_NOTE from '../../../resources/icons/note.png';
@@ -33,7 +34,7 @@ const IconContainer = styled.div`
 `;
 
 export default function SiteIcon(props) {
-  const { className, domain = null, type = DEFAULT_ENTRY_TYPE } = props;
+  const { className, domain = null, iconPath = null, type = DEFAULT_ENTRY_TYPE } = props;
   const imgRef = useRef(null);
   const [dynamicState, setDynamicState] = useState(DYNAMIC_STATE_LOADING);
   const onImgError = useMemo(
@@ -75,7 +76,7 @@ export default function SiteIcon(props) {
         condition={dynamicState === DYNAMIC_STATE_FAILED || dynamicState === DYNAMIC_STATE_LOADING}
       >
         <FallbackIcon
-          src={ICON_TYPES[type]}
+          src={iconPath ? path.join(iconPath, path.basename(ICON_TYPES[type])) : ICON_TYPES[type]}
           dynamicLoading={dynamicState === DYNAMIC_STATE_LOADING}
         />
       </If>

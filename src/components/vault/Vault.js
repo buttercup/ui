@@ -13,6 +13,7 @@ export const VaultProvider = ({
   attachments,
   attachmentPreviews,
   icons = false,
+  iconsPath = null,
   onAddAttachments,
   onDeleteAttachment,
   onDownloadAttachment,
@@ -70,6 +71,7 @@ export const VaultProvider = ({
 
     // Icons
     iconsEnabled: icons,
+    iconsPath,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {
