@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import {
   Alignment,
   Button,
@@ -17,7 +16,9 @@ import {
 } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
+import { VaultContext } from './Vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
+import { ShareModal } from './ShareModal';
 import { getThemeProp } from '../../utils';
 
 const KEYCODE_ENTER = 13;
@@ -71,6 +72,24 @@ const GroupsList = () => {
     trashSelected,
     trashID
   } = useGroups();
+  const { sharing } = useContext(VaultContext);
+  const [shareTargetGroup, setShareTargetGroup] = useState(null);
+  const handleOrgSelect = useCallback(
+    orgItem => {
+      setShareTargetGroup(null);
+      if (!orgItem) return;
+    },
+    [sharing]
+  );
+  const showShareModal = useCallback(
+    (groupID, groupTitle) => {
+      setShareTargetGroup({
+        id: groupID,
+        title: groupTitle
+      });
+    },
+    [sharing]
+  );
 
   useEffect(() => {
     if (groupTitleInputRef && groupTitleInputRef.current) {
@@ -162,6 +181,14 @@ const GroupsList = () => {
         <MenuDivider />
         <MenuItem text="Add New Group" icon="add" onClick={() => editGroup(null, groupFacade.id)} />
         <MenuItem text="Rename" icon="edit" onClick={() => editGroup(groupFacade)} />
+        <If condition={!!sharing}>
+          <MenuDivider />
+          <MenuItem
+            text="Share"
+            icon="social-media"
+            onClick={() => showShareModal(groupFacade.id, groupFacade.title)}
+          />
+        </If>
         <MenuDivider />
         <MenuItem text="Move to..." icon="add-to-folder">
           {renderGroupsMenu(groups, null, node.id)}
@@ -250,6 +277,12 @@ const GroupsList = () => {
           </div>
         </div>
       </Dialog>
+      <ShareModal
+        callback={handleOrgSelect}
+        groupName={shareTargetGroup ? shareTargetGroup.title : ''}
+        open={!!shareTargetGroup}
+        sharing={sharing}
+      />
     </>
   );
 };

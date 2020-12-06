@@ -10,6 +10,7 @@ import {
   BasicVaultFormatB,
   BasicVaultNoIcons,
   BasicDarkVault,
+  BasicVaultSharing,
   HeavyVault
 } from './vault';
 import OTPDigitsStory from './OTPDigits';
@@ -120,7 +121,8 @@ storiesOf('Vault', module)
   .add('basic (format B)', () => <BasicVaultFormatB />)
   .add('basic (no icons)', () => <BasicVaultNoIcons />)
   .add('dark', () => <BasicDarkVault />)
-  .add('heavy', () => <HeavyVault />);
+  .add('heavy', () => <HeavyVault />)
+  .add('basic (sharing)', () => <BasicVaultSharing />);
 
 storiesOf('OTPDigits', module)
   .add('6 digits', () => (

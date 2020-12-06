@@ -19,6 +19,7 @@ export const VaultProvider = ({
   onDownloadAttachment,
   onPreviewAttachment,
   onUpdate,
+  sharing = null,
   vault: vaultSource,
   children
 }) => {
@@ -72,6 +73,9 @@ export const VaultProvider = ({
     // Icons
     iconsEnabled: icons,
     iconsPath,
+
+    // Sharing
+    sharing,
 
     // Actions
     batchDeleteItems: ({ groupIDs = [], entryIDs = [] }) => {

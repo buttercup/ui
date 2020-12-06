@@ -29,6 +29,11 @@ const light = {
       dropBackground: Colors.LIGHT_GRAY5,
       dropBorder: Colors.LIGHT_GRAY2,
       dropText: Colors.GRAY4
+    },
+    sharing: {
+      orgs: {
+        selectedBackgroundColor: Colors.TURQUOISE3
+      }
     }
   }
 };
@@ -62,6 +67,11 @@ const dark = {
       dropBackground: Colors.DARK_GRAY3,
       dropBorder: Colors.DARK_GRAY5,
       dropText: Colors.GRAY2
+    },
+    sharing: {
+      orgs: {
+        selectedBackgroundColor: Colors.TURQUOISE3
+      }
     }
   }
 };

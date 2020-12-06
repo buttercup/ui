@@ -22,6 +22,39 @@ import { VaultProvider, VaultUI, themes } from '../src/index';
 import ATTACHMENT_BLOB from './resources/attachment.blob.dat';
 import ATTACHMENT_IMG from './resources/attachment.png.dat';
 
+class SharingAdapter {
+  constructor() {}
+
+  async getOrganisations() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([
+          { id: 10, title: 'Open Financials Pty Ltd.' },
+          { id: 12, title: 'MadDev Oy' },
+          { id: 13, title: 'Test Company' },
+          { id: 19, title: 'Family' },
+          { id: 21, title: 'My School' }
+        ]);
+      }, 2000);
+    });
+  }
+
+  async getOrganisationUsers(orgID) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([
+          { id: 100, name: 'Amelia Smith', shared: false },
+          { id: 101, name: 'Jenna Rook', shared: false },
+          { id: 102, name: 'Steven Nguyen', shared: true },
+          { id: 106, name: 'Even Webster', shared: false },
+          { id: 108, name: 'Jolie Mills', shared: true },
+          { id: 109, name: 'Yen Shisen', shared: false }
+        ]);
+      }, 1750);
+    });
+  }
+}
+
 try {
   initButtercup();
 } catch (err) {}
@@ -172,7 +205,13 @@ const View = styled.div`
   width: 100%;
 `;
 
-function VaultRender({ formatB = false, dark = false, basic = true, icons = true } = {}) {
+function VaultRender({
+  formatB = false,
+  dark = false,
+  basic = true,
+  icons = true,
+  sharing = null
+} = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
@@ -285,6 +324,7 @@ function VaultRender({ formatB = false, dark = false, basic = true, icons = true
               const source = vaultManager.sources[0];
               setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
             }}
+            sharing={sharing}
           >
             <VaultUI />
           </VaultProvider>
@@ -301,5 +341,7 @@ export const BasicVaultFormatB = () => <VaultRender formatB />;
 export const BasicVaultNoIcons = () => <VaultRender icons={false} />;
 
 export const BasicDarkVault = () => <VaultRender dark />;
+
+export const BasicVaultSharing = () => <VaultRender sharing={new SharingAdapter()} />;
 
 export const HeavyVault = () => <VaultRender basic={false} />;
