@@ -254,8 +254,8 @@ function VaultRender({ formatB = false, dark = false, basic = true, icons = true
     createVaultManager();
   }, []);
   return (
-    <ThemeProvider theme={dark ? themes.dark : themes.light}>
-      <View>
+    <View className={dark ? 'bp3-dark' : ''}>
+      <ThemeProvider theme={dark ? themes.dark : themes.light}>
         <If condition={archiveFacade}>
           <VaultProvider
             vault={archiveFacade}
@@ -289,8 +289,8 @@ function VaultRender({ formatB = false, dark = false, basic = true, icons = true
             <VaultUI />
           </VaultProvider>
         </If>
-      </View>
-    </ThemeProvider>
+      </ThemeProvider>
+    </View>
   );
 }
 

@@ -1,6 +1,7 @@
 import { Colors } from '@blueprintjs/core';
 
 const light = {
+  dark: false,
   vault: {
     list: {
       focusedBackgroundColor: Colors.LIGHT_GRAY5,
@@ -34,6 +35,7 @@ const light = {
 };
 
 const dark = {
+  dark: true,
   vault: {
     list: {
       focusedBackgroundColor: Colors.DARK_GRAY5,
