@@ -56,7 +56,7 @@ export const PaneContainer = styled.div`
   display: grid;
   overflow: hidden;
   background-color: ${props => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
-  grid-template-rows: 55px 1fr 40px;
+  grid-template-rows: 55px 1fr 50px;
   grid-template-areas:
     'header'
     'body'
