@@ -29,7 +29,16 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
+      },
+      {
+        test: /\.(ttf|otf|woff|woff2|eot)$/i,
         use: [
           {
             loader: 'file-loader',
