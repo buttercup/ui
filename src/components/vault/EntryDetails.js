@@ -253,7 +253,8 @@ const Attachments = ({
   entryFacade,
   onDeleteAttachment = () => {},
   onDownloadAttachment = () => {},
-  onPreviewAttachment = () => {}
+  onPreviewAttachment = () => {},
+  readOnly = false
 }) => {
   const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
@@ -382,6 +383,7 @@ const Attachments = ({
               intent={Intent.DANGER}
               onClick={() => setDeletingAttachment(previewingAttachment)}
               title="Delete attachment"
+              disabled={readOnly}
             >
               Delete
             </Button>
@@ -406,6 +408,7 @@ const Attachments = ({
                   onDeleteAttachment(attachmentItem);
                 }}
                 title="Confirm attachment deletion"
+                disabled={readOnly}
               >
                 Delete
               </Button>
@@ -457,7 +460,7 @@ const FieldText = ({ entryFacade, field }) => {
           <Element>
             <Choose>
               <When condition={field.valueType === EntryPropertyValueType.Password && !visible}>
-                ●●●●
+                ●●●●●●●●
               </When>
               <Otherwise>
                 <FormattedText
@@ -679,11 +682,12 @@ const EntryDetailsContent = () => {
     attachmentPreviews,
     onDeleteAttachment,
     onDownloadAttachment,
-    onPreviewAttachment
+    onPreviewAttachment,
+    readOnly
   } = useContext(VaultContext);
   const {
     entry,
-    editing,
+    editing: isEditing,
     onAddField,
     onCancelEdit,
     onEdit,
@@ -695,6 +699,8 @@ const EntryDetailsContent = () => {
     onSaveEdit
   } = useCurrentEntry();
   const { onMoveEntryToTrash, trashID } = useGroups();
+
+  const editing = isEditing && !readOnly;
 
   const editableFields = editing
     ? entry.fields.filter(item => item.propertyType === 'property')
@@ -754,19 +760,20 @@ const EntryDetailsContent = () => {
             onDeleteAttachment={attachment => onDeleteAttachment(entry.id, attachment.id)}
             onDownloadAttachment={attachment => onDownloadAttachment(entry.id, attachment.id)}
             onPreviewAttachment={attachment => onPreviewAttachment(entry.id, attachment.id)}
+            readOnly={readOnly}
           />
         </If>
       </PaneContent>
       <PaneFooter>
         <ActionBar>
           <If condition={!editing}>
-            <Button onClick={onEdit} icon="edit" disabled={entry.parentID === trashID}>
+            <Button onClick={onEdit} icon="edit" disabled={readOnly || entry.parentID === trashID}>
               Edit
             </Button>
           </If>
           <If condition={editing}>
             <div>
-              <Button onClick={onSaveEdit} intent={Intent.PRIMARY} icon="tick">
+              <Button onClick={onSaveEdit} intent={Intent.PRIMARY} icon="tick" disabled={readOnly}>
                 Save
               </Button>
               <Button onClick={onCancelEdit}>Cancel</Button>
@@ -779,6 +786,7 @@ const EntryDetailsContent = () => {
                 primaryAction="Move to Trash"
                 onClick={() => onMoveEntryToTrash(entry.id)}
                 danger
+                disabled={readOnly}
               />
             </If>
           </If>
@@ -790,7 +798,7 @@ const EntryDetailsContent = () => {
 
 const EntryDetails = () => {
   const { editing, entry } = useCurrentEntry();
-  const { attachments: supportsAttachments, onAddAttachments } = useContext(VaultContext);
+  const { attachments: supportsAttachments, onAddAttachments, readOnly } = useContext(VaultContext);
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     noClick: true,
     onDrop: files => {
@@ -801,7 +809,7 @@ const EntryDetails = () => {
     <ErrorBoundary>
       <PaneContainer {...(!editing && supportsAttachments ? getRootProps() : {})}>
         <If condition={!editing}>
-          <AttachmentDropZone visible={isDragActive}>
+          <AttachmentDropZone visible={isDragActive} disabled={readOnly}>
             <Icon icon="compressed" iconSize={30} />
             <span>Drop file(s) to add to vault</span>
           </AttachmentDropZone>

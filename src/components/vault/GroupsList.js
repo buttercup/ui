@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {
@@ -19,6 +19,7 @@ import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
+import { VaultContext } from './Vault';
 
 const KEYCODE_ENTER = 13;
 
@@ -71,6 +72,7 @@ const GroupsList = () => {
     trashSelected,
     trashID
   } = useGroups();
+  const { readOnly } = useContext(VaultContext);
 
   useEffect(() => {
     if (groupTitleInputRef && groupTitleInputRef.current) {
@@ -111,7 +113,9 @@ const GroupsList = () => {
           key="moveRoot"
           icon="git-pull"
           onClick={() => moveGroupToGroup(selectedGroupID, '0')}
-          disabled={groupsRaw.find(groupRaw => groupRaw.id === selectedGroupID).parentID === '0'}
+          disabled={
+            readOnly || groupsRaw.find(groupRaw => groupRaw.id === selectedGroupID).parentID === '0'
+          }
         />
         <MenuDivider />
       </If>
@@ -121,7 +125,7 @@ const GroupsList = () => {
           key={parentNode.id}
           icon={parentNode.icon}
           onClick={() => moveGroupToGroup(selectedGroupID, parentNode.id)}
-          disabled={selectedGroupID === parentNode.id}
+          disabled={readOnly || selectedGroupID === parentNode.id}
         />
         <MenuDivider />
       </If>
@@ -133,7 +137,7 @@ const GroupsList = () => {
               key={group.id}
               icon={group.icon}
               onClick={() => moveGroupToGroup(selectedGroupID, group.id)}
-              disabled={selectedGroupID === group.id}
+              disabled={readOnly || selectedGroupID === group.id}
             >
               {renderGroupsMenu(group.childNodes, group, selectedGroupID)}
             </MenuItem>
@@ -144,7 +148,7 @@ const GroupsList = () => {
               key={group.id}
               icon={group.icon}
               onClick={() => moveGroupToGroup(selectedGroupID, group.id)}
-              disabled={selectedGroupID === group.id}
+              disabled={readOnly || selectedGroupID === group.id}
             />
           </Otherwise>
         </Choose>
@@ -160,13 +164,28 @@ const GroupsList = () => {
       <Menu>
         <MenuItem text={groupFacade.title} disabled />
         <MenuDivider />
-        <MenuItem text="Add New Group" icon="add" onClick={() => editGroup(null, groupFacade.id)} />
-        <MenuItem text="Rename" icon="edit" onClick={() => editGroup(groupFacade)} />
+        <MenuItem
+          text="Add New Group"
+          icon="add"
+          onClick={() => editGroup(null, groupFacade.id)}
+          disabled={readOnly}
+        />
+        <MenuItem
+          text="Rename"
+          icon="edit"
+          onClick={() => editGroup(groupFacade)}
+          disabled={readOnly}
+        />
         <MenuDivider />
-        <MenuItem text="Move to..." icon="add-to-folder">
+        <MenuItem text="Move to..." icon="add-to-folder" disabled={readOnly}>
           {renderGroupsMenu(groups, null, node.id)}
         </MenuItem>
-        <MenuItem text="Move to Trash" icon="trash" onClick={() => moveToTrash(selectedGroupID)} />
+        <MenuItem
+          text="Move to Trash"
+          icon="trash"
+          onClick={() => moveToTrash(selectedGroupID)}
+          disabled={readOnly}
+        />
       </Menu>,
       { left: evt.clientX, top: evt.clientY },
       () => {
@@ -194,6 +213,7 @@ const GroupsList = () => {
           onAddItem={() => editGroup()}
           onTermChange={term => onGroupFilterTermChange(term)}
           onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
+          readOnly={readOnly}
         />
         <PaneContent>
           <Tree

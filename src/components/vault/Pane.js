@@ -94,7 +94,8 @@ export const PaneHeader = ({
   filter = null,
   onAddItem = NOOP,
   onTermChange = NOOP,
-  onSortModeChange = NOOP
+  onSortModeChange = NOOP,
+  readOnly = false
 }) => {
   const [filterInputVisible, toggleFilter] = useState(false);
   const inputRef = useRef(null);
@@ -166,7 +167,7 @@ export const PaneHeader = ({
         </Choose>
       </ListHeadingContent>
       <If condition={onAddItem !== NOOP}>
-        <Button minimal icon="add" small onClick={onAddItem} />
+        <Button minimal icon="add" small onClick={onAddItem} disabled={readOnly} />
       </If>
       <If condition={showFilter}>
         <Popover content={renderMenu}>
