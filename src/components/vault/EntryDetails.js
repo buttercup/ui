@@ -457,7 +457,7 @@ const FieldText = ({ entryFacade, field }) => {
           <Element>
             <Choose>
               <When condition={field.valueType === EntryPropertyValueType.Password && !visible}>
-                ●●●●
+                ●●●●●●●●
               </When>
               <Otherwise>
                 <FormattedText
