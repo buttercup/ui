@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
 import { NonIdealState } from '@blueprintjs/core';
@@ -6,6 +6,7 @@ import Entry from './Entry';
 import { useCurrentEntries, useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
+import { VaultContext } from './Vault';
 
 const EntriesList = ({ className }) => {
   const {
@@ -16,6 +17,7 @@ const EntriesList = ({ className }) => {
     onEntriesFilterTermChange,
     onEntriesFilterSortModeChange
   } = useCurrentEntries();
+  const { readOnly } = useContext(VaultContext);
   const { trashSelected } = useGroups();
   const ref = useRef(null);
   const currentIndex = entries.findIndex(entry => entry.id === selectedEntryID);
@@ -90,7 +92,7 @@ const EntriesList = ({ className }) => {
         </Choose>
       </PaneContent>
       <PaneFooter>
-        <AddEntry disabled={trashSelected} />
+        <AddEntry disabled={trashSelected || readOnly} />
       </PaneFooter>
     </PaneContainer>
   );

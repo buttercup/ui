@@ -172,7 +172,13 @@ const View = styled.div`
   width: 100%;
 `;
 
-function VaultRender({ formatB = false, dark = false, basic = true, icons = true } = {}) {
+function VaultRender({
+  formatB = false,
+  dark = false,
+  basic = true,
+  icons = true,
+  readOnly = false
+} = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
@@ -285,6 +291,7 @@ function VaultRender({ formatB = false, dark = false, basic = true, icons = true
               const source = vaultManager.sources[0];
               setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
             }}
+            readOnly={readOnly}
           >
             <VaultUI />
           </VaultProvider>
@@ -299,6 +306,8 @@ export const BasicVault = () => <VaultRender />;
 export const BasicVaultFormatB = () => <VaultRender formatB />;
 
 export const BasicVaultNoIcons = () => <VaultRender icons={false} />;
+
+export const BasicVaultReadOnly = () => <VaultRender readOnly />;
 
 export const BasicDarkVault = () => <VaultRender dark />;
 

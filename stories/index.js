@@ -9,6 +9,7 @@ import {
   BasicVault,
   BasicVaultFormatB,
   BasicVaultNoIcons,
+  BasicVaultReadOnly,
   BasicDarkVault,
   HeavyVault
 } from './vault';
@@ -119,6 +120,7 @@ storiesOf('Vault', module)
   .add('basic (format A)', () => <BasicVault />)
   .add('basic (format B)', () => <BasicVaultFormatB />)
   .add('basic (no icons)', () => <BasicVaultNoIcons />)
+  .add('read-only', () => <BasicVaultReadOnly />)
   .add('dark', () => <BasicDarkVault />)
   .add('heavy', () => <HeavyVault />);
 

@@ -105,7 +105,7 @@ const ContentWrapper = styled.div`
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const { groups, onMoveEntryToGroup, onMoveEntryToTrash, trashID } = useGroups();
-  const { iconsEnabled, iconsPath } = useContext(VaultContext);
+  const { iconsEnabled, iconsPath, readOnly } = useContext(VaultContext);
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
           key={parentNode.id}
           icon={parentNode.icon}
           onClick={handleMove(parentNode.id)}
-          disabled={entry.parentID === parentNode.id}
+          disabled={entry.parentID === parentNode.id || readOnly}
         />
         <MenuDivider />
       </If>
@@ -137,6 +137,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
               key={group.id}
               icon={group.icon}
               onClick={handleMove(group.id)}
+              disabled={readOnly}
             >
               {renderGroupsMenu(group.childNodes, group)}
             </MenuItem>
@@ -147,7 +148,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
               key={group.id}
               icon={group.icon}
               onClick={handleMove(group.id)}
-              disabled={entry.parentID === group.id}
+              disabled={entry.parentID === group.id || readOnly}
             />
           </Otherwise>
         </Choose>
@@ -168,6 +169,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
             text="Move to Trash"
             icon="trash"
             onClick={() => onMoveEntryToTrash(entry.id)}
+            disabled={readOnly}
           />
         </If>
       </Menu>,
