@@ -83,6 +83,10 @@ Available as `SmallType`.
 
 TBA.
 
+## Translations / i18n
+
+Parts of this UI library are internationalised. You can find the translations at `src/i18n/translations`. When adding _new_ translations, make sure to update the index at `src/i18n/translations/index.js` so that the language is made available.
+
 ## Testing
 Run `npm t` to execute the tests.
 
