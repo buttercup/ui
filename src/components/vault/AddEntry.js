@@ -3,9 +3,11 @@ import { Button, ButtonGroup, Popover, Menu, MenuItem } from '@blueprintjs/core'
 import PropTypes from 'prop-types';
 import { defaultType as defaultEntryType, types as entryTypes } from './entryTypes';
 import { useActions } from './hooks/vault';
+import { useTranslations } from '../../hooks/i18n';
 
 const AddEntry = ({ disabled }) => {
   const { onAddEntry } = useActions();
+  const t = useTranslations();
 
   const renderMenu = (
     <Menu>
@@ -25,7 +27,7 @@ const AddEntry = ({ disabled }) => {
     <ButtonGroup fill>
       <Button
         icon="plus"
-        text="New Entry"
+        text={t('new-entry.cta')}
         onClick={() => onAddEntry(defaultEntryType)}
         disabled={disabled}
         fill
