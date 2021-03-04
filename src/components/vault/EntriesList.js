@@ -7,8 +7,10 @@ import { useCurrentEntries, useGroups } from './hooks/vault';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
 import { VaultContext } from './Vault';
+import { useTranslations } from '../../hooks/i18n';
 
 const EntriesList = ({ className }) => {
+  const t = useTranslations();
   const {
     entries,
     selectedEntryID,
@@ -50,7 +52,7 @@ const EntriesList = ({ className }) => {
   return (
     <PaneContainer className={className}>
       <PaneHeader
-        title={trashSelected ? 'Trash' : 'Documents'}
+        title={trashSelected ? t('entries-list.trash') : t('entries-list.documents')}
         count={entries.length}
         filter={filters}
         onTermChange={term => onEntriesFilterTermChange(term)}
@@ -77,15 +79,15 @@ const EntriesList = ({ className }) => {
             </HotKeys>
           </When>
           <When condition={entries.length === 0 && filters.term !== ''}>
-            <NonIdealState title="Not found" />
+            <NonIdealState title={t('entries-list.filters-no-matches')} />
           </When>
           <When condition={entries.length === 0 && trashSelected}>
-            <NonIdealState title="Trash is empty!" icon="trash" />
+            <NonIdealState title={t('entries-list.trash-empty')} icon="trash" />
           </When>
           <Otherwise>
             <NonIdealState
-              title="No Documents"
-              description="Why not create one?"
+              title={t('entries-list.no-entries')}
+              description={t('entries-list.create-one-cta')}
               icon="id-number"
             />
           </Otherwise>

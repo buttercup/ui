@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -35,6 +35,7 @@ import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 import CreditCard from './CreditCard';
+import { useTranslations } from '../../hooks/i18n';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
@@ -58,11 +59,11 @@ function mimeTypePreviewable(mimeType) {
   return false;
 }
 
-function title(entry) {
+function title(entry, untitledText) {
   const titleField = entry.fields.find(
     item => item.propertyType === 'property' && item.property === 'title'
   );
-  return titleField ? titleField.value : <i>(Untitled)</i>;
+  return titleField ? titleField.value : <i>{untitledText}</i>;
 }
 
 const ActionBar = styled.div`
@@ -256,6 +257,7 @@ const Attachments = ({
   onPreviewAttachment = () => {},
   readOnly = false
 }) => {
+  const t = useTranslations();
   const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
@@ -374,18 +376,18 @@ const Attachments = ({
             <Button
               intent={Intent.PRIMARY}
               onClick={() => onDownloadAttachment(previewingAttachment)}
-              title="Download attachment"
+              title={t('attachments.download-title')}
             >
-              Download
+              {t('attachments.download')}
             </Button>
             &nbsp;
             <Button
               intent={Intent.DANGER}
               onClick={() => setDeletingAttachment(previewingAttachment)}
-              title="Delete attachment"
+              title={t('attachments.delete-title')}
               disabled={readOnly}
             >
-              Delete
+              {t('attachments.delete')}
             </Button>
           </div>
         </If>
@@ -407,16 +409,16 @@ const Attachments = ({
                   setPreviewingAttachment(null);
                   onDeleteAttachment(attachmentItem);
                 }}
-                title="Confirm attachment deletion"
+                title={t('attachments.confirm.delete-title')}
                 disabled={readOnly}
               >
-                Delete
+                {t('attachments.confirm.delete')}
               </Button>
               <Button
                 onClick={() => setDeletingAttachment(null)}
-                title="Cancel attachment deletion"
+                title={t('attachments.confirm.cancel-title')}
               >
-                Cancel
+                {t('attachments.confirm.cancel')}
               </Button>
             </div>
           </div>
@@ -677,6 +679,7 @@ const FieldRow = ({
 };
 
 const EntryDetailsContent = () => {
+  const t = useTranslations();
   const {
     attachments: supportsAttachments,
     attachmentPreviews,
@@ -710,7 +713,7 @@ const EntryDetailsContent = () => {
 
   return (
     <>
-      <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
+      <PaneHeader title={editing ? 'Edit Document' : title(entry, t('entry-no-title'))} />
       <PaneContent>
         <If condition={entry.type === EntryType.CreditCard}>
           <CreditCard entry={entry} />

@@ -15,6 +15,7 @@ import SiteIcon from './SiteIcon';
 import { useGroups } from './hooks/vault';
 import { VaultContext } from './Vault';
 import { extractDomain } from './utils/domain';
+import { useTranslations } from '../../hooks/i18n';
 
 function getEntryDomain(entry) {
   const properties = fieldsToProperties(entry.fields);
@@ -103,6 +104,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
+  const t = useTranslations();
   const [contextMenuOpen, setContextMenuVisibility] = useState(false);
   const { groups, onMoveEntryToGroup, onMoveEntryToTrash, trashID } = useGroups();
   const { iconsEnabled, iconsPath, readOnly } = useContext(VaultContext);
@@ -121,7 +123,7 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
     <>
       <If condition={parentNode}>
         <MenuItem
-          text={`Move to ${parentNode.label}`}
+          text={t(`entry-menu.move-to-parent`, { group: parentNode.label })}
           key={parentNode.id}
           icon={parentNode.icon}
           onClick={handleMove(parentNode.id)}
@@ -161,12 +163,12 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
     setContextMenuVisibility(true);
     ContextMenu.show(
       <Menu>
-        <MenuItem text="Move to..." icon="add-to-folder">
+        <MenuItem text={t('entry-menu.move-to')} icon="add-to-folder">
           {renderGroupsMenu(groups)}
         </MenuItem>
         <If condition={entry.parentID !== trashID}>
           <MenuItem
-            text="Move to Trash"
+            text={t('entry-menu.move-to-trash')}
             icon="trash"
             onClick={() => onMoveEntryToTrash(entry.id)}
             disabled={readOnly}
@@ -199,12 +201,8 @@ const Entry = ({ entry, selected, onClick, innerRef, ...props }) => {
         />
       </ImageWrapper>
       <ContentWrapper>
-        <Text ellipsize>
-          {/* {getFacadeField(entry, 'title', entry.matches)} */}
-          {title(entry)}
-        </Text>
+        <Text ellipsize>{title(entry)}</Text>
         <SecondaryText ellipsize className={Classes.TEXT_SMALL}>
-          {/* {getFacadeField(entry, 'username', entry.matches)} */}
           {username(entry)}
         </SecondaryText>
       </ContentWrapper>
