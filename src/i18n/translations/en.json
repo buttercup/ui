@@ -1,0 +1,32 @@
+{
+  "attachments": {
+    "confirm": {
+      "cancel": "Cancel",
+      "cancel-title": "Cancel attachment deletion",
+      "delete": "Delete",
+      "delete-title": "Confirm attachment deletion"
+    },
+    "delete": "Delete",
+    "delete-title": "Delete attachment",
+    "download": "Download",
+    "download-title": "Download attachment"
+  },
+  "cancel": "Cancel",
+  "entries-list": {
+    "create-one-cta": "Why not create one?",
+    "documents": "Documents",
+    "filters-no-matches": "No matches",
+    "no-entries": "No Documents",
+    "trash": "Trash",
+    "trash-empty": "It's empty"
+  },
+  "entry-menu": {
+    "move-to": "Move to...",
+    "move-to-parent": "Move to {{group}}",
+    "move-to-trash": "Move to Trash"
+  },
+  "entry-no-title": "(Untitled)",
+  "new-entry": {
+    "cta": "New Entry"
+  }
+}
