@@ -4,12 +4,15 @@
       "cancel": "Cancel",
       "cancel-title": "Cancel attachment deletion",
       "delete": "Delete",
+      "delete-prompt": "Deleting this attachment will permanently remove it from your vault.\nAre you sure that you want to delete it?",
+      "delete-prompt-title": "Delte \"{{title}}\"",
       "delete-title": "Confirm attachment deletion"
     },
     "delete": "Delete",
     "delete-title": "Delete attachment",
     "download": "Download",
-    "download-title": "Download attachment"
+    "download-title": "Download attachment",
+    "drop-files": "Drop file(s) to add to vault"
   },
   "cancel": "Cancel",
   "entries-list": {
@@ -20,12 +23,30 @@
     "trash": "Trash",
     "trash-empty": "It's empty"
   },
+  "entry": {
+    "add-custom-field-btn": "Add Custom Field",
+    "attachments": "Attachments",
+    "cancel-edit": "Cancel",
+    "custom-fields": "Custom Fields",
+    "edit": "Edit",
+    "edit-document": "Edit Document",
+    "none-selected": {
+      "message": "Select or create a new document",
+      "title": "No document selected"
+    },
+    "save": "Save",
+    "trash-move": {
+      "message": "Are you sure you want to move this entry to Trash?",
+      "title": "Confirm move to Trash",
+      "trash-btn": "Move to Trash"
+    },
+    "untitled": "(Untitled)"
+  },
   "entry-menu": {
     "move-to": "Move to...",
     "move-to-parent": "Move to {{group}}",
     "move-to-trash": "Move to Trash"
   },
-  "entry-no-title": "(Untitled)",
   "new-entry": {
     "cta": "New Entry"
   }
