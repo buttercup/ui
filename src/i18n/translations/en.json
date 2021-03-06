@@ -47,6 +47,16 @@
     "move-to-parent": "Move to {{group}}",
     "move-to-trash": "Move to Trash"
   },
+  "entry-type": {
+    "default-label": "Default",
+    "title": {
+      "credit_card": "Credit/Bank Card",
+      "login": "Login",
+      "note": "Note",
+      "ssh_key": "SSH Key",
+      "website": "Website"
+    }
+  },
   "new-entry": {
     "cta": "New Entry"
   }
