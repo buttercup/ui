@@ -57,7 +57,28 @@
       "website": "Website"
     }
   },
+  "group": {
+    "header": "Groups",
+    "prompt": {
+      "cancel": "Cancel",
+      "create": "Create Group",
+      "message": "Enter group title:",
+      "rename": "Rename Group",
+      "save": "Save"
+    }
+  },
+  "group-menu": {
+    "add-new-group": "Add New Group",
+    "move-to": "Move to...",
+    "move-to-parent": "Move to {{group}}",
+    "move-to-root": "Move to root level",
+    "move-to-trash": "Move to Trash",
+    "rename-group": "Rename"
+  },
   "new-entry": {
     "cta": "New Entry"
+  },
+  "trash": {
+    "header": "Trash"
   }
 }
