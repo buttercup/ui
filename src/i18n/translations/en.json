@@ -18,8 +18,14 @@
   "entries-list": {
     "create-one-cta": "Why not create one?",
     "documents": "Documents",
+    "filter-placeholder": "Filter...",
     "filters-no-matches": "No matches",
     "no-entries": "No Documents",
+    "sort": {
+      "alphabetical-asc": "Alphabetical (ascending)",
+      "alphabetical-desc": "Alphabetical (descending)",
+      "filter": "Filter"
+    },
     "trash": "Trash",
     "trash-empty": "It's empty"
   },
