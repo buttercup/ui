@@ -12,7 +12,8 @@
     "delete-title": "Delete attachment",
     "download": "Download",
     "download-title": "Download attachment",
-    "drop-files": "Drop file(s) to add to vault"
+    "drop-files": "Drop file(s) to add to vault",
+    "drop-instruction": "Drag and drop to add attachments"
   },
   "cancel": "Cancel",
   "entries-list": {
@@ -47,6 +48,15 @@
       "trash-btn": "Move to Trash"
     },
     "untitled": "(Untitled)"
+  },
+  "custom-fields": {
+    "change-type": {
+      "text": "Change Type: Text (default)",
+      "note": "Change Type: Note",
+      "password": "Change Type: Password",
+      "otp": "Change Type: Note"
+    },
+    "delete-field": "Delete Field"
   },
   "entry-menu": {
     "move-to": "Move to...",

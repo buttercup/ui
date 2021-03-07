@@ -39,10 +39,10 @@ import { useTranslations } from '../../hooks/i18n';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
-  { type: EntryPropertyValueType.Text, title: 'Text (default)', icon: 'italic' },
-  { type: EntryPropertyValueType.Note, title: 'Note', icon: 'align-left' },
-  { type: EntryPropertyValueType.Password, title: 'Password', icon: 'key' },
-  { type: EntryPropertyValueType.OTP, title: 'OTP', icon: 'time' }
+  { type: EntryPropertyValueType.Text, title: 'text', icon: 'italic' },
+  { type: EntryPropertyValueType.Note, title: 'note', icon: 'align-left' },
+  { type: EntryPropertyValueType.Password, title: 'password', icon: 'key' },
+  { type: EntryPropertyValueType.OTP, title: 'otp', icon: 'time' }
 ];
 
 function iconName(mimeType) {
@@ -285,7 +285,7 @@ const Attachments = ({
   return (
     <AttachmentsContainer>
       <If condition={attachments.length === 0}>
-        <AttachmentDropInstruction>Drag and drop to add attachments</AttachmentDropInstruction>
+        <AttachmentDropInstruction>{t('attachments.drop-instruction')}</AttachmentDropInstruction>
       </If>
       <For each="attachment" of={attachments}>
         <AttachmentItem
@@ -570,6 +570,7 @@ const FieldRow = ({
   onFieldSetValueType,
   onRemoveField
 }) => {
+  const t = useTranslations();
   const label =
     editing && field.removeable ? (
       <EditableText
@@ -591,7 +592,7 @@ const FieldRow = ({
       <For each="fieldTypeOption" of={FIELD_TYPE_OPTIONS}>
         <MenuItem
           key={fieldTypeOption.type}
-          text={`Change Type: ${fieldTypeOption.title}`}
+          text={t(`custom-fields.change-type.${fieldTypeOption.title}`)}
           icon={fieldTypeOption.icon}
           labelElement={
             field.valueType === fieldTypeOption.type ? <Icon icon="small-tick" /> : null
@@ -602,7 +603,11 @@ const FieldRow = ({
         />
       </For>
       <MenuDivider />
-      <MenuItem text="Delete Field" icon="trash" onClick={() => onRemoveField(field)} />
+      <MenuItem
+        text={t('custom-fields.delete-field')}
+        icon="trash"
+        onClick={() => onRemoveField(field)}
+      />
     </Menu>
   );
   return (

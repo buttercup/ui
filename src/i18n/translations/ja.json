@@ -12,7 +12,8 @@
     "delete-title": "ファイルを削除する",
     "download": "ダウンロード",
     "download-title": "ファイルをダウンロード",
-    "drop-files": "ファイルをドロップして追加"
+    "drop-files": "ファイルをドロップして追加",
+    "drop-instruction": "ファイルをドロップして追加"
   },
   "cancel": "キャンセル",
   "entries-list": {
@@ -47,6 +48,15 @@
       "trash-btn": "ゴミ箱に移動する"
     },
     "untitled": "(無題のドキュメント)"
+  },
+  "custom-fields": {
+    "change-type": {
+      "text": "形式を変更: テキスト(デフォルト)",
+      "note": "形式を変更: ノート",
+      "password": "形式を変更: パスワード",
+      "otp": "形式を変更: OTP"
+    },
+    "delete-field": "フィールドを削除"
   },
   "entry-menu": {
     "move-to": "移動する",
