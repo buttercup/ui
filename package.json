@@ -80,6 +80,7 @@
     "fast-deep-equal": "^2.0.1",
     "file-loader": "^6.0.0",
     "husky": "^4.2.5",
+    "i18next": "^19.9.1",
     "jest": "^25.3.0",
     "jest-styled-components": "^7.0.2",
     "jsx-control-statements": "^3.2.8",

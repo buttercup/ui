@@ -5,33 +5,23 @@ export const defaultType = EntryType.Login;
 export const types = [
   {
     type: EntryType.Login,
-    title: 'Login',
-    label: 'Default',
     icon: 'id-number',
-    description: 'Credentials for a login form'
+    default: true
   },
   {
     type: EntryType.Website,
-    title: 'Website',
-    icon: 'globe-network',
-    description: 'Login details for a website'
+    icon: 'globe-network'
   },
   {
     type: EntryType.CreditCard,
-    title: 'Credit/Bank Card',
-    icon: 'credit-card',
-    description: 'Credit/Bank Card details'
+    icon: 'credit-card'
   },
   {
     type: EntryType.Note,
-    title: 'Note',
-    icon: 'annotation',
-    description: 'A secure note'
+    icon: 'annotation'
   },
   {
     type: EntryType.SSHKey,
-    title: 'SSH Key',
-    icon: 'key',
-    description: 'An SSH Key pair'
+    icon: 'key'
   }
 ];

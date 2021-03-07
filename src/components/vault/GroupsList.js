@@ -17,6 +17,7 @@ import {
 } from '@blueprintjs/core';
 import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
+import { useTranslations } from '../../hooks/i18n';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import { getThemeProp } from '../../utils';
 import { VaultContext } from './Vault';
@@ -73,6 +74,7 @@ const GroupsList = () => {
     trashID
   } = useGroups();
   const { readOnly } = useContext(VaultContext);
+  const t = useTranslations();
 
   useEffect(() => {
     if (groupTitleInputRef && groupTitleInputRef.current) {
@@ -109,7 +111,7 @@ const GroupsList = () => {
       <If condition={!parentNode}>
         {/* Only show on first level */}
         <MenuItem
-          text="Move to root level"
+          text={t('group-menu.move-to-root')}
           key="moveRoot"
           icon="git-pull"
           onClick={() => moveGroupToGroup(selectedGroupID, '0')}
@@ -121,7 +123,7 @@ const GroupsList = () => {
       </If>
       <If condition={parentNode}>
         <MenuItem
-          text={`Move to ${parentNode.label}`}
+          text={t('group-menu.move-to-parent', { group: parentNode.label })}
           key={parentNode.id}
           icon={parentNode.icon}
           onClick={() => moveGroupToGroup(selectedGroupID, parentNode.id)}
@@ -165,23 +167,23 @@ const GroupsList = () => {
         <MenuItem text={groupFacade.title} disabled />
         <MenuDivider />
         <MenuItem
-          text="Add New Group"
+          text={t('group-menu.add-new-group')}
           icon="add"
           onClick={() => editGroup(null, groupFacade.id)}
           disabled={readOnly}
         />
         <MenuItem
-          text="Rename"
+          text={t('group-menu.rename-group')}
           icon="edit"
           onClick={() => editGroup(groupFacade)}
           disabled={readOnly}
         />
         <MenuDivider />
-        <MenuItem text="Move to..." icon="add-to-folder" disabled={readOnly}>
+        <MenuItem text={t('group-menu.move-to')} icon="add-to-folder" disabled={readOnly}>
           {renderGroupsMenu(groups, null, node.id)}
         </MenuItem>
         <MenuItem
-          text="Move to Trash"
+          text={t('group-menu.move-to-trash')}
           icon="trash"
           onClick={() => moveToTrash(selectedGroupID)}
           disabled={readOnly}
@@ -207,7 +209,7 @@ const GroupsList = () => {
     <>
       <PaneContainer primary>
         <PaneHeader
-          title="Groups"
+          title={t('group.header')}
           count={groups.length}
           filter={filters}
           onAddItem={() => editGroup()}
@@ -234,7 +236,7 @@ const GroupsList = () => {
             icon="trash"
             fill
             minimal
-            text="Trash"
+            text={t('trash.header')}
             alignText={Alignment.LEFT}
             active={trashSelected}
             onClick={() => onSelectGroup(trashID)}
@@ -244,11 +246,11 @@ const GroupsList = () => {
       <Dialog
         icon="manually-entered-data"
         onClose={closeEditDialog}
-        title={groupEditID === -1 ? 'Create Group' : 'Rename Group'}
+        title={groupEditID === -1 ? t('group.prompt.create') : t('group.prompt.rename')}
         isOpen={groupEditID !== null}
       >
         <div className={Classes.DIALOG_BODY}>
-          <p>Enter group title:</p>
+          <p>{t('group.prompt.message')}</p>
           <InputGroup
             leftIcon={groupEditID === -1 ? 'folder-new' : 'add-to-folder'}
             onChange={evt => setNewGroupName(evt.target.value)}
@@ -263,9 +265,9 @@ const GroupsList = () => {
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button onClick={closeEditDialog}>Cancel</Button>
+            <Button onClick={closeEditDialog}>{t('group.prompt.cancel')}</Button>
             <Button intent={Intent.PRIMARY} onClick={submitGroupChange}>
-              Save
+              {t('group.prompt.save')}
             </Button>
           </div>
         </div>

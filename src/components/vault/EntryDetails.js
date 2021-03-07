@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import cx from 'classnames';
 import TextArea from 'react-textarea-autosize';
@@ -35,6 +35,7 @@ import OTPDigits from '../OTPDigits';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 import CreditCard from './CreditCard';
+import { useTranslations } from '../../hooks/i18n';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
@@ -58,11 +59,11 @@ function mimeTypePreviewable(mimeType) {
   return false;
 }
 
-function title(entry) {
+function title(entry, untitledText) {
   const titleField = entry.fields.find(
     item => item.propertyType === 'property' && item.property === 'title'
   );
-  return titleField ? titleField.value : <i>(Untitled)</i>;
+  return titleField ? titleField.value : <i>{untitledText}</i>;
 }
 
 const ActionBar = styled.div`
@@ -256,6 +257,7 @@ const Attachments = ({
   onPreviewAttachment = () => {},
   readOnly = false
 }) => {
+  const t = useTranslations();
   const [deletingAttachment, setDeletingAttachment] = useState(null);
   const [previewingAttachment, setPreviewingAttachment] = useState(null);
   const onAttachmentItemClick = useCallback((evt, attachment) => {
@@ -374,28 +376,33 @@ const Attachments = ({
             <Button
               intent={Intent.PRIMARY}
               onClick={() => onDownloadAttachment(previewingAttachment)}
-              title="Download attachment"
+              title={t('attachments.download-title')}
             >
-              Download
+              {t('attachments.download')}
             </Button>
             &nbsp;
             <Button
               intent={Intent.DANGER}
               onClick={() => setDeletingAttachment(previewingAttachment)}
-              title="Delete attachment"
+              title={t('attachments.delete-title')}
               disabled={readOnly}
             >
-              Delete
+              {t('attachments.delete')}
             </Button>
           </div>
         </If>
       </Drawer>
       <Dialog isOpen={deletingAttachment} onClose={() => setDeletingAttachment(null)}>
         <If condition={deletingAttachment}>
-          <div className={Classes.DIALOG_HEADER}>Delete "{deletingAttachment.name}"</div>
+          <div className={Classes.DIALOG_HEADER}>
+            {t('attachments.confirm.delete-prompt-title', { title: deletingAttachment.name })}
+          </div>
           <div className={Classes.DIALOG_BODY}>
-            <p>Deleting this attachment will permanently remove it from your vault.</p>
-            <p>Are you sure that you want to delete it?</p>
+            {t('attachments.confirm.delete-prompt')
+              .split('\n')
+              .map(line => (
+                <p>{line}</p>
+              ))}
           </div>
           <div className={Classes.DIALOG_FOOTER}>
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -407,16 +414,16 @@ const Attachments = ({
                   setPreviewingAttachment(null);
                   onDeleteAttachment(attachmentItem);
                 }}
-                title="Confirm attachment deletion"
+                title={t('attachments.confirm.delete-title')}
                 disabled={readOnly}
               >
-                Delete
+                {t('attachments.confirm.delete')}
               </Button>
               <Button
                 onClick={() => setDeletingAttachment(null)}
-                title="Cancel attachment deletion"
+                title={t('attachments.confirm.cancel-title')}
               >
-                Cancel
+                {t('attachments.confirm.cancel')}
               </Button>
             </div>
           </div>
@@ -677,6 +684,7 @@ const FieldRow = ({
 };
 
 const EntryDetailsContent = () => {
+  const t = useTranslations();
   const {
     attachments: supportsAttachments,
     attachmentPreviews,
@@ -710,7 +718,7 @@ const EntryDetailsContent = () => {
 
   return (
     <>
-      <PaneHeader title={editing ? 'Edit Document' : title(entry)} />
+      <PaneHeader title={editing ? t('entry.edit-document') : title(entry, t('entry.untitled'))} />
       <PaneContent>
         <If condition={entry.type === EntryType.CreditCard}>
           <CreditCard entry={entry} />
@@ -730,7 +738,7 @@ const EntryDetailsContent = () => {
         </FormContainer>
         <If condition={editing || removeableFields.length > 0}>
           <CustomFieldsHeading>
-            <span>Custom Fields</span>
+            <span>{t('entry.custom-fields')}</span>
           </CustomFieldsHeading>
         </If>
         <FormContainer>
@@ -748,11 +756,11 @@ const EntryDetailsContent = () => {
           </For>
         </FormContainer>
         <If condition={editing}>
-          <Button onClick={onAddField} text="Add Custom Field" icon="small-plus" />
+          <Button onClick={onAddField} text={t('entry.add-custom-field-btn')} icon="small-plus" />
         </If>
         <If condition={!editing && supportsAttachments}>
           <CustomFieldsHeading>
-            <span>Attachments</span>
+            <span>{t('entry.attachments')}</span>
           </CustomFieldsHeading>
           <Attachments
             attachmentPreviews={attachmentPreviews}
@@ -768,25 +776,25 @@ const EntryDetailsContent = () => {
         <ActionBar>
           <If condition={!editing}>
             <Button onClick={onEdit} icon="edit" disabled={readOnly || entry.parentID === trashID}>
-              Edit
+              {t('entry.edit')}
             </Button>
           </If>
           <If condition={editing}>
             <div>
               <Button onClick={onSaveEdit} intent={Intent.PRIMARY} icon="tick" disabled={readOnly}>
-                Save
+                {t('entry.save')}
               </Button>
-              <Button onClick={onCancelEdit}>Cancel</Button>
+              <Button onClick={onCancelEdit}>{t('entry.cancel-edit')}</Button>
             </div>
             <If condition={!entry.isNew}>
               <ConfirmButton
-                icon="trash"
-                title="Confirm move to Trash"
-                description="Are you sure you want to move this entry to Trash?"
-                primaryAction="Move to Trash"
-                onClick={() => onMoveEntryToTrash(entry.id)}
                 danger
+                description={t('entry.trash-move.message')}
                 disabled={readOnly}
+                icon="trash"
+                onClick={() => onMoveEntryToTrash(entry.id)}
+                primaryAction={t('entry.trash-move.trash-btn')}
+                title={t('entry.trash-move.title')}
               />
             </If>
           </If>
@@ -797,6 +805,7 @@ const EntryDetailsContent = () => {
 };
 
 const EntryDetails = () => {
+  const t = useTranslations();
   const { editing, entry } = useCurrentEntry();
   const { attachments: supportsAttachments, onAddAttachments, readOnly } = useContext(VaultContext);
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
@@ -811,7 +820,7 @@ const EntryDetails = () => {
         <If condition={!editing}>
           <AttachmentDropZone visible={isDragActive} disabled={readOnly}>
             <Icon icon="compressed" iconSize={30} />
-            <span>Drop file(s) to add to vault</span>
+            <span>{t('attachments.drop-files')}</span>
           </AttachmentDropZone>
           <input {...getInputProps()} />
         </If>
@@ -823,8 +832,8 @@ const EntryDetails = () => {
             <PaneContent>
               <NonIdealState
                 icon="satellite"
-                title="No document selected"
-                description="Select or create a new document."
+                title={t('entry.none-selected.title')}
+                description={t('entry.none-selected.message')}
               />
             </PaneContent>
           </Otherwise>

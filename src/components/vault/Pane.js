@@ -13,6 +13,7 @@ import {
   Icon
 } from '@blueprintjs/core';
 import { getThemeProp } from '../../utils';
+import { useTranslations } from '../../hooks/i18n';
 
 const NOOP = () => {};
 
@@ -100,6 +101,7 @@ export const PaneHeader = ({
   const [filterInputVisible, toggleFilter] = useState(false);
   const inputRef = useRef(null);
   const showFilter = filter !== null;
+  const t = useTranslations();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -120,19 +122,19 @@ export const PaneHeader = ({
   const renderMenu = (
     <Menu>
       <MenuItem
-        text="Alphabetical"
+        text={t('entries-list.sort.alphabetical-asc')}
         label={filter && filter.sortMode === 'az' ? checkedIcon : ''}
         icon="sort-alphabetical"
         onClick={() => onSortModeChange('az')}
       />
       <MenuItem
-        text="Alphabetical"
+        text={t('entries-list.sort.alphabetical-desc')}
         label={filter && filter.sortMode === 'za' ? checkedIcon : ''}
         icon="sort-alphabetical-desc"
         onClick={() => onSortModeChange('za')}
       />
       <MenuItem
-        text="Filter..."
+        text={t('entries-list.sort.filter')}
         icon="search-text"
         onClick={() => toggleFilter(!filterInputVisible)}
         disabled={filter && filter.term !== ''}
@@ -149,7 +151,7 @@ export const PaneHeader = ({
               className={Classes.FILL}
               leftIcon="search"
               type="search"
-              placeholder="Filter..."
+              placeholder={t('entries-list.filter-placeholder')}
               value={filter.term}
               onChange={e => onTermChange(e.target.value)}
               onKeyDown={handleInputKeyPress}
