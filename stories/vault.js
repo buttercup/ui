@@ -17,7 +17,7 @@ import {
 } from 'buttercup/web';
 import { ThemeProvider } from 'styled-components';
 import randomWords from 'random-words';
-import { VaultProvider, VaultUI, themes } from '../src/index';
+import { VaultProvider, VaultUI, changeLanguage, themes } from '../src/index';
 
 import ATTACHMENT_BLOB from './resources/attachment.blob.dat';
 import ATTACHMENT_IMG from './resources/attachment.png.dat';
@@ -312,3 +312,11 @@ export const BasicVaultReadOnly = () => <VaultRender readOnly />;
 export const BasicDarkVault = () => <VaultRender dark />;
 
 export const HeavyVault = () => <VaultRender basic={false} />;
+
+export const VaultTranslatedSwedish = () => {
+  useEffect(() => {
+    changeLanguage('se');
+    return () => changeLanguage('en');
+  });
+  return <VaultRender />;
+};

@@ -11,7 +11,8 @@ import {
   BasicVaultNoIcons,
   BasicVaultReadOnly,
   BasicDarkVault,
-  HeavyVault
+  HeavyVault,
+  VaultTranslatedSwedish
 } from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
@@ -122,7 +123,8 @@ storiesOf('Vault', module)
   .add('basic (no icons)', () => <BasicVaultNoIcons />)
   .add('read-only', () => <BasicVaultReadOnly />)
   .add('dark', () => <BasicDarkVault />)
-  .add('heavy', () => <HeavyVault />);
+  .add('heavy', () => <HeavyVault />)
+  .add('translated (SE)', () => <VaultTranslatedSwedish />);
 
 storiesOf('OTPDigits', module)
   .add('6 digits', () => (
