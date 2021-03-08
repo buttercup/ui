@@ -5,7 +5,7 @@
       "cancel-title": "Cancel attachment deletion",
       "delete": "Delete",
       "delete-prompt": "Deleting this attachment will permanently remove it from your vault.\nAre you sure that you want to delete it?",
-      "delete-prompt-title": "Delte \"{{title}}\"",
+      "delete-prompt-title": "Delete \"{{title}}\"",
       "delete-title": "Confirm attachment deletion"
     },
     "delete": "Delete",
