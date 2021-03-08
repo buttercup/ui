@@ -320,3 +320,11 @@ export const VaultTranslatedSwedish = () => {
   });
   return <VaultRender />;
 };
+
+export const VaultTranslatedJapanese = () => {
+  useEffect(() => {
+    changeLanguage('ja');
+    return () => changeLanguage('en');
+  });
+  return <VaultRender />;
+};
