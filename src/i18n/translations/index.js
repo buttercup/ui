@@ -7,7 +7,7 @@ import se from './se.json';
 export default {
   de,
   en,
-  fr
+  fr,
   ja,
   se
 };
