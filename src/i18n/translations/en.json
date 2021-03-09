@@ -17,7 +17,7 @@
   },
   "cancel": "Cancel",
   "custom-fields": {
-    "change-type": "Change Type: ",
+    "change-type": "Change Type:",
     "delete-field": "Delete Field",
     "field-type": {
       "text": "Text (default)",
