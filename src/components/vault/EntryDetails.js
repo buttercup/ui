@@ -39,10 +39,18 @@ import { useTranslations } from '../../hooks/i18n';
 
 const ENTRY_ATTACHMENT_ATTRIB_PREFIX = Entry.Attributes.AttachmentPrefix;
 const FIELD_TYPE_OPTIONS = [
-  { type: EntryPropertyValueType.Text, title: 'text', icon: 'italic' },
-  { type: EntryPropertyValueType.Note, title: 'note', icon: 'align-left' },
-  { type: EntryPropertyValueType.Password, title: 'password', icon: 'key' },
-  { type: EntryPropertyValueType.OTP, title: 'otp', icon: 'time' }
+  { type: EntryPropertyValueType.Text, i18nKey: 'custom-fields.field-type.text', icon: 'italic' },
+  {
+    type: EntryPropertyValueType.Note,
+    i18nKey: 'custom-fields.field-type.note',
+    icon: 'align-left'
+  },
+  {
+    type: EntryPropertyValueType.Password,
+    i18nKey: 'custom-fields.field-type.password',
+    icon: 'key'
+  },
+  { type: EntryPropertyValueType.OTP, i18nKey: 'custom-fields.field-type.otp', icon: 'time' }
 ];
 
 function iconName(mimeType) {
@@ -592,7 +600,7 @@ const FieldRow = ({
       <For each="fieldTypeOption" of={FIELD_TYPE_OPTIONS}>
         <MenuItem
           key={fieldTypeOption.type}
-          text={t(`custom-fields.change-type.${fieldTypeOption.title}`)}
+          text={t('custom-fields.change-type') + t(fieldTypeOption.i18nKey)}
           icon={fieldTypeOption.icon}
           labelElement={
             field.valueType === fieldTypeOption.type ? <Icon icon="small-tick" /> : null

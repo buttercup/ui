@@ -5,7 +5,7 @@
       "cancel-title": "Cancel attachment deletion",
       "delete": "Delete",
       "delete-prompt": "Deleting this attachment will permanently remove it from your vault.\nAre you sure that you want to delete it?",
-      "delete-prompt-title": "Delte \"{{title}}\"",
+      "delete-prompt-title": "Delete \"{{title}}\"",
       "delete-title": "Confirm attachment deletion"
     },
     "delete": "Delete",
@@ -16,6 +16,16 @@
     "drop-instruction": "Drag and drop to add attachments"
   },
   "cancel": "Cancel",
+  "custom-fields": {
+    "change-type": "Change Type: ",
+    "delete-field": "Delete Field",
+    "field-type": {
+      "text": "Text (default)",
+      "note": "Note",
+      "password": "Password",
+      "otp": "Note"
+    }
+  },
   "entries-list": {
     "create-one-cta": "Why not create one?",
     "documents": "Documents",
@@ -48,15 +58,6 @@
       "trash-btn": "Move to Trash"
     },
     "untitled": "(Untitled)"
-  },
-  "custom-fields": {
-    "change-type": {
-      "text": "Change Type: Text (default)",
-      "note": "Change Type: Note",
-      "password": "Change Type: Password",
-      "otp": "Change Type: Note"
-    },
-    "delete-field": "Delete Field"
   },
   "entry-menu": {
     "move-to": "Move to...",

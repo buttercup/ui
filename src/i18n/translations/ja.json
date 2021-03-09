@@ -16,6 +16,16 @@
     "drop-instruction": "ファイルをドロップして追加"
   },
   "cancel": "キャンセル",
+  "custom-fields": {
+    "change-type": "形式を変更: ",
+    "delete-field": "フィールドを削除",
+    "field-type": {
+      "text": "テキスト(デフォルト)",
+      "note": "ノート",
+      "password": "パスワード",
+      "otp": "OTP"
+    }
+  },
   "entries-list": {
     "create-one-cta": "ドキュメントを追加する",
     "documents": "ドキュメント",
@@ -48,15 +58,6 @@
       "trash-btn": "ゴミ箱に移動する"
     },
     "untitled": "(無題のドキュメント)"
-  },
-  "custom-fields": {
-    "change-type": {
-      "text": "形式を変更: テキスト(デフォルト)",
-      "note": "形式を変更: ノート",
-      "password": "形式を変更: パスワード",
-      "otp": "形式を変更: OTP"
-    },
-    "delete-field": "フィールドを削除"
   },
   "entry-menu": {
     "move-to": "移動する",
