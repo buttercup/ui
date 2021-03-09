@@ -12,9 +12,20 @@
     "delete-title": "Delete attachment",
     "download": "Download",
     "download-title": "Download attachment",
-    "drop-files": "Drop file(s) to add to vault"
+    "drop-files": "Drop file(s) to add to vault",
+    "drop-instruction": "Drag and drop to add attachments"
   },
   "cancel": "Cancel",
+  "custom-fields": {
+    "change-type": "Change Type:",
+    "delete-field": "Delete Field",
+    "field-type": {
+      "text": "Text (default)",
+      "note": "Note",
+      "password": "Password",
+      "otp": "Note"
+    }
+  },
   "entries-list": {
     "create-one-cta": "Why not create one?",
     "documents": "Documents",

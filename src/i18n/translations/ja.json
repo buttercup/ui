@@ -12,9 +12,20 @@
     "delete-title": "ファイルを削除する",
     "download": "ダウンロード",
     "download-title": "ファイルをダウンロード",
-    "drop-files": "ファイルをドロップして追加"
+    "drop-files": "ファイルをドロップして追加",
+    "drop-instruction": "ファイルをドロップして追加"
   },
   "cancel": "キャンセル",
+  "custom-fields": {
+    "change-type": "形式を変更:",
+    "delete-field": "フィールドを削除",
+    "field-type": {
+      "text": "テキスト(デフォルト)",
+      "note": "ノート",
+      "password": "パスワード",
+      "otp": "OTP"
+    }
+  },
   "entries-list": {
     "create-one-cta": "ドキュメントを追加する",
     "documents": "ドキュメント",
