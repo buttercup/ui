@@ -600,7 +600,7 @@ const FieldRow = ({
       <For each="fieldTypeOption" of={FIELD_TYPE_OPTIONS}>
         <MenuItem
           key={fieldTypeOption.type}
-          text={`${t('custom-fields.change-type')}${t(fieldTypeOption.i18nKey)}`}
+          text={`${t('custom-fields.change-type')} ${t(fieldTypeOption.i18nKey)}`}
           icon={fieldTypeOption.icon}
           labelElement={
             field.valueType === fieldTypeOption.type ? <Icon icon="small-tick" /> : null
