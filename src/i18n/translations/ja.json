@@ -17,7 +17,7 @@
   },
   "cancel": "キャンセル",
   "custom-fields": {
-    "change-type": "形式を変更: ",
+    "change-type": "形式を変更:",
     "delete-field": "フィールドを削除",
     "field-type": {
       "text": "テキスト(デフォルト)",
