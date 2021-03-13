@@ -7,6 +7,8 @@ import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
 
+const NOOP = () => {};
+
 export const VaultContext = React.createContext();
 
 export const VaultProvider = ({
@@ -17,6 +19,7 @@ export const VaultProvider = ({
   onAddAttachments,
   onDeleteAttachment,
   onDownloadAttachment,
+  onEditing = NOOP,
   onPreviewAttachment,
   onUpdate,
   readOnly = false,
@@ -183,6 +186,7 @@ export const VaultProvider = ({
         payload: clone(selectedEntry)
       });
       setSelectedEntryID(null);
+      onEditing(true);
     },
     onSaveEdit: () => {
       if (!editingEntry) {
@@ -195,6 +199,7 @@ export const VaultProvider = ({
       dispatchEditing({
         type: 'stop-editing'
       });
+      onEditing(false);
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
       }
@@ -203,6 +208,7 @@ export const VaultProvider = ({
       dispatchEditing({
         type: 'stop-editing'
       });
+      onEditing(false);
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
       }
