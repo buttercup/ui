@@ -11,6 +11,7 @@ import {
   BasicVaultNoIcons,
   BasicVaultReadOnly,
   BasicDarkVault,
+  ControlledVault,
   HeavyVault,
   VaultTranslatedSwedish,
   VaultTranslatedJapanese
@@ -122,6 +123,7 @@ storiesOf('Vault', module)
   .add('basic (format A)', () => <BasicVault />)
   .add('basic (format B)', () => <BasicVaultFormatB />)
   .add('basic (no icons)', () => <BasicVaultNoIcons />)
+  .add('controlled', () => <ControlledVault />)
   .add('read-only', () => <BasicVaultReadOnly />)
   .add('dark', () => <BasicDarkVault />)
   .add('heavy', () => <HeavyVault />)
