@@ -296,6 +296,8 @@ VaultProvider.propTypes = {
   onDeleteAttachment: PropTypes.func,
   onDownloadAttachment: PropTypes.func,
   onPreviewAttachment: PropTypes.func,
+  onSelectEntry: PropTypes.func,
+  onSelectGroup: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
 };
