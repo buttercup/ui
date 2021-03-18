@@ -14,6 +14,10 @@ const View = styled.div`
 `;
 
 export class GeneratorTrigger extends Component {
+  static defaultProps = {
+    copyMode: false
+  };
+
   state = {
     isOpen: false
   };
@@ -29,7 +33,12 @@ export class GeneratorTrigger extends Component {
 
   render() {
     return (
-      <Generator onGenerate={this.handleGenerated} isOpen={this.state.isOpen} {...this.props}>
+      <Generator
+        copyMode={!!this.props.copyMode}
+        onGenerate={this.handleGenerated}
+        isOpen={this.state.isOpen}
+        {...this.props}
+      >
         <View>
           <Button
             primary
