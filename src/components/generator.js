@@ -5,7 +5,7 @@ import Popover from 'react-popover';
 import { Button } from './button';
 import { ColoredDigits } from './colored-digits';
 import { colors } from '../variables';
-import { selectElementContents } from '../utils';
+import { copyToClipboard, selectElementContents } from '../utils';
 
 const NOOP = () => {};
 
@@ -100,7 +100,7 @@ const GeneratorControls = styled.div`
 `;
 
 export function GeneratorUserInterface(props = {}) {
-  const { autoGenerate = true, onError = NOOP, onGenerate = NOOP } = props;
+  const { autoGenerate = true, copyMode = false, onError = NOOP, onGenerate = NOOP } = props;
   const [config, setConfig] = useState(getConfig);
   const [password, setPassword] = useState('');
   const enabledCharacterSets = useMemo(() => config.randomCharacters.enabledCharacterSets, [
@@ -264,9 +264,24 @@ export function GeneratorUserInterface(props = {}) {
         <Button onClick={() => generateNewPassword()} primary>
           Generate
         </Button>
-        <Button onClick={() => onGenerate(password)} dark>
-          Use This
-        </Button>
+        <Choose>
+          <When condition={copyMode}>
+            <Button
+              dark
+              onClick={() => {
+                copyToClipboard(password);
+                onGenerate(password);
+              }}
+            >
+              Copy
+            </Button>
+          </When>
+          <Otherwise>
+            <Button onClick={() => onGenerate(password)} dark>
+              Use This
+            </Button>
+          </Otherwise>
+        </Choose>
       </GeneratorControls>
     </Body>
   );

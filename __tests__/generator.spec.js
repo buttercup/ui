@@ -7,9 +7,18 @@ import { Generator } from '../src/index.js';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('generator', () => {
-  test('initial render remains consistent', () => {
+  test('renders identical standard', () => {
     const container = mount(
       <Generator autoGenerate={false} isOpen={true}>
+        <a />
+      </Generator>
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  test('renders identical copy-mode', () => {
+    const container = mount(
+      <Generator autoGenerate={false} copyMode isOpen={true}>
         <a />
       </Generator>
     );

@@ -1,6 +1,1306 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`generator initial render remains consistent 1`] = `
+exports[`generator renders identical copy-mode 1`] = `
+.c9 {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 6px 12px;
+  width: auto;
+  font-size: .75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer !important;
+  outline: none;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  background-color: #00B7AC;
+  color: white;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c9 svg {
+  font-size: 14px;
+  vertical-align: -3px !important;
+  margin-right: 2px;
+  cursor: pointer !important;
+}
+
+.c9:hover {
+  background-color: #009e94;
+}
+
+.c9:active {
+  position: relative;
+  top: 1px;
+}
+
+.c9[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.c10 {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 6px 12px;
+  width: auto;
+  font-size: .75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer !important;
+  outline: none;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  background-color: rgba(0,0,0,.25);
+  color: white;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c10 svg {
+  font-size: 14px;
+  vertical-align: -3px !important;
+  margin-right: 2px;
+  cursor: pointer !important;
+}
+
+.c10:hover {
+  background-color: rgba(0,0,0,.35);
+}
+
+.c10:active {
+  position: relative;
+  top: 1px;
+}
+
+.c10[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.c2 .num {
+  color: #00B7AC;
+}
+
+.c0 {
+  background: #31353D;
+  padding: 12px;
+  color: #fff;
+  border-radius: 5px;
+  font-weight: 300;
+}
+
+.c1 {
+  font-size: 0.9rem;
+  padding: 6px;
+  margin: 0;
+  background-color: rgba(0,0,0,.25);
+  border-radius: 3px;
+  overflow: hidden;
+  font-weight: 400;
+  cursor: copy;
+}
+
+.c3 {
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+.c3 label {
+  display: block;
+}
+
+.c3 small {
+  color: #777;
+}
+
+.c4 {
+  display: block;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c7 span {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  background-color: rgba(0,0,0,.25);
+  padding: 0 3px;
+  border-radius: 3px;
+  font-family: monospace;
+  width: 30px;
+  margin-left: 6px;
+}
+
+.c7 input {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c5 {
+  border-color: rgba(255,255,255,.50);
+  border-radius: 3px;
+}
+
+.c6 {
+  text-transform: uppercase;
+  padding: 0 6px;
+  font-size: 0.8em;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 12px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c8 button {
+  width: 50%;
+}
+
+.c8 button:first-child {
+  margin-right: 6px;
+}
+
+<Generator
+  autoGenerate={false}
+  copyMode={true}
+  isOpen={true}
+>
+  <Memo(GlobalStyleComponent) />
+  <Popover
+    appendTarget={
+      <body>
+        <div
+          class="Popover Popover-above "
+          style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
+        >
+          <div
+            class="Popover-body"
+            style="order: -1;"
+          >
+            <div
+              class="c0"
+            >
+              <pre
+                class="c1"
+                role="content"
+              >
+                <span
+                  class="c2"
+                >
+                  <span
+                    class="str"
+                  />
+                </span>
+              </pre>
+              <div
+                class="c3"
+              >
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="radio"
+                  />
+                   
+                  Characters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="radio"
+                  />
+                   
+                  Words
+                </div>
+              </div>
+              <fieldset
+                class="c5"
+              >
+                <legend
+                  class="c6"
+                >
+                  Options
+                </legend>
+                <div
+                  class="c7"
+                >
+                  <input
+                    max="50"
+                    min="10"
+                    type="range"
+                    value="20"
+                  />
+                  <span>
+                    20
+                  </span>
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Uppercase Letters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Lowercase Letters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Digits
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                   
+                  Space
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Underscore & Dash
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                   
+                  Symbols
+                </div>
+              </fieldset>
+              <div
+                class="c8"
+              >
+                <button
+                  class="c9"
+                  type="button"
+                >
+                  Generate
+                </button>
+                <button
+                  class="c10"
+                  type="button"
+                >
+                  Use This
+                </button>
+              </div>
+            </div>
+          </div>
+          <svg
+            class="Popover-tip"
+            height="7"
+            style="transform: translateX(-14px); transition: transform 150ms ease-in;"
+            width="14"
+          >
+            <polygon
+              class="Popover-tipShape"
+              points="0,0 7,7, 14,0"
+            />
+          </svg>
+          <object
+            class="resize-sensor"
+            data="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+            type="text/html"
+          />
+        </div>
+        .c9 {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 6px 12px;
+  width: auto;
+  font-size: .75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer !important;
+  outline: none;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  background-color: #00B7AC;
+  color: white;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c9 svg {
+  font-size: 14px;
+  vertical-align: -3px !important;
+  margin-right: 2px;
+  cursor: pointer !important;
+}
+
+.c9:hover {
+  background-color: #009e94;
+}
+
+.c9:active {
+  position: relative;
+  top: 1px;
+}
+
+.c9[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.c10 {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 6px 12px;
+  width: auto;
+  font-size: .75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  border: 0;
+  cursor: pointer !important;
+  outline: none;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  background-color: rgba(0,0,0,.25);
+  color: white;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c10 svg {
+  font-size: 14px;
+  vertical-align: -3px !important;
+  margin-right: 2px;
+  cursor: pointer !important;
+}
+
+.c10:hover {
+  background-color: rgba(0,0,0,.35);
+}
+
+.c10:active {
+  position: relative;
+  top: 1px;
+}
+
+.c10[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.c2 .num {
+  color: #00B7AC;
+}
+
+.c0 {
+  background: #31353D;
+  padding: 12px;
+  color: #fff;
+  border-radius: 5px;
+  font-weight: 300;
+}
+
+.c1 {
+  font-size: 0.9rem;
+  padding: 6px;
+  margin: 0;
+  background-color: rgba(0,0,0,.25);
+  border-radius: 3px;
+  overflow: hidden;
+  font-weight: 400;
+  cursor: copy;
+}
+
+.c3 {
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+.c3 label {
+  display: block;
+}
+
+.c3 small {
+  color: #777;
+}
+
+.c4 {
+  display: block;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c7 span {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  background-color: rgba(0,0,0,.25);
+  padding: 0 3px;
+  border-radius: 3px;
+  font-family: monospace;
+  width: 30px;
+  margin-left: 6px;
+}
+
+.c7 input {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c5 {
+  border-color: rgba(255,255,255,.50);
+  border-radius: 3px;
+}
+
+.c6 {
+  text-transform: uppercase;
+  padding: 0 6px;
+  font-size: 0.8em;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 12px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c8 button {
+  width: 50%;
+}
+
+.c8 button:first-child {
+  margin-right: 6px;
+}
+
+<div
+          class="Popover Popover-above "
+          style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
+        >
+          <div
+            class="Popover-body"
+            style="order: -1;"
+          >
+            <div
+              class="c0"
+            >
+              <pre
+                class="c1"
+                role="content"
+              >
+                <span
+                  class="c2"
+                >
+                  <span
+                    class="str"
+                  />
+                </span>
+              </pre>
+              <div
+                class="c3"
+              >
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="radio"
+                  />
+                   
+                  Characters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="radio"
+                  />
+                   
+                  Words
+                </div>
+              </div>
+              <fieldset
+                class="c5"
+              >
+                <legend
+                  class="c6"
+                >
+                  Options
+                </legend>
+                <div
+                  class="c7"
+                >
+                  <input
+                    max="50"
+                    min="10"
+                    type="range"
+                    value="20"
+                  />
+                  <span>
+                    20
+                  </span>
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Uppercase Letters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Lowercase Letters
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Digits
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                   
+                  Space
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    checked=""
+                    type="checkbox"
+                  />
+                   
+                  Underscore & Dash
+                </div>
+                <div
+                  class="c4"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                   
+                  Symbols
+                </div>
+              </fieldset>
+              <div
+                class="c8"
+              >
+                <button
+                  class="c9"
+                  type="button"
+                >
+                  Generate
+                </button>
+                <button
+                  class="c10"
+                  type="button"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+          <svg
+            class="Popover-tip"
+            height="7"
+            style="transform: translateX(-14px); transition: transform 150ms ease-in;"
+            width="14"
+          >
+            <polygon
+              class="Popover-tipShape"
+              points="0,0 7,7, 14,0"
+            />
+          </svg>
+          <object
+            class="resize-sensor"
+            data="about:blank"
+            style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+            type="text/html"
+          />
+        </div>
+      </body>
+    }
+    body={
+      <GeneratorUserInterface
+        autoGenerate={false}
+        copyMode={true}
+      />
+    }
+    enterExitTransitionDurationMs={500}
+    isOpen={true}
+    offset={4}
+    onOuterAction={[Function]}
+    place={null}
+    preferPlace={null}
+    refreshIntervalMs={200}
+    tipSize={7}
+  >
+    <a />
+    <Portal
+      containerInfo={
+        <body>
+          <div
+            class="Popover Popover-above "
+            style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
+          >
+            <div
+              class="Popover-body"
+              style="order: -1;"
+            >
+              <div
+                class="c0"
+              >
+                <pre
+                  class="c1"
+                  role="content"
+                >
+                  <span
+                    class="c2"
+                  >
+                    <span
+                      class="str"
+                    />
+                  </span>
+                </pre>
+                <div
+                  class="c3"
+                >
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="radio"
+                    />
+                     
+                    Characters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="radio"
+                    />
+                     
+                    Words
+                  </div>
+                </div>
+                <fieldset
+                  class="c5"
+                >
+                  <legend
+                    class="c6"
+                  >
+                    Options
+                  </legend>
+                  <div
+                    class="c7"
+                  >
+                    <input
+                      max="50"
+                      min="10"
+                      type="range"
+                      value="20"
+                    />
+                    <span>
+                      20
+                    </span>
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Uppercase Letters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Lowercase Letters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Digits
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="checkbox"
+                    />
+                     
+                    Space
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Underscore & Dash
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="checkbox"
+                    />
+                     
+                    Symbols
+                  </div>
+                </fieldset>
+                <div
+                  class="c8"
+                >
+                  <button
+                    class="c9"
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                  <button
+                    class="c10"
+                    type="button"
+                  >
+                    Use This
+                  </button>
+                </div>
+              </div>
+            </div>
+            <svg
+              class="Popover-tip"
+              height="7"
+              style="transform: translateX(-14px); transition: transform 150ms ease-in;"
+              width="14"
+            >
+              <polygon
+                class="Popover-tipShape"
+                points="0,0 7,7, 14,0"
+              />
+            </svg>
+            <object
+              class="resize-sensor"
+              data="about:blank"
+              style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+              tabindex="-1"
+              type="text/html"
+            />
+          </div>
+          <div
+            class="Popover Popover-above "
+            style="position: absolute; top: -4px; left: -25px; display: flex; flex-flow: column; transform: translateY(0); opacity: 1; transition-property: top, left, opacity, transform; transition-duration: 500ms; transition-timing-function: cubic-bezier(0.230, 1.000, 0.320, 1.000);"
+          >
+            <div
+              class="Popover-body"
+              style="order: -1;"
+            >
+              <div
+                class="c0"
+              >
+                <pre
+                  class="c1"
+                  role="content"
+                >
+                  <span
+                    class="c2"
+                  >
+                    <span
+                      class="str"
+                    />
+                  </span>
+                </pre>
+                <div
+                  class="c3"
+                >
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="radio"
+                    />
+                     
+                    Characters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="radio"
+                    />
+                     
+                    Words
+                  </div>
+                </div>
+                <fieldset
+                  class="c5"
+                >
+                  <legend
+                    class="c6"
+                  >
+                    Options
+                  </legend>
+                  <div
+                    class="c7"
+                  >
+                    <input
+                      max="50"
+                      min="10"
+                      type="range"
+                      value="20"
+                    />
+                    <span>
+                      20
+                    </span>
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Uppercase Letters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Lowercase Letters
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Digits
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="checkbox"
+                    />
+                     
+                    Space
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      checked=""
+                      type="checkbox"
+                    />
+                     
+                    Underscore & Dash
+                  </div>
+                  <div
+                    class="c4"
+                  >
+                    <input
+                      type="checkbox"
+                    />
+                     
+                    Symbols
+                  </div>
+                </fieldset>
+                <div
+                  class="c8"
+                >
+                  <button
+                    class="c9"
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                  <button
+                    class="c10"
+                    type="button"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+            </div>
+            <svg
+              class="Popover-tip"
+              height="7"
+              style="transform: translateX(-14px); transition: transform 150ms ease-in;"
+              width="14"
+            >
+              <polygon
+                class="Popover-tipShape"
+                points="0,0 7,7, 14,0"
+              />
+            </svg>
+            <object
+              class="resize-sensor"
+              data="about:blank"
+              style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+              tabindex="-1"
+              type="text/html"
+            />
+          </div>
+        </body>
+      }
+    >
+      <div
+        className="Popover Popover-above "
+        style={
+          Object {
+            "display": "flex",
+            "left": 0,
+            "position": "absolute",
+            "top": 0,
+          }
+        }
+      >
+        <div
+          className="Popover-body"
+        >
+          <GeneratorUserInterface
+            autoGenerate={false}
+            copyMode={true}
+          >
+            <styled.div>
+              <div
+                className="c0"
+              >
+                <styled.pre
+                  onClick={[Function]}
+                  role="content"
+                >
+                  <pre
+                    className="c1"
+                    onClick={[Function]}
+                    role="content"
+                  >
+                    <Styled(ColoredDigits)
+                      value=""
+                    >
+                      <ColoredDigits
+                        className="c2"
+                        value=""
+                      >
+                        <span
+                          className="c2"
+                        >
+                          <span
+                            className="str"
+                            key="0"
+                          />
+                        </span>
+                      </ColoredDigits>
+                    </Styled(ColoredDigits)>
+                  </pre>
+                </styled.pre>
+                <styled.div>
+                  <div
+                    className="c3"
+                  >
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="radio"
+                        />
+                         
+                        Characters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="radio"
+                        />
+                         
+                        Words
+                      </div>
+                    </styled.div>
+                  </div>
+                </styled.div>
+                <styled.fieldset>
+                  <fieldset
+                    className="c5"
+                  >
+                    <styled.legend>
+                      <legend
+                        className="c6"
+                      >
+                        Options
+                      </legend>
+                    </styled.legend>
+                    <styled.div>
+                      <div
+                        className="c7"
+                      >
+                        <input
+                          max="50"
+                          min="10"
+                          onChange={[Function]}
+                          type="range"
+                          value={20}
+                        />
+                        <span>
+                          20
+                        </span>
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Uppercase Letters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Lowercase Letters
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Digits
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Space
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={true}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Underscore & Dash
+                      </div>
+                    </styled.div>
+                    <styled.div>
+                      <div
+                        className="c4"
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                         
+                        Symbols
+                      </div>
+                    </styled.div>
+                  </fieldset>
+                </styled.fieldset>
+                <styled.div>
+                  <div
+                    className="c8"
+                  >
+                    <Styled(BaseButton)
+                      onClick={[Function]}
+                      primary={true}
+                    >
+                      <BaseButton
+                        className="c9"
+                        onClick={[Function]}
+                        primary={true}
+                      >
+                        <button
+                          className="c9"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          Generate
+                        </button>
+                      </BaseButton>
+                    </Styled(BaseButton)>
+                    <Styled(BaseButton)
+                      dark={true}
+                      onClick={[Function]}
+                    >
+                      <BaseButton
+                        className="c10"
+                        dark={true}
+                        onClick={[Function]}
+                      >
+                        <button
+                          className="c10"
+                          onClick={[Function]}
+                          type="button"
+                        >
+                          Copy
+                        </button>
+                      </BaseButton>
+                    </Styled(BaseButton)>
+                  </div>
+                </styled.div>
+              </div>
+            </styled.div>
+          </GeneratorUserInterface>
+        </div>
+        <Tip
+          direction="down"
+          size={7}
+        >
+          <svg
+            className="Popover-tip"
+            height={7}
+            width={14}
+          >
+            <polygon
+              className="Popover-tipShape"
+              points="0,0 7,7, 14,0"
+            />
+          </svg>
+        </Tip>
+      </div>
+    </Portal>
+  </Popover>
+</Generator>
+`;
+
+exports[`generator renders identical standard 1`] = `
 .c9 {
   display: inline-block;
   border-radius: 20px;

@@ -86,6 +86,11 @@ storiesOf('Generator', module)
       <GeneratorTrigger preferPlace="below" />
     </div>
   ))
+  .add('copy mode', () => (
+    <div style={{ position: 'absolute', left: 0 }}>
+      <GeneratorTrigger copyMode preferPlace="below" />
+    </div>
+  ))
   .add('edges of screen (auto)', () => (
     <div>
       <div style={{ position: 'absolute', right: 0 }}>
