@@ -32,6 +32,7 @@ import { PaneContainer, PaneContent, PaneHeader, PaneFooter } from './Pane';
 import { VaultContext } from './Vault';
 import ConfirmButton from './ConfirmButton';
 import OTPDigits from '../OTPDigits';
+import { Generator as PasswordGenerator } from '../generator';
 import ErrorBoundary from './ErrorBoundary';
 import { copyToClipboard, getThemeProp } from '../../utils';
 import CreditCard from './CreditCard';
@@ -579,6 +580,7 @@ const FieldRow = ({
   onRemoveField
 }) => {
   const t = useTranslations();
+  const [passwordMgrVisible, setPasswordMgrVisible] = useState(false);
   const label =
     editing && field.removeable ? (
       <EditableText
@@ -680,6 +682,19 @@ const FieldRow = ({
                   />
                 </Otherwise>
               </Choose>
+              <If condition={field.valueType === 'password'}>
+                <PasswordGenerator
+                  isOpen={passwordMgrVisible}
+                  onClose={() => setPasswordMgrVisible(false)}
+                  onGenerate={newPass => {
+                    onFieldUpdate(field, newPass);
+                    setPasswordMgrVisible(false);
+                  }}
+                >
+                  <span>{/* hack to fix resize-sensor UI breakage */}</span>
+                </PasswordGenerator>
+                <Button icon="key" onClick={() => setPasswordMgrVisible(!passwordMgrVisible)} />
+              </If>
               <If condition={field.removeable}>
                 <Popover content={renderMenu} boundary="viewport" captureDismiss={false}>
                   <Button icon="cog" />

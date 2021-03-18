@@ -287,12 +287,12 @@ export function GeneratorUserInterface(props = {}) {
   );
 }
 
-export const Generator = ({ children, isOpen, className, ...rest }) => {
+export const Generator = ({ children, isOpen, className, onClose = NOOP, ...rest }) => {
   const View = <GeneratorUserInterface {...rest} />;
   return (
     <>
       <PopoverStyles />
-      <Popover isOpen={isOpen} body={View} className={className}>
+      <Popover hasBackdrop isOpen={isOpen} body={View} onClose={onClose} className={className}>
         {children}
       </Popover>
     </>
