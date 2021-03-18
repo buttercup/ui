@@ -9,7 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('generator', () => {
   test('initial render remains consistent', () => {
     const container = mount(
-      <Generator isOpen={true}>
+      <Generator autoGenerate={false} isOpen={true}>
         <a />
       </Generator>
     );

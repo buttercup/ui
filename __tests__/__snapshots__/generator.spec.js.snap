@@ -181,6 +181,7 @@ exports[`generator initial render remains consistent 1`] = `
 }
 
 <Generator
+  autoGenerate={false}
   isOpen={true}
 >
   <Memo(GlobalStyleComponent) />
@@ -533,7 +534,7 @@ exports[`generator initial render remains consistent 1`] = `
     }
     body={
       <GeneratorUserInterface
-        onGenerate={[Function]}
+        autoGenerate={false}
       />
     }
     enterExitTransitionDurationMs={500}
@@ -730,7 +731,7 @@ exports[`generator initial render remains consistent 1`] = `
           className="Popover-body"
         >
           <GeneratorUserInterface
-            onGenerate={[Function]}
+            autoGenerate={false}
           >
             <styled.div>
               <div
