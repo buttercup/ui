@@ -42,7 +42,7 @@ const EntriesList = ({ className }) => {
   const handlers = {
     arrowUp: event => handleNavigation(event, -1),
     arrowDown: event => handleNavigation(event, 1),
-    enter: event => {
+    enter: () => {
       if (document.activeElement !== ref.current) {
         document.activeElement.click();
       }
