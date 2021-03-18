@@ -703,8 +703,10 @@ exports[`generator renders identical copy-mode 1`] = `
       />
     }
     enterExitTransitionDurationMs={500}
+    hasBackdrop={true}
     isOpen={true}
     offset={4}
+    onClose={[Function]}
     onOuterAction={[Function]}
     place={null}
     preferPlace={null}
@@ -1838,8 +1840,10 @@ exports[`generator renders identical standard 1`] = `
       />
     }
     enterExitTransitionDurationMs={500}
+    hasBackdrop={true}
     isOpen={true}
     offset={4}
+    onClose={[Function]}
     onOuterAction={[Function]}
     place={null}
     preferPlace={null}
