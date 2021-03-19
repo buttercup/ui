@@ -129,7 +129,7 @@
     "ramda": "^0.27.0",
     "react-icons": "^2.2.7",
     "react-popover": "^0.5.10",
-    "react-reflex": "^3.0.22",
+    "react-reflex": "^4.0.0",
     "react-textarea-autosize": "^7.1.2",
     "zxcvbn": "^4.4.2"
   }

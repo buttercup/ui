@@ -2,11 +2,11 @@
 // Document body to handle resizing
 // See: https://github.com/leefsmp/Re-Flex/issues/68
 /////////////////////////////////////////////////////////
-body.col-resize {
+body.reflex-col-resize {
   cursor: col-resize;
 }
 
-body.row-resize {
+body.reflex-row-resize {
   cursor: row-resize;
 }
 
@@ -125,8 +125,7 @@ body.row-resize {
   -webkit-background-clip: padding;
   background-clip: padding-box;
   opacity: 0.2;
-  z-index: 0;
-  background-color: #8A9BA8 !important;
+  z-index: 100;
 }
 
 .reflex-container > .reflex-splitter.reflex-thin.active
