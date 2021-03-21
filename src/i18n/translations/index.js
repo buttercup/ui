@@ -3,6 +3,7 @@ import en from './en.json';
 import fr from './se.json';
 import ja from './ja.json';
 import pl from './pl.json';
+import ru from './ru.json';
 import se from './se.json';
 
 export default {
@@ -11,5 +12,6 @@ export default {
   fr,
   ja,
   pl,
+  ru,
   se
 };

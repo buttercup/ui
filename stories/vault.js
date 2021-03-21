@@ -353,3 +353,11 @@ export const VaultTranslatedJapanese = () => {
   });
   return <VaultRender />;
 };
+
+export const VaultTranslatedRussian = () => {
+  useEffect(() => {
+    changeLanguage('ru');
+    return () => changeLanguage('en');
+  });
+  return <VaultRender />;
+};
