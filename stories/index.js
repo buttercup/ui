@@ -14,7 +14,8 @@ import {
   ControlledVault,
   HeavyVault,
   VaultTranslatedSwedish,
-  VaultTranslatedJapanese
+  VaultTranslatedJapanese,
+  VaultTranslatedRussian
 } from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
@@ -133,7 +134,8 @@ storiesOf('Vault', module)
   .add('dark', () => <BasicDarkVault />)
   .add('heavy', () => <HeavyVault />)
   .add('translated (SE)', () => <VaultTranslatedSwedish />)
-  .add('translated (JA)', () => <VaultTranslatedJapanese />);
+  .add('translated (JA)', () => <VaultTranslatedJapanese />)
+  .add('translated (RU)', () => <VaultTranslatedRussian />);
 
 storiesOf('OTPDigits', module)
   .add('6 digits', () => (
