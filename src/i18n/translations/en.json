@@ -23,7 +23,7 @@
       "text": "Text (default)",
       "note": "Note",
       "password": "Password",
-      "otp": "Note"
+      "otp": "OTP"
     }
   },
   "entries-list": {
