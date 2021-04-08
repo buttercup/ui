@@ -173,14 +173,17 @@ const View = styled.div`
 `;
 
 function VaultRender({
-  formatB = false,
-  dark = false,
   basic = true,
+  controlled = false,
+  dark = false,
+  formatB = false,
   icons = true,
   readOnly = false
 } = {}) {
   const [vaultManager, setVaultManager] = useState(null);
   const [archiveFacade, setArchiveFacade] = useState(null);
+  const [controlledGroupID, setControlledGroupID] = useState(null);
+  const [controlledEntryID, setControlledEntryID] = useState(null);
   const [attachmentPreviews, setAttachmentPreviews] = useState({});
   const deleteAttachment = useCallback(
     async (entryID, attachmentID) => {
@@ -263,38 +266,58 @@ function VaultRender({
     <View className={dark ? 'bp3-dark' : ''}>
       <ThemeProvider theme={dark ? themes.dark : themes.light}>
         <If condition={archiveFacade}>
-          <VaultProvider
-            vault={archiveFacade}
-            attachments
-            attachmentPreviews={attachmentPreviews}
-            icons={icons}
-            onAddAttachments={async (entryID, files) => {
-              const source = vaultManager.sources[0];
-              const entry = source.vault.findEntryByID(entryID);
-              for (const file of files) {
-                const buff = await file.arrayBuffer();
-                await source.attachmentManager.setAttachment(
-                  entry,
-                  AttachmentManager.newAttachmentID(),
-                  buff,
-                  file.name,
-                  file.type || 'application/octet-stream'
-                );
-              }
-              setArchiveFacade(createVaultFacade(source.vault));
-            }}
-            onDeleteAttachment={deleteAttachment}
-            onDownloadAttachment={downloadAttachment}
-            onPreviewAttachment={previewAttachment}
-            onUpdate={vaultFacade => {
-              console.log('Saving vault...');
-              const source = vaultManager.sources[0];
-              setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
-            }}
-            readOnly={readOnly}
-          >
-            <VaultUI />
-          </VaultProvider>
+          <Choose>
+            <When condition={controlled}>
+              <VaultProvider
+                onSelectEntry={setControlledEntryID}
+                onSelectGroup={setControlledGroupID}
+                onUpdate={vaultFacade => {
+                  console.log('Saving vault...');
+                  const source = vaultManager.sources[0];
+                  setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
+                }}
+                selectedEntry={controlledEntryID}
+                selectedGroup={controlledGroupID}
+                vault={archiveFacade}
+              >
+                <VaultUI />
+              </VaultProvider>
+            </When>
+            <Otherwise>
+              <VaultProvider
+                vault={archiveFacade}
+                attachments
+                attachmentPreviews={attachmentPreviews}
+                icons={icons}
+                onAddAttachments={async (entryID, files) => {
+                  const source = vaultManager.sources[0];
+                  const entry = source.vault.findEntryByID(entryID);
+                  for (const file of files) {
+                    const buff = await file.arrayBuffer();
+                    await source.attachmentManager.setAttachment(
+                      entry,
+                      AttachmentManager.newAttachmentID(),
+                      buff,
+                      file.name,
+                      file.type || 'application/octet-stream'
+                    );
+                  }
+                  setArchiveFacade(createVaultFacade(source.vault));
+                }}
+                onDeleteAttachment={deleteAttachment}
+                onDownloadAttachment={downloadAttachment}
+                onPreviewAttachment={previewAttachment}
+                onUpdate={vaultFacade => {
+                  console.log('Saving vault...');
+                  const source = vaultManager.sources[0];
+                  setArchiveFacade(processVaultUpdate(source.vault, vaultFacade));
+                }}
+                readOnly={readOnly}
+              >
+                <VaultUI />
+              </VaultProvider>
+            </Otherwise>
+          </Choose>
         </If>
       </ThemeProvider>
     </View>
@@ -313,6 +336,8 @@ export const BasicDarkVault = () => <VaultRender dark />;
 
 export const HeavyVault = () => <VaultRender basic={false} />;
 
+export const ControlledVault = () => <VaultRender controlled />;
+
 export const VaultTranslatedSwedish = () => {
   useEffect(() => {
     changeLanguage('se');
@@ -324,6 +349,14 @@ export const VaultTranslatedSwedish = () => {
 export const VaultTranslatedJapanese = () => {
   useEffect(() => {
     changeLanguage('ja');
+    return () => changeLanguage('en');
+  });
+  return <VaultRender />;
+};
+
+export const VaultTranslatedRussian = () => {
+  useEffect(() => {
+    changeLanguage('ru');
     return () => changeLanguage('en');
   });
   return <VaultRender />;

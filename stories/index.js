@@ -11,9 +11,11 @@ import {
   BasicVaultNoIcons,
   BasicVaultReadOnly,
   BasicDarkVault,
+  ControlledVault,
   HeavyVault,
   VaultTranslatedSwedish,
-  VaultTranslatedJapanese
+  VaultTranslatedJapanese,
+  VaultTranslatedRussian
 } from './vault';
 import OTPDigitsStory from './OTPDigits';
 import '../src/styles/index.scss';
@@ -85,6 +87,11 @@ storiesOf('Generator', module)
       <GeneratorTrigger preferPlace="below" />
     </div>
   ))
+  .add('copy mode', () => (
+    <div style={{ position: 'absolute', left: 0 }}>
+      <GeneratorTrigger copyMode preferPlace="below" />
+    </div>
+  ))
   .add('edges of screen (auto)', () => (
     <div>
       <div style={{ position: 'absolute', right: 0 }}>
@@ -122,11 +129,13 @@ storiesOf('Vault', module)
   .add('basic (format A)', () => <BasicVault />)
   .add('basic (format B)', () => <BasicVaultFormatB />)
   .add('basic (no icons)', () => <BasicVaultNoIcons />)
+  .add('controlled', () => <ControlledVault />)
   .add('read-only', () => <BasicVaultReadOnly />)
   .add('dark', () => <BasicDarkVault />)
   .add('heavy', () => <HeavyVault />)
   .add('translated (SE)', () => <VaultTranslatedSwedish />)
-  .add('translated (JA)', () => <VaultTranslatedJapanese />);
+  .add('translated (JA)', () => <VaultTranslatedJapanese />)
+  .add('translated (RU)', () => <VaultTranslatedRussian />);
 
 storiesOf('OTPDigits', module)
   .add('6 digits', () => (

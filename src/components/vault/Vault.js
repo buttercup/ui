@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useMemo, useReducer, useState } from 'react';
 import { clone } from 'ramda';
 import PropTypes from 'prop-types';
 import { createEntryFacade, createGroupFacade } from 'buttercup/web';
@@ -6,6 +6,8 @@ import { VaultFacade } from './props';
 import { entryReducer } from './reducers/entry';
 import { vaultReducer, filterReducer, defaultFilter } from './reducers/vault';
 import { useDeepEffect } from './hooks/compare';
+
+const NOOP = () => {};
 
 export const VaultContext = React.createContext();
 
@@ -17,21 +19,48 @@ export const VaultProvider = ({
   onAddAttachments,
   onDeleteAttachment,
   onDownloadAttachment,
+  onEditing = NOOP,
   onPreviewAttachment,
+  onSelectEntry = null,
+  onSelectGroup = null,
   onUpdate,
   readOnly = false,
+  selectedEntry: extSelectedEntry = null,
+  selectedGroup: extSelectedGroup = null,
   vault: vaultSource,
   children
 }) => {
   const { _tag: vaultFacadeTag } = vaultSource;
   const [vault, dispatch] = useReducer(vaultReducer, vaultSource);
   const [lastVaultFacadeTag, setLastVaultFacadeTag] = useState(vaultFacadeTag);
-  const [selectedGroupID, setSelectedGroupID] = useState(vault.groups[0].id);
-  const [selectedEntryID, setSelectedEntryID] = useState(null);
   const [editingEntry, dispatchEditing] = useReducer(entryReducer, null);
   const [groupFilters, dispatchGroupFilters] = useReducer(filterReducer, defaultFilter);
   const [entriesFilters, dispatchEntriesFilters] = useReducer(filterReducer, defaultFilter);
   const [expandedGroups, setExpandedGroups] = useState([]);
+
+  const [__selectedGroupID, __setSelectedGroupID] = useState(vault.groups[0].id);
+  const [__selectedEntryID, __setSelectedEntryID] = useState(null);
+  const [setSelectedEntryID, setSelectedGroupID] = useMemo(
+    () =>
+      onSelectEntry && onSelectGroup
+        ? [onSelectEntry, onSelectGroup]
+        : [__setSelectedEntryID, __setSelectedGroupID],
+    [onSelectEntry, onSelectGroup, __setSelectedGroupID, __setSelectedEntryID]
+  );
+  const [selectedEntryID, selectedGroupID] = useMemo(
+    () =>
+      onSelectEntry && onSelectGroup
+        ? [extSelectedEntry, extSelectedGroup]
+        : [__selectedEntryID, __selectedGroupID],
+    [
+      onSelectEntry,
+      onSelectGroup,
+      extSelectedEntry,
+      extSelectedGroup,
+      __selectedEntryID,
+      __selectedGroupID
+    ]
+  );
 
   const selectedEntry = vault.entries.find(entry => entry.id === selectedEntryID);
   const currentEntries = vault.entries.filter(entry => entry.parentID === selectedGroupID);
@@ -86,8 +115,8 @@ export const VaultProvider = ({
       });
     },
     onSelectGroup: groupID => {
-      setSelectedGroupID(groupID);
       setSelectedEntryID(null);
+      setSelectedGroupID(groupID);
     },
     handleExpandGroup: group => {
       setExpandedGroups([...expandedGroups, group.id]);
@@ -183,6 +212,7 @@ export const VaultProvider = ({
         payload: clone(selectedEntry)
       });
       setSelectedEntryID(null);
+      onEditing(true);
     },
     onSaveEdit: () => {
       if (!editingEntry) {
@@ -195,6 +225,7 @@ export const VaultProvider = ({
       dispatchEditing({
         type: 'stop-editing'
       });
+      onEditing(false);
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
       }
@@ -203,6 +234,7 @@ export const VaultProvider = ({
       dispatchEditing({
         type: 'stop-editing'
       });
+      onEditing(false);
       if (editingEntry.id) {
         setSelectedEntryID(editingEntry.id);
       }
@@ -264,6 +296,8 @@ VaultProvider.propTypes = {
   onDeleteAttachment: PropTypes.func,
   onDownloadAttachment: PropTypes.func,
   onPreviewAttachment: PropTypes.func,
+  onSelectEntry: PropTypes.func,
+  onSelectGroup: PropTypes.func,
   onUpdate: PropTypes.func.isRequired,
   vault: VaultFacade.isRequired
 };
