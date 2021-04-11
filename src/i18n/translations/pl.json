@@ -23,7 +23,7 @@
       "text": "Tekst (domyślne)",
       "note": "Notatka",
       "password": "Hasło",
-      "otp": "OTP"
+      "otp": "Hasło jednorazowe"
     }
   },
   "entries-list": {
