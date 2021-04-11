@@ -1,16 +1,32 @@
-@import "~@fontsource/inter/index.css";
+@import '~@fontsource/inter/index.css';
 
-@import "~@blueprintjs/core/src/common/_colors.scss";
+@import '~@blueprintjs/core/src/common/_colors.scss';
 
 $pt-font-family: 'Inter';
 $pt-intent-primary: $turquoise3;
 $button-intents: (
-  "primary": ($pt-intent-primary, $turquoise2, $turquoise1),
-  "success": ($pt-intent-success, $green2, $green1),
-  "warning": ($pt-intent-warning, $orange2, $orange1),
-  "danger": ($pt-intent-danger, $red2, $red1)
+  'primary': (
+    $pt-intent-primary,
+    $turquoise2,
+    $turquoise1
+  ),
+  'success': (
+    $pt-intent-success,
+    $green2,
+    $green1
+  ),
+  'warning': (
+    $pt-intent-warning,
+    $orange2,
+    $orange1
+  ),
+  'danger': (
+    $pt-intent-danger,
+    $red2,
+    $red1
+  )
 ) !default;
 
-@import "~@blueprintjs/core/src/blueprint.scss";
-@import "./reflex.scss";
-@import "./creditcard.scss";
+@import '~@blueprintjs/core/src/blueprint.scss';
+@import './split.scss';
+@import './creditcard.scss';

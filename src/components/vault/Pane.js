@@ -56,6 +56,7 @@ export const Pane = styled(ReflexElement)`
 export const PaneContainer = styled.div`
   display: grid;
   overflow: hidden;
+  height: 100%;
   background-color: ${props => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
   grid-template-rows: 55px 1fr 50px;
   grid-template-areas:
