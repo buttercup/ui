@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import { ReflexElement } from 'react-reflex';
 import {
   Tag,
   Colors,
@@ -48,7 +47,7 @@ const ListHeadingContent = styled.div`
   margin-right: 5px;
 `;
 
-export const Pane = styled(ReflexElement)`
+export const Pane = styled.section`
   display: grid;
   grid-template-rows: 1fr;
 `;
@@ -56,6 +55,7 @@ export const Pane = styled(ReflexElement)`
 export const PaneContainer = styled.div`
   display: grid;
   overflow: hidden;
+  height: 100%;
   background-color: ${props => props.primary && getThemeProp(props, 'colors.mainPaneBackground')};
   grid-template-rows: 55px 1fr 50px;
   grid-template-areas:
