@@ -12,11 +12,22 @@
     "delete-title": "Anhang löschen",
     "download": "Herunterladen",
     "download-title": "Anhang herunterladen",
-    "drop-files": "Dateien hierher ziehen um zum Vault hinzuzufügen"
+    "drop-files": "Datei(en) hierher ziehen um sie zum Vault hinzuzufügen",
+    "drop-instruction": "Drag and drop um Anhänge hinzu zufügen"
   },
   "cancel": "Abbrechen",
+  "custom-fields": {
+    "change-type": "Ändere Typ:",
+    "delete-field": "Lösche Feld",
+    "field-type": {
+      "text": "Text (Standard)",
+      "note": "Notiz",
+      "password": "Passwort",
+      "otp": "OTP"
+    }
+  },
   "entries-list": {
-    "create-one-cta": "Wollen sie neu erstellen?",
+    "create-one-cta": "Eine neue erstellen?",
     "documents": "Dokumente",
     "filter-placeholder": "Filter...",
     "filters-no-matches": "Keine Ergebnisse",
@@ -27,7 +38,7 @@
       "filter": "Filter"
     },
     "trash": "Papierkorb",
-    "trash-empty": "leer"
+    "trash-empty": "Leer"
   },
   "entry": {
     "add-custom-field-btn": "Benutzerdefiniertes Feld hinzufügen",
@@ -42,7 +53,7 @@
     },
     "save": "Speichern",
     "trash-move": {
-      "message": "Wollen sie diesen Eintrag in den Papierkorb verschieben?",
+      "message": "Wollen Sie diesen Eintrag in den Papierkorb verschieben?",
       "title": "In den Papierkorb verschieben bestätigen",
       "trash-btn": "In den Papierkorb veschieben"
     },
@@ -58,7 +69,7 @@
     "title": {
       "credit_card": "Kreditkarte/Bankkarte",
       "login": "Benutzername",
-      "note": "Kommentar",
+      "note": "Notiz",
       "ssh_key": "SSH Key",
       "website": "Webseite"
     }
@@ -68,13 +79,13 @@
     "prompt": {
       "cancel": "Abbrechen",
       "create": "Gruppe anlegen",
-      "message": "Gruppenname:",
+      "message": "Gruppentitel eingeben:",
       "rename": "Gruppe umbenennen",
       "save": "Speichern"
     }
   },
   "group-menu": {
-    "add-new-group": "Gruppe anlegen",
+    "add-new-group": "Neue Gruppe anlegen",
     "move-to": "Verschieben nach...",
     "move-to-parent": "Verschieben nach {{group}}",
     "move-to-root": "Auf oberste Ebene verschieben",
