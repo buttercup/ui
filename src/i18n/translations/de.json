@@ -4,7 +4,7 @@
       "cancel": "Abbrechen",
       "cancel-title": "Anhang löschen abbrechen",
       "delete": "Löschen",
-      "delete-prompt": "Löschen dieses Anhangs entfernt ihn dauerhaft aus ihrem Vault.\nWollen sie den Anhang löschen?",
+      "delete-prompt": "Löschen dieses Anhangs entfernt ihn dauerhaft aus deinem Tresor.\nWillst Du den Anhang dauerhaft löschen?",
       "delete-prompt-title": "Löschen von \"{{title}}\"",
       "delete-title": "Anhang löschen bestätigen"
     },
@@ -12,7 +12,7 @@
     "delete-title": "Anhang löschen",
     "download": "Herunterladen",
     "download-title": "Anhang herunterladen",
-    "drop-files": "Datei(en) hierher ziehen um sie zum Vault hinzuzufügen",
+    "drop-files": "Datei(en) hierher ziehen, um sie zum Tresor hinzuzufügen",
     "drop-instruction": "Drag and drop um Anhänge hinzu zufügen"
   },
   "cancel": "Abbrechen",
@@ -53,7 +53,7 @@
     },
     "save": "Speichern",
     "trash-move": {
-      "message": "Wollen Sie diesen Eintrag in den Papierkorb verschieben?",
+      "message": "Willst Du diesen Eintrag in den Papierkorb verschieben?",
       "title": "In den Papierkorb verschieben bestätigen",
       "trash-btn": "In den Papierkorb veschieben"
     },
