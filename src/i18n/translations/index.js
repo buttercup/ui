@@ -6,6 +6,8 @@ import ja from './ja.json';
 import pl from './pl.json';
 import ru from './ru.json';
 import se from './se.json';
+import gl from './gl.json';
+import es from './es.json';
 
 export default {
   de,
@@ -15,5 +17,7 @@ export default {
   ja,
   pl,
   ru,
-  se
+  se,
+  gl,
+  es
 };
