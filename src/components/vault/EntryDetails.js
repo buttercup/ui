@@ -230,11 +230,12 @@ const FieldTextToolbar = styled(ButtonGroup)`
   margin-left: 0.5rem;
   opacity: 0;
 `;
-const FieldTextWrapper = styled.span`
+const FieldTextWrapper = styled.div`
   border: 1px dashed transparent;
   border-radius: 2px;
+  width: 100%;
   display: inline-flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 2px;
   word-break: break-all;
