@@ -70,6 +70,7 @@ const GroupsList = () => {
     onGroupFilterSortModeChange,
     trashID,
     trashCount,
+    trashGroupCount,
     trashSelected,
     trashGroups
   } = useGroups();
@@ -256,7 +257,7 @@ const GroupsList = () => {
           <Otherwise>
             <PaneHeader
               title={'Trash'}
-              count={trashCount}
+              count={trashGroupCount}
               filter={filters}
               onTermChange={term => onGroupFilterTermChange(term)}
               onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}

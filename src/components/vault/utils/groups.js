@@ -1,5 +1,19 @@
 import { sortBy, prop, compose, toLower, reverse } from 'ramda';
 
+export function countChildGroups(facade, parentGroupID) {
+  const groups = getAllGroupsInGroup(facade, parentGroupID);
+  return groups.length;
+}
+
+export function countChildGroupsAndEntries(facade, parentGroupID) {
+  const groups = getAllGroupsInGroup(facade, parentGroupID);
+  let count = groups.length;
+  groups.forEach(group => {
+    count += getAllEntriesInGroup(facade, group.id).length;
+  });
+  return count;
+}
+
 export const isTrashGroup = group => group.attributes && group.attributes.bc_group_role === 'trash';
 
 export const getAllEntriesInGroup = (facade, groupID) => {

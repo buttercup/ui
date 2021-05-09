@@ -1,6 +1,8 @@
 import { useCallback, useContext, useMemo } from 'react';
 import { VaultContext } from '../Vault';
 import {
+  countChildGroups,
+  countChildGroupsAndEntries,
   filterNestedGroups,
   getAllEntriesInGroup,
   getAllGroupsInGroup,
@@ -84,9 +86,10 @@ export function useGroups() {
   } = useContext(VaultContext);
 
   const trashGroup = useMemo(() => vault.groups.find(isTrashGroup), [vault]);
-  const trashID = trashGroup && trashGroup.id;
+  const trashID = useMemo(() => (trashGroup && trashGroup.id) || null, [trashGroup]);
   const trashSelected = selectedGroupID === trashID;
-  const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
+  const trashCount = useMemo(() => countChildGroupsAndEntries(vault, trashID), [vault, trashID]);
+  const trashGroupCount = useMemo(() => countChildGroups(vault, trashID), [vault, trashID]);
   const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
   const emptyTrash = useCallback(() => {
     if (!trashID) return;
@@ -143,7 +146,8 @@ export function useGroups() {
       : [],
     trashID,
     trashSelected,
-    trashCount
+    trashCount,
+    trashGroupCount
   };
 }
 
