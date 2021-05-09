@@ -230,11 +230,12 @@ const FieldTextToolbar = styled(ButtonGroup)`
   margin-left: 0.5rem;
   opacity: 0;
 `;
-const FieldTextWrapper = styled.span`
+const FieldTextWrapper = styled.div`
   border: 1px dashed transparent;
   border-radius: 2px;
+  width: 100%;
   display: inline-flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 2px;
   word-break: break-all;
@@ -447,6 +448,7 @@ const FieldText = ({ entryFacade, field }) => {
   const [historyDialogVisible, setHistoryDialogVisible] = useState(false);
   const otpRef = useRef(field.value);
   const { onFieldUpdateInPlace } = useCurrentEntry();
+  const t = useTranslations();
   const Element = field.valueType === EntryPropertyValueType.Password ? 'code' : 'span';
   const { _changes: history = [] } = entryFacade;
   const historyItems = useMemo(() => {
@@ -495,7 +497,11 @@ const FieldText = ({ entryFacade, field }) => {
       <FieldTextToolbar>
         <If condition={field.valueType === EntryPropertyValueType.Password}>
           <Button
-            text={visible ? 'Hide' : 'Reveal'}
+            text={
+              visible
+                ? t('entry.field-controls.password.hide')
+                : t('entry.field-controls.password.reveal')
+            }
             small
             onClick={() => toggleVisibility(!visible)}
           />
