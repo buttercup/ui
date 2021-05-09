@@ -52,26 +52,26 @@ const GroupsList = () => {
   const [newGroupName, setNewGroupName] = useState('');
   const groupTitleInputRef = useRef(null);
   const [trashOpen, setTrashOpen] = useState(false);
+  const [emptyingTrash, setEmptyingTrash] = useState(false);
   const {
     groups,
     groupsRaw,
+    emptyTrash,
     selectedGroupID,
     onCreateGroup,
     onMoveGroup,
     onMoveGroupToTrash,
     onRenameGroup,
     onSelectGroup,
-    expandedGroups,
     handleCollapseGroup,
     handleExpandGroup,
-    handleModifyGroup,
     filters,
     onGroupFilterTermChange,
     onGroupFilterSortModeChange,
+    trashID,
     trashCount,
     trashSelected,
-    trashGroups,
-    trashID
+    trashGroups
   } = useGroups();
   const { readOnly } = useContext(VaultContext);
   const t = useTranslations();
@@ -88,13 +88,16 @@ const GroupsList = () => {
     setParentGroupID(null);
   };
 
-  const confirmEmptyTrash = () => {
-    // @todo empty trash
-  };
-
   const handleTrashClick = useCallback(() => {
-    setTrashOpen(!trashOpen);
+    const trashNowOpen = !trashOpen;
+    setTrashOpen(trashNowOpen);
+    onSelectGroup(trashNowOpen && trashID ? trashID : null);
   }, [trashOpen]);
+
+  const handleTrashEmpty = useCallback(() => {
+    setEmptyingTrash(false);
+    emptyTrash();
+  }, [emptyTrash]);
 
   const editGroup = (groupFacade, parentID = null) => {
     setGroupEditID(groupFacade ? groupFacade.id : -1);
@@ -108,6 +111,7 @@ const GroupsList = () => {
 
   const moveToTrash = groupID => {
     onMoveGroupToTrash(groupID);
+    onSelectGroup(null);
   };
 
   const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
@@ -245,7 +249,6 @@ const GroupsList = () => {
                 text={t('trash.header')}
                 alignText={Alignment.LEFT}
                 active={trashSelected}
-                // onClick={() => onSelectGroup(trashID)}
                 onClick={handleTrashClick}
               />
             </PaneFooter>
@@ -255,7 +258,6 @@ const GroupsList = () => {
               title={'Trash'}
               count={trashCount}
               filter={filters}
-              onAddItem={() => editGroup()}
               onTermChange={term => onGroupFilterTermChange(term)}
               onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
               readOnly={readOnly}
@@ -270,22 +272,14 @@ const GroupsList = () => {
               />
             </PaneContent>
             <PaneFooter>
-              <Button
-                minimal
-                icon="undo"
-                fill
-                // title="Close trash"
-                text="Close"
-                onClick={() => setTrashOpen(false)}
-              />
+              <Button minimal icon="undo" fill text="Close" onClick={() => setTrashOpen(false)} />
               <Button
                 icon="delete"
-                // fill
                 minimal
                 title={'Empty Trash'}
                 alignText={Alignment.LEFT}
-                // onClick={() => setTrashOpen(false)}
                 intent={Intent.DANGER}
+                onClick={() => setEmptyingTrash(true)}
               />
             </PaneFooter>
           </Otherwise>
@@ -315,6 +309,19 @@ const GroupsList = () => {
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Button onClick={closeEditDialog}>{t('group.prompt.cancel')}</Button>
             <Button intent={Intent.PRIMARY} onClick={submitGroupChange}>
+              {t('group.prompt.save')}
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+      <Dialog icon="confirm" onClose={closeEditDialog} title={'Empty Trash'} isOpen={emptyingTrash}>
+        <div className={Classes.DIALOG_BODY}>
+          <p>Are you sure that you want to empty the trash?</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button onClick={() => setEmptyingTrash(false)}>{t('group.prompt.cancel')}</Button>
+            <Button intent={Intent.PRIMARY} onClick={handleTrashEmpty}>
               {t('group.prompt.save')}
             </Button>
           </div>

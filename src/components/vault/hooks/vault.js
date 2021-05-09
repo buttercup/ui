@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { VaultContext } from '../Vault';
 import {
   filterNestedGroups,
@@ -83,12 +83,12 @@ export function useGroups() {
     onGroupFilterSortModeChange
   } = useContext(VaultContext);
 
-  const trashGroup = vault.groups.find(isTrashGroup);
+  const trashGroup = useMemo(() => vault.groups.find(isTrashGroup), [vault]);
   const trashID = trashGroup && trashGroup.id;
   const trashSelected = selectedGroupID === trashID;
   const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
   const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
-  const emptyTrash = () => {
+  const emptyTrash = useCallback(() => {
     if (!trashID) return;
     const trashEntries = getAllEntriesInGroup(vault, trashID);
     const trashGroups = getAllGroupsInGroup(vault, trashID);
@@ -96,7 +96,7 @@ export function useGroups() {
       groupIDs: trashGroups.map(group => group.id),
       entryIDs: trashEntries.map(entry => entry.id)
     });
-  };
+  }, [vault, batchDeleteItems, trashID]);
 
   return {
     groups: filterNestedGroups(
