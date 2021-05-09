@@ -48,6 +48,12 @@
     "custom-fields": "Custom Fields",
     "edit": "Edit",
     "edit-document": "Edit Document",
+    "field-controls": {
+      "password": {
+        "hide": "Hide",
+        "reveal": "Reveal"
+      }
+    },
     "none-selected": {
       "message": "Select or create a new document",
       "title": "No document selected"
