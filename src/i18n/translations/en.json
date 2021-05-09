@@ -96,6 +96,14 @@
     "cta": "New Entry"
   },
   "trash": {
+    "close-button": "Close",
+    "empty-button-title": "Empty Trash",
+    "empty-confirm-dialog": {
+      "cancel-button": "Cancel",
+      "confirm-button": "Empty",
+      "message": "Are you sure that you want to empty the trash?",
+      "title": "Empty Trash"
+    },
     "header": "Trash"
   }
 }

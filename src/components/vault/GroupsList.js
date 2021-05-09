@@ -256,7 +256,7 @@ const GroupsList = () => {
           </When>
           <Otherwise>
             <PaneHeader
-              title={'Trash'}
+              title={t('trash.header')}
               count={trashGroupCount}
               filter={filters}
               onTermChange={term => onGroupFilterTermChange(term)}
@@ -273,11 +273,17 @@ const GroupsList = () => {
               />
             </PaneContent>
             <PaneFooter>
-              <Button minimal icon="undo" fill text="Close" onClick={() => setTrashOpen(false)} />
+              <Button
+                minimal
+                icon="undo"
+                fill
+                text={t('trash.close-button')}
+                onClick={() => setTrashOpen(false)}
+              />
               <Button
                 icon="delete"
                 minimal
-                title={'Empty Trash'}
+                title={t('trash.empty-button-title')}
                 alignText={Alignment.LEFT}
                 intent={Intent.DANGER}
                 onClick={() => setEmptyingTrash(true)}
@@ -315,15 +321,22 @@ const GroupsList = () => {
           </div>
         </div>
       </Dialog>
-      <Dialog icon="confirm" onClose={closeEditDialog} title={'Empty Trash'} isOpen={emptyingTrash}>
+      <Dialog
+        icon="confirm"
+        onClose={closeEditDialog}
+        title={t('trash.empty-confirm-dialog.title')}
+        isOpen={emptyingTrash}
+      >
         <div className={Classes.DIALOG_BODY}>
-          <p>Are you sure that you want to empty the trash?</p>
+          <p>{t('trash.empty-confirm-dialog.message')}</p>
         </div>
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button onClick={() => setEmptyingTrash(false)}>{t('group.prompt.cancel')}</Button>
-            <Button intent={Intent.PRIMARY} onClick={handleTrashEmpty}>
-              {t('group.prompt.save')}
+            <Button onClick={() => setEmptyingTrash(false)}>
+              {t('trash.empty-confirm-dialog.cancel-button')}
+            </Button>
+            <Button intent={Intent.DANGER} onClick={handleTrashEmpty}>
+              {t('trash.empty-confirm-dialog.confirm-button')}
             </Button>
           </div>
         </div>
