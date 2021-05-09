@@ -584,6 +584,7 @@ const FieldRow = ({
   const label =
     editing && field.removeable ? (
       <EditableText
+        placeholder={t('entry.click-to-edit')}
         value={field.property}
         onChange={value => {
           onFieldNameUpdate(field, value);
@@ -743,6 +744,7 @@ const EntryDetailsContent = () => {
     : entry.fields.filter(item => item.propertyType === 'property' && item.property !== 'title');
   const mainFields = editableFields.filter(field => !field.removeable);
   const removeableFields = editableFields.filter(field => field.removeable);
+  const hasUntitledFields = removeableFields.some(field => !field.property);
 
   return (
     <>
@@ -809,7 +811,19 @@ const EntryDetailsContent = () => {
           </If>
           <If condition={editing}>
             <div>
-              <Button onClick={onSaveEdit} intent={Intent.PRIMARY} icon="tick" disabled={readOnly}>
+              <Button
+                disabled={readOnly || hasUntitledFields}
+                icon="tick"
+                intent={Intent.PRIMARY}
+                onClick={onSaveEdit}
+                title={
+                  readOnly
+                    ? t('entry.save-disabled-title.readonly')
+                    : hasUntitledFields
+                    ? t('entry.save-disabled-title.untitled')
+                    : null
+                }
+              >
                 {t('entry.save')}
               </Button>
               <Button onClick={onCancelEdit}>{t('entry.cancel-edit')}</Button>
