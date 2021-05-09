@@ -44,6 +44,7 @@
     "add-custom-field-btn": "Add Custom Field",
     "attachments": "Attachments",
     "cancel-edit": "Cancel",
+    "click-to-edit": "Click to edit",
     "custom-fields": "Custom Fields",
     "edit": "Edit",
     "edit-document": "Edit Document",
@@ -52,6 +53,10 @@
       "title": "No document selected"
     },
     "save": "Save",
+    "save-disabled-title": {
+      "readonly": "Editing not possible right now",
+      "untitled": "Some fields are missing titles"
+    },
     "trash-move": {
       "message": "Are you sure you want to move this entry to Trash?",
       "title": "Confirm move to Trash",
