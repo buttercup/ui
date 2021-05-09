@@ -23,9 +23,19 @@ export const getAllGroupsInGroup = (facade, groupID) => {
   }, []);
 };
 
-export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
+export const getNestedGroups = (
+  groups = [],
+  selectedGroupID,
+  expandedGroups,
+  parentID = '0',
+  allowTrash = false
+) => {
   return groups
-    .filter(group => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')
+    .filter(
+      group =>
+        group.parentID === parentID &&
+        (allowTrash || (!allowTrash && group.attributes.bc_group_role !== 'trash'))
+    )
     .map(group => {
       const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
       const isExpanded = expandedGroups.includes(group.id);

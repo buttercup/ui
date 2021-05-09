@@ -129,6 +129,18 @@ export function useGroups() {
     handleExpandGroup,
     onMoveEntryToGroup,
     onMoveEntryToTrash,
+    trashGroups: trashGroup
+      ? filterNestedGroups(
+          getNestedGroups(
+            sortGroups(vault.groups, groupFilters.sortMode === 'az'),
+            selectedGroupID,
+            expandedGroups,
+            trashID,
+            true // allow trash
+          ),
+          groupFilters.term
+        )
+      : [],
     trashID,
     trashSelected,
     trashCount
