@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useCallback, useEffect, useState, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import {
   Alignment,
   Button,
@@ -15,7 +14,6 @@ import {
   Tag,
   Tree as BaseTree
 } from '@blueprintjs/core';
-import { GroupFacade } from './props';
 import { useGroups } from './hooks/vault';
 import { useTranslations } from '../../hooks/i18n';
 import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
@@ -53,25 +51,28 @@ const GroupsList = () => {
   const [parentGroupID, setParentGroupID] = useState(null);
   const [newGroupName, setNewGroupName] = useState('');
   const groupTitleInputRef = useRef(null);
+  const [trashOpen, setTrashOpen] = useState(false);
+  const [emptyingTrash, setEmptyingTrash] = useState(false);
   const {
     groups,
     groupsRaw,
+    emptyTrash,
     selectedGroupID,
     onCreateGroup,
     onMoveGroup,
     onMoveGroupToTrash,
     onRenameGroup,
     onSelectGroup,
-    expandedGroups,
     handleCollapseGroup,
     handleExpandGroup,
-    handleModifyGroup,
     filters,
     onGroupFilterTermChange,
     onGroupFilterSortModeChange,
+    trashID,
     trashCount,
+    trashGroupCount,
     trashSelected,
-    trashID
+    trashGroups
   } = useGroups();
   const { readOnly } = useContext(VaultContext);
   const t = useTranslations();
@@ -88,9 +89,16 @@ const GroupsList = () => {
     setParentGroupID(null);
   };
 
-  const confirmEmptyTrash = () => {
-    // @todo empty trash
-  };
+  const handleTrashClick = useCallback(() => {
+    const trashNowOpen = !trashOpen;
+    setTrashOpen(trashNowOpen);
+    onSelectGroup(trashNowOpen && trashID ? trashID : null);
+  }, [trashOpen]);
+
+  const handleTrashEmpty = useCallback(() => {
+    setEmptyingTrash(false);
+    emptyTrash();
+  }, [emptyTrash]);
 
   const editGroup = (groupFacade, parentID = null) => {
     setGroupEditID(groupFacade ? groupFacade.id : -1);
@@ -104,6 +112,7 @@ const GroupsList = () => {
 
   const moveToTrash = groupID => {
     onMoveGroupToTrash(groupID);
+    onSelectGroup(null);
   };
 
   const renderGroupsMenu = (items, parentNode, selectedGroupID) => (
@@ -208,40 +217,80 @@ const GroupsList = () => {
   return (
     <>
       <PaneContainer primary>
-        <PaneHeader
-          title={t('group.header')}
-          count={groups.length}
-          filter={filters}
-          onAddItem={() => editGroup()}
-          onTermChange={term => onGroupFilterTermChange(term)}
-          onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
-          readOnly={readOnly}
-        />
-        <PaneContent>
-          <Tree
-            contents={groups}
-            onNodeClick={group => onSelectGroup(group.id)}
-            onNodeContextMenu={showGroupContextMenu}
-            onNodeExpand={handleExpandGroup}
-            onNodeCollapse={handleCollapseGroup}
-          />
-        </PaneContent>
-        <PaneFooter>
-          <Button
-            rightIcon={
-              <Tag round minimal intent={trashCount > 0 ? Intent.WARNING : Intent.NONE}>
-                {trashCount}
-              </Tag>
-            }
-            icon="trash"
-            fill
-            minimal
-            text={t('trash.header')}
-            alignText={Alignment.LEFT}
-            active={trashSelected}
-            onClick={() => onSelectGroup(trashID)}
-          />
-        </PaneFooter>
+        <Choose>
+          <When condition={!trashOpen}>
+            <PaneHeader
+              title={t('group.header')}
+              count={groups.length}
+              filter={filters}
+              onAddItem={() => editGroup()}
+              onTermChange={term => onGroupFilterTermChange(term)}
+              onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
+              readOnly={readOnly}
+            />
+            <PaneContent>
+              <Tree
+                contents={groups}
+                onNodeClick={group => onSelectGroup(group.id)}
+                onNodeContextMenu={showGroupContextMenu}
+                onNodeExpand={handleExpandGroup}
+                onNodeCollapse={handleCollapseGroup}
+              />
+            </PaneContent>
+            <PaneFooter>
+              <Button
+                rightIcon={
+                  <Tag round minimal intent={trashCount > 0 ? Intent.WARNING : Intent.NONE}>
+                    {trashCount}
+                  </Tag>
+                }
+                icon="trash"
+                fill
+                minimal
+                text={t('trash.header')}
+                alignText={Alignment.LEFT}
+                active={trashSelected}
+                onClick={handleTrashClick}
+              />
+            </PaneFooter>
+          </When>
+          <Otherwise>
+            <PaneHeader
+              title={t('trash.header')}
+              count={trashGroupCount}
+              filter={filters}
+              onTermChange={term => onGroupFilterTermChange(term)}
+              onSortModeChange={sortMode => onGroupFilterSortModeChange(sortMode)}
+              readOnly={readOnly}
+            />
+            <PaneContent>
+              <Tree
+                contents={trashGroups}
+                onNodeClick={group => onSelectGroup(group.id)}
+                onNodeContextMenu={showGroupContextMenu}
+                onNodeExpand={handleExpandGroup}
+                onNodeCollapse={handleCollapseGroup}
+              />
+            </PaneContent>
+            <PaneFooter>
+              <Button
+                minimal
+                icon="undo"
+                fill
+                text={t('trash.close-button')}
+                onClick={() => setTrashOpen(false)}
+              />
+              <Button
+                icon="delete"
+                minimal
+                title={t('trash.empty-button-title')}
+                alignText={Alignment.LEFT}
+                intent={Intent.DANGER}
+                onClick={() => setEmptyingTrash(true)}
+              />
+            </PaneFooter>
+          </Otherwise>
+        </Choose>
       </PaneContainer>
       <Dialog
         icon="manually-entered-data"
@@ -268,6 +317,26 @@ const GroupsList = () => {
             <Button onClick={closeEditDialog}>{t('group.prompt.cancel')}</Button>
             <Button intent={Intent.PRIMARY} onClick={submitGroupChange}>
               {t('group.prompt.save')}
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        icon="confirm"
+        onClose={closeEditDialog}
+        title={t('trash.empty-confirm-dialog.title')}
+        isOpen={emptyingTrash}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>{t('trash.empty-confirm-dialog.message')}</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Button onClick={() => setEmptyingTrash(false)}>
+              {t('trash.empty-confirm-dialog.cancel-button')}
+            </Button>
+            <Button intent={Intent.DANGER} onClick={handleTrashEmpty}>
+              {t('trash.empty-confirm-dialog.confirm-button')}
             </Button>
           </div>
         </div>

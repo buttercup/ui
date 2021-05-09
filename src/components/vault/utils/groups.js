@@ -1,31 +1,52 @@
 import { sortBy, prop, compose, toLower, reverse } from 'ramda';
 
+export function countChildGroups(facade, parentGroupID) {
+  const groups = getAllGroupsInGroup(facade, parentGroupID);
+  return groups.length;
+}
+
+export function countChildGroupsAndEntries(facade, parentGroupID) {
+  const groups = getAllGroupsInGroup(facade, parentGroupID);
+  let count = groups.length;
+  groups.forEach(group => {
+    count += getAllEntriesInGroup(facade, group.id).length;
+  });
+  return count;
+}
+
 export const isTrashGroup = group => group.attributes && group.attributes.bc_group_role === 'trash';
 
 export const getAllEntriesInGroup = (facade, groupID) => {
-  const allGroups = [
-    ...getAllGroupsInGroup(facade, groupID),
-    facade.groups.find(group => group.id === groupID)
-  ];
+  const allGroups = getAllGroupsInGroup(facade, groupID, true);
   return allGroups.reduce((output, group) => {
-    return [...output, ...facade.entries.filter(entry => entry.parentID === group.id)];
+    return [...output, ...facade.entries.filter(entry => entry.parentID === groupID)];
   }, []);
 };
 
-export const getAllGroupsInGroup = (facade, groupID) => {
-  const targetIDs = [groupID];
-  return facade.groups.reduce((output, nextGroup) => {
-    if (targetIDs.includes(nextGroup.id)) {
-      output.push(nextGroup);
-      targetIDs.push(nextGroup.id);
+export const getAllGroupsInGroup = (facade, groupID, includeParent = false) => {
+  const groups = includeParent ? [facade.groups.find(g => g.id === groupID)] : [];
+  facade.groups.forEach(group => {
+    if (group.parentID === groupID) {
+      groups.push(group);
+      groups.push(...getAllGroupsInGroup(facade, group.id));
     }
-    return output;
-  }, []);
+  });
+  return groups;
 };
 
-export const getNestedGroups = (groups = [], selectedGroupID, expandedGroups, parentID = '0') => {
+export const getNestedGroups = (
+  groups = [],
+  selectedGroupID,
+  expandedGroups,
+  parentID = '0',
+  allowTrash = false
+) => {
   return groups
-    .filter(group => group.parentID === parentID && group.attributes.bc_group_role !== 'trash')
+    .filter(
+      group =>
+        group.parentID === parentID &&
+        (allowTrash || (!allowTrash && group.attributes.bc_group_role !== 'trash'))
+    )
     .map(group => {
       const childNodes = getNestedGroups(groups, selectedGroupID, expandedGroups, group.id);
       const isExpanded = expandedGroups.includes(group.id);

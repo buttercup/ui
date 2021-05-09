@@ -1,6 +1,8 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { VaultContext } from '../Vault';
 import {
+  countChildGroups,
+  countChildGroupsAndEntries,
   filterNestedGroups,
   getAllEntriesInGroup,
   getAllGroupsInGroup,
@@ -83,12 +85,13 @@ export function useGroups() {
     onGroupFilterSortModeChange
   } = useContext(VaultContext);
 
-  const trashGroup = vault.groups.find(isTrashGroup);
-  const trashID = trashGroup && trashGroup.id;
+  const trashGroup = useMemo(() => vault.groups.find(isTrashGroup), [vault]);
+  const trashID = useMemo(() => (trashGroup && trashGroup.id) || null, [trashGroup]);
   const trashSelected = selectedGroupID === trashID;
-  const trashCount = vault.entries.filter(entry => entry.parentID === trashID).length;
+  const trashCount = useMemo(() => countChildGroupsAndEntries(vault, trashID), [vault, trashID]);
+  const trashGroupCount = useMemo(() => countChildGroups(vault, trashID), [vault, trashID]);
   const onMoveEntryToTrash = entryID => onMoveEntryToGroup(entryID, trashID);
-  const emptyTrash = () => {
+  const emptyTrash = useCallback(() => {
     if (!trashID) return;
     const trashEntries = getAllEntriesInGroup(vault, trashID);
     const trashGroups = getAllGroupsInGroup(vault, trashID);
@@ -96,7 +99,7 @@ export function useGroups() {
       groupIDs: trashGroups.map(group => group.id),
       entryIDs: trashEntries.map(entry => entry.id)
     });
-  };
+  }, [vault, batchDeleteItems, trashID]);
 
   return {
     groups: filterNestedGroups(
@@ -129,9 +132,22 @@ export function useGroups() {
     handleExpandGroup,
     onMoveEntryToGroup,
     onMoveEntryToTrash,
+    trashGroups: trashGroup
+      ? filterNestedGroups(
+          getNestedGroups(
+            sortGroups(vault.groups, groupFilters.sortMode === 'az'),
+            selectedGroupID,
+            expandedGroups,
+            trashID,
+            true // allow trash
+          ),
+          groupFilters.term
+        )
+      : [],
     trashID,
     trashSelected,
-    trashCount
+    trashCount,
+    trashGroupCount
   };
 }
 
