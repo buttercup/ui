@@ -4,7 +4,7 @@
       "cancel": "Abbrechen",
       "cancel-title": "Löschen von Anhang abbrechen",
       "delete": "Löschen",
-      "delete-prompt": "Das Löschen dieses Anhangs wird ihn permanent aus dem Tresor entfernen.\nSind Sie sicher, dass Sie diesen löschen möchten?",
+      "delete-prompt": "Das Löschen dieses Anhangs wird ihn permanent aus dem Tresor entfernen.\n Bist Du sicher, dass Du diesen löschen möchtest?",
       "delete-prompt-title": "Löschen von \"{{title}}\"",
       "delete-title": "Bestätigung für das Löschen von Anhängen"
     },
@@ -64,7 +64,7 @@
       "untitled": "Einige Felder wurde nicht benannt"
     },
     "trash-move": {
-      "message": "Sind Sie sicher, dass Sie diesen Eintrag in den Papierkorb verschieben möchten?",
+      "message": "Bist Du sicher, dass Du diesen Eintrag in den Papierkorb verschieben möchtest?",
       "title": "Bestätigung für in Papierkorb verschieben",
       "trash-btn": "In Papierkorb verschieben"
     },
@@ -112,7 +112,7 @@
     "empty-confirm-dialog": {
       "cancel-button": "Abbrechen",
       "confirm-button": "Leeren",
-      "message": "Sind Sie sicher, dass Sie den Papierkorb leeren möchten?",
+      "message": "Bist Du sicher, dass Du den Papierkorb leeren möchtest?",
       "title": "Papierkorb leeren"
     },
     "header": "Papierkorb"
