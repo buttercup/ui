@@ -4,7 +4,7 @@
       "cancel": "Abbrechen",
       "cancel-title": "Löschen von Anhang abbrechen",
       "delete": "Löschen",
-      "delete-prompt": "Das Löschen dieses Anhangs wird ihn permanent aus dem Tresor entfernen.\n Bist Du sicher, dass Du diesen löschen möchtest?",
+      "delete-prompt": "Das Löschen dieses Anhangs wird ihn permanent aus dem Tresor entfernen.\nBist Du sicher, dass Du diesen löschen möchtest?",
       "delete-prompt-title": "Löschen von \"{{title}}\"",
       "delete-title": "Bestätigung für das Löschen von Anhängen"
     },
@@ -61,7 +61,7 @@
     "save": "Speichern",
     "save-disabled-title": {
       "readonly": "Bearbeiten ist derzeit nicht möglich",
-      "untitled": "Einige Felder wurde nicht benannt"
+      "untitled": "Einige Felder wurden nicht benannt"
     },
     "trash-move": {
       "message": "Bist Du sicher, dass Du diesen Eintrag in den Papierkorb verschieben möchtest?",
