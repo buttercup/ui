@@ -287,6 +287,7 @@ function VaultRender({
               <VaultProvider
                 vault={archiveFacade}
                 attachments
+                attachmentsMaxSize={10 * 1024 * 1024}
                 attachmentPreviews={attachmentPreviews}
                 icons={icons}
                 onAddAttachments={async (entryID, files) => {

@@ -13,6 +13,7 @@ export const VaultContext = React.createContext();
 
 export const VaultProvider = ({
   attachments,
+  attachmentsMaxSize = Infinity,
   attachmentPreviews,
   icons = false,
   iconsPath = null,
@@ -93,6 +94,7 @@ export const VaultProvider = ({
 
     // Attachments
     attachments,
+    attachmentsMaxSize,
     attachmentPreviews,
     onAddAttachments,
     onDeleteAttachment,

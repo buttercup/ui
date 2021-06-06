@@ -855,8 +855,14 @@ const EntryDetailsContent = () => {
 const EntryDetails = () => {
   const t = useTranslations();
   const { editing, entry } = useCurrentEntry();
-  const { attachments: supportsAttachments, onAddAttachments, readOnly } = useContext(VaultContext);
+  const {
+    attachments: supportsAttachments,
+    attachmentsMaxSize,
+    onAddAttachments,
+    readOnly
+  } = useContext(VaultContext);
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
+    maxSize: attachmentsMaxSize,
     noClick: true,
     onDrop: files => {
       onAddAttachments(entry.id, files);
