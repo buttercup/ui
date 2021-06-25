@@ -20,7 +20,7 @@ const EntriesList = ({ className }) => {
     onEntriesFilterSortModeChange
   } = useCurrentEntries();
   const { readOnly } = useContext(VaultContext);
-  const { trashSelected } = useGroups();
+  const { selectedGroupID, trashSelected } = useGroups();
   const ref = useRef(null);
   const currentIndex = entries.findIndex(entry => entry.id === selectedEntryID);
   const keyMap = {
@@ -94,7 +94,7 @@ const EntriesList = ({ className }) => {
         </Choose>
       </PaneContent>
       <PaneFooter>
-        <AddEntry disabled={trashSelected || readOnly} />
+        <AddEntry disabled={trashSelected || readOnly || !selectedGroupID} />
       </PaneFooter>
     </PaneContainer>
   );
