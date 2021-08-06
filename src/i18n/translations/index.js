@@ -6,6 +6,7 @@ import fr from './se.json';
 import gl from './gl.json';
 import ja from './ja.json';
 import pl from './pl.json';
+import ro from './ro.json';
 import ru from './ru.json';
 import se from './se.json';
 
@@ -18,6 +19,7 @@ export default {
   gl,
   ja,
   pl,
+  ro,
   ru,
   se
 };
