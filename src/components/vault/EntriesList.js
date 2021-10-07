@@ -8,6 +8,7 @@ import { PaneContainer, PaneHeader, PaneContent, PaneFooter } from './Pane';
 import AddEntry from './AddEntry';
 import { VaultContext } from './Vault';
 import { useTranslations } from '../../hooks/i18n';
+import { copyToClipboard } from '../../utils';
 
 const EntriesList = ({ className }) => {
   const t = useTranslations();
@@ -26,7 +27,9 @@ const EntriesList = ({ className }) => {
   const keyMap = {
     arrowUp: 'up',
     arrowDown: 'down',
-    enter: 'enter'
+    enter: 'enter',
+    copyUsername: 'ctrl+b',
+    copyPassword: 'ctrl+c'
   };
   const handleNavigation = (event, step) => {
     event.preventDefault();
@@ -39,6 +42,13 @@ const EntriesList = ({ className }) => {
       ref.current.focus();
     }
   };
+  const handleCopyField = entryToCopy => {
+    if (!entryToCopy) {
+      return;
+    }
+
+    return copyToClipboard(entryToCopy.value);
+  };
   const handlers = {
     arrowUp: event => handleNavigation(event, -1),
     arrowDown: event => handleNavigation(event, 1),
@@ -46,7 +56,11 @@ const EntriesList = ({ className }) => {
       if (document.activeElement !== ref.current) {
         document.activeElement.click();
       }
-    }
+    },
+    copyUsername: () =>
+      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Username')),
+    copyPassword: () =>
+      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Password'))
   };
 
   return (
