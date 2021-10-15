@@ -710,7 +710,18 @@ const FieldRow = ({
             </ControlGroup>
           </When>
           <Otherwise>
-            <FieldText field={field} entryFacade={entryFacade} />
+          {field.property === 'url' ? (
+              <a
+                onClick={e => {
+                  e.ctrlKey && window.open(field.value, '_blank');
+                }}
+                title="open with Ctrl/CMD + click"
+              >
+                <FieldText field={field} entryFacade={entryFacade} />
+              </a>
+            ) : (
+              <FieldText field={field} entryFacade={entryFacade} />
+            )}
           </Otherwise>
         </Choose>
       </FieldRowChildren>
