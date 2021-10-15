@@ -713,9 +713,10 @@ const FieldRow = ({
             {field.property === 'url' ? (
               <a
                 onClick={e => {
-                  e.ctrlKey && window.open(field.value, '_blank');
+                  console.log(e);
+                  (e.ctrlKey || e.metaKey) && window.open(field.value, '_blank');
                 }}
-                title="open with Ctrl/CMD + click"
+                title="open with Ctrl/Cmd + click"
               >
                 <FieldText field={field} entryFacade={entryFacade} />
               </a>
