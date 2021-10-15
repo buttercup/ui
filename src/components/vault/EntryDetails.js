@@ -715,6 +715,7 @@ const FieldRow = ({
                 onClick={e => {
                   (e.ctrlKey || e.metaKey) && window.open(field.value, '_blank');
                 }}
+                target="_blank"
                 title="open with Ctrl/Cmd + click"
               >
                 <FieldText field={field} entryFacade={entryFacade} />
