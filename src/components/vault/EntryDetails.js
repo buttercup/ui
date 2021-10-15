@@ -710,7 +710,7 @@ const FieldRow = ({
             </ControlGroup>
           </When>
           <Otherwise>
-          {field.property === 'url' ? (
+            {field.property === 'url' ? (
               <a
                 onClick={e => {
                   e.ctrlKey && window.open(field.value, '_blank');
