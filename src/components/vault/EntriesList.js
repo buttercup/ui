@@ -28,8 +28,8 @@ const EntriesList = ({ className }) => {
     arrowUp: 'up',
     arrowDown: 'down',
     enter: 'enter',
-    copyUsername: 'ctrl+b',
-    copyPassword: 'ctrl+c'
+    copyUsername: ['ctrl+b', 'command+b'],
+    copyPassword: ['ctrl+c', 'command+c']
   };
   const handleNavigation = (event, step) => {
     event.preventDefault();
@@ -57,10 +57,14 @@ const EntriesList = ({ className }) => {
         document.activeElement.click();
       }
     },
-    copyUsername: () =>
-      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Username')),
-    copyPassword: () =>
-      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Password'))
+    copyUsername: e => {
+      e.preventDefault();
+      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Username'));
+    },
+    copyPassword: e => {
+      e.preventDefault();
+      handleCopyField(entries[currentIndex].fields.find(field => field.title === 'Password'));
+    }
   };
 
   return (
