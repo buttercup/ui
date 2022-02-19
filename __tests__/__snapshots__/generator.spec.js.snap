@@ -185,7 +185,7 @@ exports[`generator renders identical copy-mode 1`] = `
   copyMode={true}
   isOpen={true}
 >
-  <Memo(GlobalStyleComponent) />
+  <Memo(l) />
   <Popover
     appendTarget={
       <body>
@@ -1486,7 +1486,7 @@ exports[`generator renders identical standard 1`] = `
   autoGenerate={false}
   isOpen={true}
 >
-  <Memo(GlobalStyleComponent) />
+  <Memo(l) />
   <Popover
     appendTarget={
       .c9 {
