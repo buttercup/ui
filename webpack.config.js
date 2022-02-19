@@ -5,96 +5,92 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const pkg = require('./package.json');
 
 module.exports = {
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
-  ],
-  entry: {
-    index: './src/index.js',
-    styles: './src/styles/index.scss'
-  },
-  devtool: false,
-  output: {
-    libraryTarget: 'commonjs2',
-    path: path.resolve(__dirname, 'dist')
-  },
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader'
+    entry: {
+        index: './src/index.js',
+        styles: './src/styles/index.scss'
+    },
+    devtool: false,
+    externals: [
+        ...Object.keys(pkg.dependencies),
+        ...Object.keys(pkg.peerDependencies),
+        "react",
+        "react-dom"
+    ],
+    mode: 'production',
+    module: {
+        rules: [{
+                test: /\.m?js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            },
+            {
+                test: /\.scss$/,
+                use: [{
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    'css-loader', // translates CSS into CommonJS
+                    'sass-loader' // compiles Sass to CSS, using Node Sass by default
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [{
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    'css-loader' // translates CSS into CommonJS
+                ]
+            },
+            {
+                test: /\.(png|jpg|gif)$/i,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'icons'
+                    }
+                }]
+            },
+            {
+                test: /\.(ttf|otf|woff|woff2|eot)$/i,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts'
+                    }
+                }]
+            }
+        ]
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                exclude: /\/node_modules/,
+                parallel: true
+            }),
+            new OptimizeCSSAssetsPlugin({})
+        ]
+    },
+    output: {
+        libraryTarget: 'commonjs2',
+        path: path.resolve(__dirname, 'dist')
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        })
+    ],
+    resolve: {
+        fallback: {
+            crypto: false,
+            fs: false,
+            path: false
         }
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader', // translates CSS into CommonJS
-          'sass-loader' // compiles Sass to CSS, using Node Sass by default
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader' // translates CSS into CommonJS
-        ]
-      },
-      {
-        test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'icons'
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(ttf|otf|woff|woff2|eot)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts'
-            }
-          }
-        ]
-      }
-    ]
-  },
-  node: {
-    crypto: "empty",
-    fs: "empty"
-  },
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        exclude: /\/node_modules/,
-        cache: true,
-        parallel: true
-      }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  },
-  externals: [
-    ...Object.keys(pkg.dependencies),
-    ...Object.keys(pkg.peerDependencies),
-    "react",
-    "react-dom"
-  ],
-  mode: 'production'
+    }
 };

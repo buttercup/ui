@@ -1,7 +1,4 @@
 module.exports = {
-  node: {
-    fs: 'empty'
-  },
   module: {
     rules: [
       {
@@ -22,10 +19,7 @@ module.exports = {
       {
         test: /\.dat$/,
         use: [
-          {
-            loader: 'arraybuffer-loader',
-            options: {}
-          }
+            'arraybuffer-loader'
         ]
       },
       {
@@ -47,5 +41,12 @@ module.exports = {
         ]
       }
     ]
+  },
+  resolve: {
+      fallback: {
+        crypto: false,
+        fs: false,
+        path: false
+      }
   }
 };
