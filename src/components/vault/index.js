@@ -1,2 +1,2 @@
-export { VaultContext, VaultProvider } from './Vault';
-export { default as VaultUI } from './VaultUI';
+export { VaultContext, VaultProvider } from "./Vault";
+export { default as VaultUI } from "./VaultUI";
