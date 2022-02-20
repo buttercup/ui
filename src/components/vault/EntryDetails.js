@@ -181,7 +181,6 @@ const FormContainer = styled.div`
     margin-bottom: 1rem;
 `;
 const CustomFieldsHeading = styled.h5`
-    text-transform: uppercase;
     color: ${p => getThemeProp(p, "entry.separatorTextColor")};
     display: flex;
     align-items: center;
