@@ -1,7 +1,7 @@
 import React from "react";
 import "jest-styled-components";
 import Enzyme, { mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { Generator } from "../src/index.js";
 
 Enzyme.configure({ adapter: new Adapter() });
