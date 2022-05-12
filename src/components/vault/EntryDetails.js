@@ -459,6 +459,7 @@ const Attachments = ({
 };
 
 const FieldText = ({ entryFacade, field }) => {
+    const { onUserCopy } = useContext(VaultContext);
     const [visible, toggleVisibility] = useState(false);
     const [historyDialogVisible, setHistoryDialogVisible] = useState(false);
     const otpRef = useRef(field.value);
@@ -525,7 +526,14 @@ const FieldText = ({ entryFacade, field }) => {
                         onClick={() => toggleVisibility(!visible)}
                     />
                 </If>
-                <Button icon="clipboard" small onClick={() => copyToClipboard(otpRef.current)} />
+                <Button
+                    icon="clipboard"
+                    small
+                    onClick={() => {
+                        copyToClipboard(otpRef.current);
+                        if (onUserCopy) onUserCopy(otpRef.current);
+                    }}
+                />
                 <Button
                     icon="history"
                     small

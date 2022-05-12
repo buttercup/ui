@@ -25,6 +25,7 @@ export const VaultProvider = ({
     onSelectEntry = null,
     onSelectGroup = null,
     onUpdate,
+    onUserCopy = null,
     readOnly = false,
     selectedEntry: extSelectedEntry = null,
     selectedGroup: extSelectedGroup = null,
@@ -91,6 +92,7 @@ export const VaultProvider = ({
         expandedGroups,
         groupFilters,
         entriesFilters,
+        onUserCopy,
 
         // Attachments
         attachments,
@@ -301,6 +303,7 @@ VaultProvider.propTypes = {
     onSelectEntry: PropTypes.func,
     onSelectGroup: PropTypes.func,
     onUpdate: PropTypes.func.isRequired,
+    onUserCopy: PropTypes.func,
     vault: VaultFacade.isRequired
 };
 
