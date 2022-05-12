@@ -1,32 +1,29 @@
+@use 'sass:math';
+
 @import '~@fontsource/inter/index.css';
 
-@import '~@blueprintjs/core/src/common/_colors.scss';
+@import "~normalize.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
 
-$pt-font-family: 'Inter';
-$pt-intent-primary: $turquoise3;
-$button-intents: (
-  'primary': (
-    $pt-intent-primary,
-    $turquoise2,
-    $turquoise1
-  ),
-  'success': (
-    $pt-intent-success,
-    $green2,
-    $green1
-  ),
-  'warning': (
-    $pt-intent-warning,
-    $orange2,
-    $orange1
-  ),
-  'danger': (
-    $pt-intent-danger,
-    $red2,
-    $red1
-  )
-) !default;
-
-@import '~@blueprintjs/core/src/blueprint.scss';
 @import './split.scss';
 @import './creditcard.scss';
+
+// Constants
+
+$bc-brand-colour: #00B7AC;
+$bc-brand-colour-dark: #179E94;
+
+// Blueprint overrides
+
+.bp4-input:focus, .bp4-input.bp4-active {
+    box-shadow: inset 0 0 0 1px $bc-brand-colour, 0 0 0 2px rgba(45, 114, 210, 0.3), inset 0 1px 1px rgba(17, 20, 24, 0.2);
+}
+
+a {
+    color: $bc-brand-colour-dark;
+
+    &:hover {
+        color: $bc-brand-colour;
+    }
+}

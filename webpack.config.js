@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const sass = require("sass");
 const pkg = require('./package.json');
 
 module.exports = {
@@ -31,7 +32,14 @@ module.exports = {
                         loader: MiniCssExtractPlugin.loader
                     },
                     'css-loader', // translates CSS into CommonJS
-                    'sass-loader' // compiles Sass to CSS, using Node Sass by default
+                    // 'sass-loader' // compiles Sass to CSS, using Node Sass by default
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            indentedSyntax: true,
+                            implementation: sass
+                        }
+                    }
                 ]
             },
             {

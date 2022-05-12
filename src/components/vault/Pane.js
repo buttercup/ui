@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
-import {
-    Tag,
-    Colors,
-    Button,
-    Popover,
-    Menu,
-    MenuItem,
-    InputGroup,
-    Classes,
-    Icon
-} from "@blueprintjs/core";
+import { Tag, Button, Popover, Menu, MenuItem, InputGroup, Classes, Icon } from "@blueprintjs/core";
 import { getThemeProp } from "../../utils";
 import { useTranslations } from "../../hooks/i18n";
 
@@ -18,10 +8,12 @@ const NOOP = () => {};
 
 const createScrollShadow = color => css`
     /* Show shadow on scroll: https://gist.github.com/tbmiller/6675197 */
-    background: linear-gradient(${color} 30%, hsla(0, 0%, 100%, 0)),
-        linear-gradient(hsla(0, 0%, 100%, 0) 0px, ${color} 70%) bottom,
-        radial-gradient(at top, rgba(0, 0, 0, 0.2), transparent 70%),
-        radial-gradient(at bottom, rgba(0, 0, 0, 0.2), transparent 70%) bottom;
+    background: linear-gradient(${color} 30%, rgba(255, 255, 255, 0)) 0% 0% / 100% 10px no-repeat
+            local,
+        linear-gradient(rgba(255, 255, 255, 0) 0px, ${color} 70%) center bottom / 100% 10px local,
+        radial-gradient(at center top, rgba(0, 0, 0, 0.2), transparent 70%) 0% 0% / 100% 5px scroll,
+        radial-gradient(at center bottom, rgba(0, 0, 0, 0.2), transparent 70%) center bottom / 100%
+            5px scroll;
     background-repeat: no-repeat;
     background-size: 100% 10px, 100% 10px, 100% 5px, 100% 5px;
     background-attachment: local, local, scroll, scroll;

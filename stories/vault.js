@@ -15,6 +15,7 @@ import {
     init as initButtercup,
     setDefaultFormat
 } from "buttercup/web";
+import cn from "classnames";
 import { ThemeProvider } from "styled-components";
 import randomWords from "random-words";
 import { VaultProvider, VaultUI, changeLanguage, themes } from "../src/index";
@@ -101,6 +102,21 @@ async function createArchive(vault, source) {
             "-----BEGIN RSA PRIVATE KEY-----\nProc-Type: 4,ENCRYPTED\nDEK-Info: DES-EDE3-CBC,DA075FA7F84053C8\n\n3N+r51y+rS/ZLRquGTckU93Wt6gMSe9yznmk0Z+hmSmaxzLJHPdpXRozeSQDHqyl\nQCRX0IrL9zrHD0Eqg5SdhgFX3SOCN+uOLtXKoZpSkq39mcAMdE7pMDam/WAmuV63\ndaq45k8D9h4XmlTZb1/2TYdZpFpaN5H7xtOiY0SSd+6GmvMadRVuKcQmSAtcLv6I\nPYmdmDFEwVHxSZYB2u4Vn9brW+EDmKZi74EsrGUu5n80wVvTArssEl5sTZFJ9Uho\nVDySb8OtldCWLKee1ntRa01cp4VaW3X1ikt/46X18zGDie6uinUovExCPO/NWmen\nZIjsQs44nNih5WGYfYvj4Zk36ly9EnMf0GiPrGu2lisz6oup2zqBtSHoAShs+OSy\nFmQYHesMsaXkI1tcxuKAkC8Hsu8/4xePFil5O9NryC6MA/q5/L+6FbGX0Vu3e15s\neYZlVk39GfwuOjnZ2nzVKAm1bNINtz1OEyezFoejk3oFVyBt2NZD87oGgcZ17t1j\nW18cmFhwDHrPJqosI7A0RlUOyxPCoXZk44Kvi7B8N0Soz1x6zoX3rxu3m2SUs0YW\n14GWOUCux2vQqCCpvGtXh2WCNzZJ6ihbKR4nbvpwhfTTaPaPy9/6rYXIV7ZEgTBm\n2dW+0vunC6MfMtha+u+9L8Ut3SizT30nz2FMAWT9ymcaZMOIUWPBHJ6TPq1xIali\n3rvdSsM9iaAv4MrcoTwpcOU0NN8iLTiuUXRi8dQKnPmgoCZJh4WDZMLYFU+R7E7A\ndSzH72FdiKmu894lN6TNe2BzAkYkehcRDmSCULJN8KjLZX3GzIr2/UaKOorvktwB\n9nsbp3hNHIbQv9QmNtyqwkzq8w8JAQHeF10Q2OBnd/+BAO3XyM8K3GpAXV4gSDF7\nIJorwUWUg9fauCy7V1OwgAGJJFH1IVGwSxBUcd/FjnxGU9qf/By2Fu7qIGZ95621\nUtGOvaI9ManBlYRUct3AWBu1tJG6doSqpC9/APQBRUqwkaqLaFZRFayCevl26E+7\ngWK1LsSNWIZTogyB5Ywr0rLzuKgVIcPPBbpOB/u7w2XERZk3EmhOiuSO4IfLNpmZ\nqeEuKEpPmzKd4jDlp1sMWVz5OzoGsU3SzbsDR7WdMlIy3EWYTq/I7I0chhgrhJGc\nHst1YQ9du4BGxzWHXrPkI/vTd4LlIqet8TOasyUKqK9IKAZ92W8PcAlxzDhnVcmA\nG1TGxFmNqOz1tL9jrqxOziWTaTir36z0MB2+8+EF4Fg+UjaQ0yIwB0O9o6BLvMxZ\nd6pcacIdDRCNAizafxS8ez62Stvzao0ylEd69l/4JsHTgkco7AGfmOyU72FRSTzh\n2lfdWJmRn/e0c47WQE+2dPNiiqYEFhqOTStTZL5oN0c/bgn+Ke0fd6CzGQ7sED6m\nTQyzVL9XOegMMV6BF9pLa9mG3rzDjM18I4w0PtrlRsZijnWxCMjsaJg0rG/49n/k\n79Vzpdy/DF/ojN/y1JQKgz7KbGf9eYsC8n22LbJWVUinBNiFlSpViSPfSYIugQsI\n306CDDo1/UoSq/s1ezGDZK8+gMiZUPOslyl9E3R2T/F54wbtyRVpdw==\n-----END RSA PRIVATE KEY-----\n"
         )
         .setAttribute(Entry.Attributes.FacadeType, EntryType.SSHKey);
+    general
+        .createEntry("Game trial")
+        .setProperty("username", "sbx120-sdm2")
+        .setProperty("password", "pasw0rd123")
+        .setProperty("url", "https://store.steampowered.com");
+    general
+        .createEntry("SoundCloud")
+        .setProperty("username", "myuser@hotmail.com")
+        .setProperty("password", "n32nl#knkSk")
+        .setProperty("url", "https://soundcloud.com");
+    general
+        .createEntry("Reddit")
+        .setProperty("username", "fiesty-monkey")
+        .setProperty("password", "super-secret-password-123")
+        .setProperty("url", "https://reddit.com");
     const attachmentEntry = general
         .createEntry("Entry w/ Attachments")
         .setProperty("username", "jsc@test.org")
@@ -269,7 +285,11 @@ function VaultRender({
         createVaultManager();
     }, []);
     return (
-        <View className={dark ? "bp3-dark" : ""}>
+        <View
+            className={cn("storybook-container", {
+                "bp4-dark": dark
+            })}
+        >
             <ThemeProvider theme={dark ? themes.dark : themes.light}>
                 <If condition={archiveFacade}>
                     <Choose>

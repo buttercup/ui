@@ -15,6 +15,7 @@ import SiteIcon from "./SiteIcon";
 import { useGroups } from "./hooks/vault";
 import { VaultContext } from "./Vault";
 import { extractDomain } from "./utils/domain";
+import { colors } from "../../variables";
 import { useTranslations } from "../../hooks/i18n";
 
 function getEntryDomain(entry) {
@@ -53,6 +54,8 @@ const EntryWrapper = styled.div`
 
     &:focus {
         background-color: ${props => getThemeProp(props, "list.focusedBackgroundColor")};
+        outline-color: ${colors.BRAND_PRIMARY};
+        outline-style: solid;
     }
 
     ${props =>

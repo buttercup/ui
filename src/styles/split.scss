@@ -7,6 +7,12 @@
   overflow: hidden;
 }
 
+.bp4-dark {
+    .splitter-layout {
+        background-color: rgb(48, 64, 77);
+    }
+}
+
 .splitter-layout .layout-pane {
   position: relative;
   flex: 0 0 auto;
