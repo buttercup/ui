@@ -967,7 +967,7 @@ const EntryDetails = () => {
                     <Otherwise>
                         <PaneContent>
                             <NonIdealState
-                                icon="satellite"
+                                icon="document"
                                 title={t("entry.none-selected.title")}
                                 description={t("entry.none-selected.message")}
                             />

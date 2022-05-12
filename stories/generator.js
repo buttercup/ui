@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { action } from "@storybook/addon-actions";
-import MagicIcon from "react-icons/lib/fa/magic";
+import { FaMagic as MagicIcon } from "react-icons/fa";
 import { Button, Generator } from "../src";
 import styled from "styled-components";
 
