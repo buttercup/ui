@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import zxcvbn from "zxcvbn";
 import cx from "classnames";
 import styled from "styled-components";
-import { MDInfo as InfoIcon, MdWarning as WarningIcon } from "react-icons/md";
+import { MdInfo as InfoIcon, MdWarning as WarningIcon } from "react-icons/md";
 import { colors } from "../variables";
 
 class Meter extends Component {
