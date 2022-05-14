@@ -45,7 +45,7 @@ const dark = {
         colors: {
             divider: Colors.DARK_GRAY5,
             paneDivider: Colors.GRAY3,
-            uiBackground: "rgb(48, 64, 77)", //Colors.DARK_GRAY4,
+            uiBackground: Colors.DARK_GRAY2,
             mainPaneBackground: Colors.DARK_GRAY3
         },
         tree: {

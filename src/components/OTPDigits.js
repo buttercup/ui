@@ -17,10 +17,12 @@ const DigitsContainer = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    flex-wrap: none;
 `;
 const Digits = styled(Text)`
     font-family: monospace;
     font-size: 2em;
+    word-break: keep-all;
 `;
 const TimeLeftSpinner = styled(Spinner)`
     margin-right: 8px;

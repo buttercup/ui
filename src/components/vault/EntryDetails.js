@@ -259,6 +259,9 @@ const HistoryScrollContainer = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
 `;
+const NoWrapText = styled.span`
+    word-break: keep-all;
+`;
 
 const Attachments = ({
     attachmentPreviews = {},
@@ -498,7 +501,7 @@ const FieldText = ({ entryFacade, field }) => {
                                     field.valueType === EntryPropertyValueType.Password && !visible
                                 }
                             >
-                                ●●●●●●●●
+                                <NoWrapText>●●●●●●●●</NoWrapText>
                             </When>
                             <Otherwise>
                                 <FormattedText
@@ -853,20 +856,22 @@ const EntryDetailsContent = () => {
                         <span>{t("entry.custom-fields")}</span>
                     </CustomFieldsHeading>
                 </If>
-                <FormContainer>
-                    <For each="field" of={removeableFields}>
-                        <FieldRow
-                            key={field.id}
-                            entryFacade={entry}
-                            field={field}
-                            onFieldNameUpdate={onFieldNameUpdate}
-                            onFieldUpdate={onFieldUpdate}
-                            onFieldSetValueType={onFieldSetValueType}
-                            onRemoveField={onRemoveField}
-                            editing={editing}
-                        />
-                    </For>
-                </FormContainer>
+                <If condition={removeableFields.length > 0}>
+                    <FormContainer>
+                        <For each="field" of={removeableFields}>
+                            <FieldRow
+                                key={field.id}
+                                entryFacade={entry}
+                                field={field}
+                                onFieldNameUpdate={onFieldNameUpdate}
+                                onFieldUpdate={onFieldUpdate}
+                                onFieldSetValueType={onFieldSetValueType}
+                                onRemoveField={onRemoveField}
+                                editing={editing}
+                            />
+                        </For>
+                    </FormContainer>
+                </If>
                 <If condition={editing}>
                     <Button
                         onClick={onAddField}
