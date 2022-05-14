@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Intent, Spinner } from "@blueprintjs/core";
+import { Intent, Spinner, Text } from "@blueprintjs/core";
 import * as OTPAuth from "otpauth";
 
 const Container = styled.div`
@@ -18,8 +18,7 @@ const DigitsContainer = styled.div`
     align-items: center;
     cursor: pointer;
 `;
-const Digits = styled.span`
-    color: #222;
+const Digits = styled(Text)`
     font-family: monospace;
     font-size: 2em;
 `;

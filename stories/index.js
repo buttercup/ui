@@ -17,7 +17,7 @@ import {
     VaultTranslatedJapanese,
     VaultTranslatedRussian
 } from "./vault";
-import OTPDigitsStory from "./OTPDigits";
+import { OTPDigitsDark, OTPDigitsLight } from "./OTPDigits";
 import "../src/styles/index.scss";
 
 const Digits = styled(ColoredDigits)`
@@ -138,12 +138,18 @@ storiesOf("Vault", module)
     .add("translated (RU)", () => <VaultTranslatedRussian />);
 
 storiesOf("OTPDigits", module)
-    .add("6 digits", () => (
-        <OTPDigitsStory uri="otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30" />
+    .add("TOTP: 6 digits", () => (
+        <OTPDigitsLight uri="otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30" />
     ))
-    .add("8 digits", () => (
-        <OTPDigitsStory uri="otpauth://totp/Perry?secret=ababab&issuer=EA&algorithm=SHA1&digits=8&period=30" />
+    .add("TOTP: 8 digits", () => (
+        <OTPDigitsLight uri="otpauth://totp/Perry?secret=ababab&issuer=EA&algorithm=SHA1&digits=8&period=30" />
+    ))
+    .add("TOTP dark", () => (
+        <OTPDigitsDark uri="otpauth://totp/ACME:AzureDiamond?issuer=ACME&secret=NB2W45DFOIZA&algorithm=SHA1&digits=6&period=30" />
     ))
     .add("HOTP", () => (
-        <OTPDigitsStory uri="otpauth://hotp/Gaming%20Login?secret=NBQWQYJAGIZTIM3W&issuer=EA&counter=0" />
+        <OTPDigitsLight uri="otpauth://hotp/Gaming%20Login?secret=NBQWQYJAGIZTIM3W&issuer=EA&counter=0" />
+    ))
+    .add("HOTP dark", () => (
+        <OTPDigitsDark uri="otpauth://hotp/Gaming%20Login?secret=NBQWQYJAGIZTIM3W&issuer=EA&counter=0" />
     ));
