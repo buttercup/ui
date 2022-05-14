@@ -11,8 +11,8 @@ const light = {
         colors: {
             divider: Colors.LIGHT_GRAY4,
             paneDivider: Colors.GRAY3,
-            uiBackground: "#fff",
-            mainPaneBackground: Colors.LIGHT_GRAY5
+            uiBackground: Colors.LIGHT_GRAY5,
+            mainPaneBackground: Colors.LIGHT_GRAY4
         },
         tree: {
             selectedBackgroundColor: Colors.LIGHT_GRAY2,
@@ -21,7 +21,7 @@ const light = {
             selectedIconColor: Colors.DARK_GRAY5
         },
         entry: {
-            primaryContainer: Colors.LIGHT_GRAY5,
+            primaryContainer: Colors.LIGHT_GRAY4,
             separatorTextColor: Colors.GRAY3,
             separatorBorder: Colors.LIGHT_GRAY2,
             fieldHoverBorder: Colors.LIGHT_GRAY1
