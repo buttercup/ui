@@ -37,7 +37,8 @@ const light = {
             barBackground: Colors.LIGHT_GRAY4,
             border: Colors.GRAY4,
             close: Colors.GRAY1,
-            closeBackgroundHover: Colors.LIGHT_GRAY1
+            closeBackgroundHover: Colors.LIGHT_GRAY1,
+            dropBorder: Colors.GRAY5
         }
     }
 };
@@ -79,7 +80,8 @@ const dark = {
             barBackground: Colors.DARK_GRAY1,
             border: Colors.GRAY1,
             close: Colors.GRAY3,
-            closeBackgroundHover: Colors.DARK_GRAY5
+            closeBackgroundHover: Colors.DARK_GRAY5,
+            dropBorder: Colors.GRAY1
         }
     }
 };

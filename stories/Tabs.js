@@ -26,7 +26,6 @@ export function TabsDark() {
     const initialTabs = useMemo(() => JSON.parse(JSON.stringify(INITIAL_TABS)), []);
     const [tabs, setTabs] = useState(initialTabs);
     const [selected, setSelected] = useState("abc");
-    console.log(tabs);
     return (
         <ThemedView dark>
             <View>
@@ -41,7 +40,6 @@ export function TabsDark() {
                             1
                         );
                         newTabs.splice(newIndex, 0, tab);
-                        console.log("INSERT", tabID, newIndex);
                         setTabs(newTabs);
                     }}
                     onSelect={id => setSelected(id)}
@@ -54,19 +52,28 @@ export function TabsDark() {
 }
 
 export function TabsLight() {
+    const initialTabs = useMemo(() => JSON.parse(JSON.stringify(INITIAL_TABS)), []);
+    const [tabs, setTabs] = useState(initialTabs);
     const [selected, setSelected] = useState("abc");
     return (
         <ThemedView>
             <View>
                 <Tabs
+                    onClose={tabID => {
+                        setTabs(tabs.filter(tab => tab.id !== tabID));
+                    }}
+                    onReorder={(tabID, newIndex) => {
+                        const newTabs = [...tabs];
+                        const [tab] = newTabs.splice(
+                            newTabs.findIndex(t => t.id === tabID),
+                            1
+                        );
+                        newTabs.splice(newIndex, 0, tab);
+                        setTabs(newTabs);
+                    }}
                     onSelect={id => setSelected(id)}
                     selected={selected}
-                    tabs={[
-                        { id: "abc", content: "Tab 1", icon: ICON_BUTTERCUP },
-                        { id: "def", content: "Tab 2", icon: ICON_DROPBOX },
-                        { id: "ghi", content: "Tab 3", icon: ICON_GOOGLEDRIVE },
-                        { id: "jkl", content: "Tab 4", icon: ICON_WEBDAV_WHITE }
-                    ]}
+                    tabs={tabs}
                 />
             </View>
         </ThemedView>

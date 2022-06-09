@@ -17,8 +17,9 @@ const Close = styled(Icon)`
 const DropTarget = styled.div`
     height: 42px;
     width: 100px;
-    border: 1px dotted #ddd;
+    border: 1px dashed ${p => getThemeProp(p, "tab.dropBorder")};
     margin-right: 8px;
+    border-radius: 8px 8px 0 0;
 `;
 
 const TabContainer = styled.div`
