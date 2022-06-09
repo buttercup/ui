@@ -30,6 +30,14 @@ const light = {
             dropBackground: Colors.LIGHT_GRAY5,
             dropBorder: Colors.LIGHT_GRAY2,
             dropText: Colors.GRAY4
+        },
+        tab: {
+            background: Colors.LIGHT_GRAY2,
+            backgroundSelected: Colors.LIGHT_GRAY3,
+            barBackground: Colors.LIGHT_GRAY4,
+            border: Colors.GRAY4,
+            close: Colors.GRAY1,
+            closeBackgroundHover: Colors.LIGHT_GRAY1
         }
     }
 };
@@ -64,6 +72,14 @@ const dark = {
             dropBackground: Colors.DARK_GRAY3,
             dropBorder: Colors.DARK_GRAY5,
             dropText: Colors.GRAY2
+        },
+        tab: {
+            background: Colors.DARK_GRAY2,
+            backgroundSelected: Colors.DARK_GRAY3,
+            barBackground: Colors.DARK_GRAY1,
+            border: Colors.GRAY1,
+            close: Colors.GRAY3,
+            closeBackgroundHover: Colors.DARK_GRAY5
         }
     }
 };
