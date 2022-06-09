@@ -1,5 +1,4 @@
-import React from "react";
-import { useDrop } from "react-dnd";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Tab } from "./Tab";
 import { getThemeProp } from "../../../utils";
@@ -14,26 +13,29 @@ const TabContainer = styled.div`
 `;
 
 export function Tabs(props) {
-    const { onSelect, selected, tabs } = props;
-    const [{ canDrop, isOver }, drop] = useDrop(() => ({
-        accept: "BOX",
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop()
-        })
-    }));
+    const { onClose, onReorder, onSelect, selected, tabs } = props;
+    const handleReorder = useCallback((movedID, targetID) => {
+        const originIndex = tabs.findIndex(t => t.id === movedID);
+        let targetIndex = tabs.findIndex(t => t.id === targetID);
+        if (targetIndex > originIndex) {
+            targetIndex -= 1;
+        }
+        onReorder(movedID, targetIndex);
+    }, [tabs]);
     return (
         <div>
-            <TabContainer ref={drop}>
+            <TabContainer>
                 {tabs.map((tab, i) => (
                     <Tab
-                        key={tab.id}
+                        key={`${tab.id}-${i}`}
                         index={i}
                         id={tab.id}
                         icon={tab.icon}
                         content={tab.content}
                         selected={tab.id === selected}
                         onSelect={() => onSelect(tab.id)}
+                        onClose={() => onClose(tab.id)}
+                        onTabReorder={tabID => handleReorder(tabID, tab.id)}
                     />
                 ))}
             </TabContainer>

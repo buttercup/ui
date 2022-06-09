@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { Icon } from "@blueprintjs/core";
 import styled, { useTheme } from "styled-components";
 import { getThemeProp } from "../../../utils";
@@ -14,11 +14,25 @@ const Close = styled(Icon)`
     }
 `;
 
+const DropTarget = styled.div`
+    height: 42px;
+    width: 100px;
+    border: 1px dotted #ddd;
+    margin-right: 8px;
+`;
+
 const TabContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 8px -1px 0;
+`;
+
+const TabInner = styled.div`
     background-color: ${p => p.selected ? getThemeProp(p, "tab.backgroundSelected") : getThemeProp(p, "tab.background")};
     border-radius: 8px 8px 0 0;
     overflow: hidden;
-    margin: 0 8px -1px 0;
     padding: 0px 10px;
 	border: 1px solid ${p => getThemeProp(p, "tab.border")};
     height: 42px;
@@ -56,6 +70,7 @@ export function Tab(props) {
         selected,
         content,
         onClose,
+        onTabReorder,
         onSelect,
         id,
         icon
@@ -77,24 +92,42 @@ export function Tab(props) {
         type: "BOX",
         collect: (monitor) => ({
             isDragging: monitor.isDragging()
-        })
+        }),
+        item: {
+            id
+        }
+    }));
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+        accept: "BOX",
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop()
+        }),
+        drop: (item) => {
+            onTabReorder(item.id);
+        }
     }));
     return (
-        <TabContainer
-            ref={isDragging ? dragPreviewRef : dragRef}
-            style={{ opacity: isDragging ? 0.5 : 1 }}
-            selected={selected}
-            role="button"
-            onClick={handleClick}
-        >
-            <TabIcon src={icon} />
-            <TabContent>{content}</TabContent>
-            <Close
-                icon="small-cross"
+        <TabContainer ref={drop}>
+            {!isDragging && isOver && (
+                <DropTarget>&nbsp;</DropTarget>
+            )}
+            <TabInner
+                ref={isDragging ? dragPreviewRef : dragRef}
+                style={{ opacity: isDragging ? 0.5 : 1 }}
+                selected={selected}
                 role="button"
-                onClick={handleClose}
-                color={getThemeProp({ theme }, "tab.close")}
-            />
+                onClick={handleClick}
+            >
+                <TabIcon src={icon} />
+                <TabContent>{content}</TabContent>
+                <Close
+                    icon="small-cross"
+                    role="button"
+                    onClick={handleClose}
+                    color={getThemeProp({ theme }, "tab.close")}
+                />
+            </TabInner>
         </TabContainer>
     );
 }
