@@ -27,15 +27,17 @@ export function Tabs(props) {
         const targetIndex = tabs.findIndex(t => t.id === targetID);
         const output = [];
         for (let i = 0; i < tabs.length; i += 1) {
-            if (i === originalIndex) continue;
             if (i === targetIndex) {
-                if (posChange === -1) {
+                if (targetIndex === originalIndex) {
+                    output.push(tabs[originalIndex]);
+                } else if (posChange === -1) {
                     output.push(tabs[originalIndex], tabs[i]);
                 } else if (posChange === 1) {
                     output.push(tabs[i], tabs[originalIndex]);
                 }
                 continue;
             }
+            if (i === originalIndex) continue;
             output.push(tabs[i]);
         }
         onReorder(output);
