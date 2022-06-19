@@ -16,10 +16,11 @@ const Close = styled(Icon)`
 
 const DropTarget = styled.div`
     height: 42px;
-    width: 100px;
-    border: 1px dashed ${p => getThemeProp(p, "tab.dropBorder")};
-    margin-right: 8px;
-    border-radius: 8px 8px 0 0;
+    position: absolute;
+    width: calc(50% + 4px);
+    ${p => p.side}: -4px;
+    top: 0px;
+    background: red;
 `;
 
 const TabContainer = styled.div`
@@ -27,7 +28,8 @@ const TabContainer = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin: 0 8px -1px 0;
+    margin: 0 4px -1px 4px;
+    position: relative;
 `;
 
 const TabInner = styled.div`
@@ -58,12 +60,14 @@ const TabContent = styled.span`
     text-decoration: none;
     user-select: none;
     white-space: nowrap;
+    pointer-events: none;
 `;
 
 const TabIcon = styled.img`
     width: 20px;
     height: 20px;
     margin-right: 8px;
+    pointer-events: none;
 `;
 
 export function Tab(props) {
@@ -98,37 +102,61 @@ export function Tab(props) {
             id
         }
     }));
-    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    const [{ canDrop, isOver: isOverMain }, dropMainRef] = useDrop(() => ({
+        accept: "BOX",
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop()
+        })
+    }));
+    const [{ isOver: isOver1 }, dropLeftRef] = useDrop(() => ({
         accept: "BOX",
         collect: (monitor) => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop()
         }),
         drop: (item) => {
-            onTabReorder(item.id);
+            onTabReorder(item.id, -1);
         }
     }));
+    const [{ isOver: isOver2 }, dropRightRef] = useDrop(() => ({
+        accept: "BOX",
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop()
+        }),
+        drop: (item) => {
+            onTabReorder(item.id, 1);
+        }
+    }));
+    console.log([isOverMain, isOver1, isOver2]);
+    const isOver = isOverMain || isOver1 || isOver2;
     return (
-        <TabContainer ref={drop}>
+        <TabContainer>
             {!isDragging && isOver && (
-                <DropTarget>&nbsp;</DropTarget>
+                <DropTarget ref={dropLeftRef} side="left">&nbsp;</DropTarget>
             )}
-            <TabInner
-                ref={isDragging ? dragPreviewRef : dragRef}
-                style={{ opacity: isDragging ? 0.5 : 1 }}
-                selected={selected}
-                role="button"
-                onClick={handleClick}
-            >
-                <TabIcon src={icon} />
-                <TabContent>{content}</TabContent>
-                <Close
-                    icon="small-cross"
+            <div ref={dropMainRef}>
+                <TabInner
+                    ref={isDragging ? dragPreviewRef : dragRef}
+                    style={{ opacity: isDragging ? 0.5 : 1 }}
+                    selected={selected}
                     role="button"
-                    onClick={handleClose}
-                    color={getThemeProp({ theme }, "tab.close")}
-                />
-            </TabInner>
+                    onClick={handleClick}
+                >
+                    <TabIcon src={icon} />
+                    <TabContent>{content}</TabContent>
+                    <Close
+                        icon="small-cross"
+                        role="button"
+                        onClick={handleClose}
+                        color={getThemeProp({ theme }, "tab.close")}
+                    />
+                </TabInner>
+            </div>
+            {!isDragging && isOver && (
+                <DropTarget ref={dropRightRef} side="right">&nbsp;</DropTarget>
+            )}
         </TabContainer>
     );
 }

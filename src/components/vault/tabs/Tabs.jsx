@@ -4,7 +4,7 @@ import { Tab } from "./Tab";
 import { getThemeProp } from "../../../utils";
 
 const TabContainer = styled.div`
-    padding: 12px 12px 0px 12px;
+    padding: 12px 8px 0px 8px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -14,12 +14,10 @@ const TabContainer = styled.div`
 
 export function Tabs(props) {
     const { onClose, onReorder, onSelect, selected, tabs } = props;
-    const handleReorder = useCallback((movedID, targetID) => {
-        const originIndex = tabs.findIndex(t => t.id === movedID);
+    const handleReorder = useCallback((movedID, targetID, posChange) => {
         let targetIndex = tabs.findIndex(t => t.id === targetID);
-        if (targetIndex > originIndex) {
-            targetIndex -= 1;
-        }
+        targetIndex = posChange < 0 ? targetIndex : targetIndex + 1;
+        console.log("REORDER", tabs.findIndex(t => t.id === targetID), posChange, targetIndex);
         onReorder(movedID, targetIndex);
     }, [tabs]);
     return (
@@ -35,7 +33,7 @@ export function Tabs(props) {
                         selected={tab.id === selected}
                         onSelect={() => onSelect(tab.id)}
                         onClose={() => onClose(tab.id)}
-                        onTabReorder={tabID => handleReorder(tabID, tab.id)}
+                        onTabReorder={(tabID, posChange) => handleReorder(tabID, tab.id, posChange)}
                     />
                 ))}
             </TabContainer>
