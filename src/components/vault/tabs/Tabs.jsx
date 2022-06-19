@@ -1,15 +1,18 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import { Tab } from "./Tab";
+import { TAB_HEIGHT_SELECTED, Tab } from "./Tab";
 import { getThemeProp } from "../../../utils";
 
+const TOP_PADDING = 4;
+
 const TabContainer = styled.div`
-    padding: 12px 8px 0px 8px;
+    padding: ${TOP_PADDING}px 4px 0px 4px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-end;
     background-color: ${p => getThemeProp(p, "tab.barBackground")};
+    height: ${TAB_HEIGHT_SELECTED + TOP_PADDING}px;
 `;
 
 export function Tabs(props) {

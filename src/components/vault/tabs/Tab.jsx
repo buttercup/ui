@@ -4,6 +4,9 @@ import { Icon } from "@blueprintjs/core";
 import styled, { useTheme } from "styled-components";
 import { getThemeProp } from "../../../utils";
 
+export const TAB_HEIGHT_NORMAL = 42;
+export const TAB_HEIGHT_SELECTED = 45;
+
 const Close = styled(Icon)`
     margin-left: 8px;
     padding: 3px;
@@ -15,7 +18,7 @@ const Close = styled(Icon)`
 `;
 
 const DropTarget = styled.div`
-    height: 42px;
+    height: ${TAB_HEIGHT_NORMAL}px;
     position: absolute;
     width: ${p => p.isOver ? "calc(50% + 104px)" : "calc(50% + 4px)"};
     ${p => p.side}: ${p => p.isOver ? "-104px" : "-4px"};
@@ -40,7 +43,7 @@ const TabInner = styled.div`
     overflow: hidden;
     padding: 0px 10px;
 	border: 1px solid ${p => getThemeProp(p, "tab.border")};
-    height: 42px;
+    height: ${TAB_HEIGHT_NORMAL}px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -48,7 +51,7 @@ const TabInner = styled.div`
     transition: all .25s;
     cursor: pointer;
     ${p => p.selected ? `
-        height: 45px;
+        height: ${TAB_HEIGHT_SELECTED}px;
         border-bottom: none;
     ` : ""}
 
