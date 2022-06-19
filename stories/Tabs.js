@@ -33,13 +33,7 @@ export function TabsDark() {
                     onClose={tabID => {
                         setTabs(tabs.filter(tab => tab.id !== tabID));
                     }}
-                    onReorder={(tabID, newIndex) => {
-                        const newTabs = [...tabs];
-                        const [tab] = newTabs.splice(
-                            newTabs.findIndex(t => t.id === tabID),
-                            1
-                        );
-                        newTabs.splice(newIndex, 0, tab);
+                    onReorder={newTabs => {
                         setTabs(newTabs);
                     }}
                     onSelect={id => setSelected(id)}
@@ -62,13 +56,7 @@ export function TabsLight() {
                     onClose={tabID => {
                         setTabs(tabs.filter(tab => tab.id !== tabID));
                     }}
-                    onReorder={(tabID, newIndex) => {
-                        const newTabs = [...tabs];
-                        const [tab] = newTabs.splice(
-                            newTabs.findIndex(t => t.id === tabID),
-                            1
-                        );
-                        newTabs.splice(newIndex, 0, tab);
+                    onReorder={newTabs => {
                         setTabs(newTabs);
                     }}
                     onSelect={id => setSelected(id)}

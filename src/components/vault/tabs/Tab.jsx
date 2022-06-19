@@ -17,10 +17,10 @@ const Close = styled(Icon)`
 const DropTarget = styled.div`
     height: 42px;
     position: absolute;
-    width: calc(50% + 4px);
-    ${p => p.side}: -4px;
+    width: ${p => p.isOver ? "calc(50% + 104px)" : "calc(50% + 4px)"};
+    ${p => p.side}: ${p => p.isOver ? "-104px" : "-4px"};
     top: 0px;
-    background: red;
+    transition: all 0.3s;
 `;
 
 const TabContainer = styled.div`
@@ -28,7 +28,9 @@ const TabContainer = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin: 0 4px -1px 4px;
+    margin-right: ${p => p.isOverRight ? "104px" : "4px"};
+    margin-bottom: -1px;
+    margin-left: ${p => p.isOverLeft ? "104px" : "4px"};
     position: relative;
 `;
 
@@ -72,14 +74,14 @@ const TabIcon = styled.img`
 
 export function Tab(props) {
     const {
-        dragCtrlRef,
-        selected,
         content,
-        onClose,
-        onTabReorder,
-        onSelect,
-        id,
         icon,
+        id,
+        onClose,
+        onDraggingChange,
+        onSelect,
+        onTabReorder,
+        selected,
         tabDragging
     } = props;
     const theme = useTheme();
@@ -105,7 +107,7 @@ export function Tab(props) {
             id
         }
     }));
-    const [, dropLeftRef] = useDrop(() => ({
+    const [{ isOver: isOverLeft }, dropLeftRef] = useDrop(() => ({
         accept: "BOX",
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -115,7 +117,7 @@ export function Tab(props) {
             onTabReorder(item.id, -1);
         }
     }));
-    const [, dropRightRef] = useDrop(() => ({
+    const [{ isOver: isOverRight }, dropRightRef] = useDrop(() => ({
         accept: "BOX",
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -124,40 +126,41 @@ export function Tab(props) {
         drop: (item) => {
             onTabReorder(item.id, 1);
             setWasDragging(false);
-            dragCtrlRef.current(id, false);
+            onDraggingChange(id, false);
         }
     }));
     useEffect(() => {
         if (isDragging && !wasDragging) {
             setWasDragging(true);
-            dragCtrlRef.current(id, true);
-        } else if (!isDragging && tabDragging !== id) {
+            onDraggingChange(id, true);
+        } else if (!isDragging) {
             setWasDragging(false);
+            onDraggingChange(id, false);
         }
     }, [id, isDragging, wasDragging, tabDragging]);
     return (
-        <TabContainer>
+        <TabContainer isOverLeft={isOverLeft} isOverRight={isOverRight}>
             {tabDragging && (
-                <DropTarget ref={dropLeftRef} side="left">&nbsp;</DropTarget>
+                <DropTarget isOver={isOverLeft} ref={dropLeftRef} side="left">&nbsp;</DropTarget>
             )}
             <TabInner
-                ref={isDragging ? dragPreviewRef : dragRef}
-                style={{ opacity: isDragging ? 0.5 : 1 }}
-                selected={selected}
-                role="button"
                 onClick={handleClick}
+                ref={isDragging ? dragPreviewRef : dragRef}
+                role="button"
+                selected={selected}
+                style={{ opacity: isDragging ? 0.5 : 1 }}
             >
                 <TabIcon src={icon} />
                 <TabContent>{content}</TabContent>
                 <Close
-                    icon="small-cross"
-                    role="button"
-                    onClick={handleClose}
                     color={getThemeProp({ theme }, "tab.close")}
+                    icon="small-cross"
+                    onClick={handleClose}
+                    role="button"
                 />
             </TabInner>
             {tabDragging && (
-                <DropTarget ref={dropRightRef} side="right">&nbsp;</DropTarget>
+                <DropTarget isOver={isOverRight} ref={dropRightRef} side="right">&nbsp;</DropTarget>
             )}
         </TabContainer>
     );
