@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { TAB_HEIGHT_SELECTED, Tab } from "./Tab";
+import { TabAddButton } from "./TabAddButton";
 import { getThemeProp } from "../../../utils";
 
 const TOP_PADDING = 4;
@@ -16,7 +17,7 @@ const TabContainer = styled.div`
 `;
 
 export function Tabs(props) {
-    const { onClose, onReorder, onSelect, selected, tabs } = props;
+    const { onAdd, onClose, onReorder, onSelect, selected, tabs } = props;
     const [dragging, setDragging] = useState(null);
     const handleDraggingChange = useCallback((tabID, isDragging) => {
         if (isDragging) {
@@ -64,6 +65,9 @@ export function Tabs(props) {
                         tabDragging={dragging}
                     />
                 ))}
+                <TabAddButton
+                    onClick={onAdd}
+                />
             </TabContainer>
         </div>
     );

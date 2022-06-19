@@ -30,6 +30,16 @@ export function TabsDark() {
         <ThemedView dark>
             <View>
                 <Tabs
+                    onAdd={() =>
+                        setTabs([
+                            ...tabs,
+                            {
+                                id: Math.random().toString(),
+                                content: `Tab ${tabs.length + 1}`,
+                                icon: ICON_BUTTERCUP
+                            }
+                        ])
+                    }
                     onClose={tabID => {
                         setTabs(tabs.filter(tab => tab.id !== tabID));
                     }}
@@ -53,6 +63,16 @@ export function TabsLight() {
         <ThemedView>
             <View>
                 <Tabs
+                    onAdd={() =>
+                        setTabs([
+                            ...tabs,
+                            {
+                                id: Math.random().toString(),
+                                content: `Tab ${tabs.length + 1}`,
+                                icon: ICON_BUTTERCUP
+                            }
+                        ])
+                    }
                     onClose={tabID => {
                         setTabs(tabs.filter(tab => tab.id !== tabID));
                     }}
