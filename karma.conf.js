@@ -35,12 +35,13 @@ module.exports = config => config.set({
     frameworks: ["mocha", "chai", "sinon", "webpack"],
 
     plugins: [
-        require("karma-webpack"),
+        require("karma-chai"),
+        require("karma-chrome-launcher"),
         require("karma-firefox-launcher"),
         require("karma-mocha"),
-        require("karma-chai"),
         require("karma-sinon"),
-        require("karma-spec-reporter")
+        require("karma-spec-reporter"),
+        require("karma-webpack")
     ],
 
     preprocessors: {
