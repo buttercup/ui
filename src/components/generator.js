@@ -177,7 +177,7 @@ export function GeneratorUserInterface(props = {}) {
     return (
         <Body>
             <PasswordContainer role="content" onClick={e => selectElementContents(e.target)}>
-                <Password value={password} />
+                <Password value={password} className="generated-password" />
             </PasswordContainer>
             <GenerationTypes>
                 <GeneratorLabel>
@@ -261,7 +261,7 @@ export function GeneratorUserInterface(props = {}) {
                 </GeneratorFieldset>
             </If>
             <GeneratorControls>
-                <Button onClick={() => generateNewPassword()} primary>
+                <Button onClick={() => generateNewPassword()} primary className="generate-button">
                     Generate
                 </Button>
                 <Choose>

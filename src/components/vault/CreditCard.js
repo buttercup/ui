@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "react-credit-cards";
+import Card from "elt-react-credit-cards";
 import { EntryPropertyType } from "buttercup/web";
 
 import "../../styles/creditcard.scss";
