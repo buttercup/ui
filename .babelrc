@@ -14,5 +14,15 @@
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-function-bind",
         "jsx-control-statements"
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                "@babel/plugin-transform-modules-commonjs"
+            ],
+            "include": [
+                "node_modules"
+            ]
+        }
+    }
 }
