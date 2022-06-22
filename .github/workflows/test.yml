@@ -3,16 +3,34 @@ name: Node.js CI
 on: push
 
 jobs:
-  specs:
+  format:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x] # Node v15 not supported yet (node-sass)
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
       - name: Node.js specs ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm test
+      - run: npm install --force # Temporary until we resolve dep issues
+      - run: npm run test:format
+  specs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Node.js web specs ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+        env:
+          MOZ_HEADLESS: 1
+          CI: github
+      - run: sudo apt install google-chrome-stable firefox
+      - run: google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      - run: npm install --force # Temporary until we resolve dep issues
+      - run: npm run test:specs

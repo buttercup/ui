@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CSSMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const sass = require("sass");
 const pkg = require('./package.json');
 
@@ -20,10 +20,13 @@ module.exports = {
     mode: 'production',
     module: {
         rules: [{
-                test: /\.m?js$/,
+                test: /\.m?jsx?$/,
                 exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader'
+                },
+                resolve: {
+                    fullySpecified: false
                 }
             },
             {
@@ -77,7 +80,7 @@ module.exports = {
                 exclude: /\/node_modules/,
                 parallel: true
             }),
-            new OptimizeCSSAssetsPlugin({})
+            new CSSMinimizerPlugin()
         ]
     },
     output: {
@@ -93,6 +96,12 @@ module.exports = {
         })
     ],
     resolve: {
+        alias: {
+            "react-dnd": path.resolve("node_modules/react-dnd"),
+            "react/jsx-runtime": "react/jsx-runtime.js",
+            "react/jsx-dev-runtime": "react/jsx-dev-runtime.js"
+        },
+        extensions: [".js", ".jsx"],
         fallback: {
             crypto: false,
             fs: false,

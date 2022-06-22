@@ -18,6 +18,7 @@ import {
     VaultTranslatedRussian
 } from "./vault";
 import { OTPDigitsDark, OTPDigitsLight } from "./OTPDigits";
+import { TabsDark, TabsLight } from "./Tabs";
 import "../src/styles/index.scss";
 
 const Digits = styled(ColoredDigits)`
@@ -136,6 +137,10 @@ storiesOf("Vault", module)
     .add("translated (SE)", () => <VaultTranslatedSwedish />)
     .add("translated (JA)", () => <VaultTranslatedJapanese />)
     .add("translated (RU)", () => <VaultTranslatedRussian />);
+
+storiesOf("Tabs", module)
+    .add("Light", () => <TabsLight />)
+    .add("Dark", () => <TabsDark />);
 
 storiesOf("OTPDigits", module)
     .add("TOTP: 6 digits", () => (
