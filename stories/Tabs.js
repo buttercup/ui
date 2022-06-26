@@ -27,11 +27,7 @@ function TabsMenu(props) {
     const { id } = props;
     return (
         <Menu>
-            <MenuItem
-                text="Unlock Vault"
-                icon="unlock"
-                onClick={() => console.log("Unlock item", id)}
-            />
+            <MenuItem text="Unlock Vault" icon="unlock" />
             <MenuItem text="Lock Vault" icon="lock" disabled />
             <MenuDivider />
             <MenuItem text="Remove Vault" icon="remove" />
