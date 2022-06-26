@@ -8,6 +8,7 @@ const TOP_PADDING = 4;
 
 const TabContainer = styled.div`
     padding: ${TOP_PADDING}px 4px 0px 4px;
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -17,7 +18,7 @@ const TabContainer = styled.div`
 `;
 
 export function Tabs(props) {
-    const { onAdd, onClose, onReorder, onSelect, selected, tabs } = props;
+    const { onAdd, onClose, onReorder, onSelect, menu, selected, tabs } = props;
     const [dragging, setDragging] = useState(null);
     const handleDraggingChange = useCallback((tabID, isDragging) => {
         if (isDragging) {
@@ -57,6 +58,7 @@ export function Tabs(props) {
                         id={tab.id}
                         index={i}
                         key={`${tab.id}-${i}`}
+                        menu={menu}
                         onClose={() => onClose(tab.id)}
                         onDraggingChange={handleDraggingChange}
                         onSelect={() => onSelect(tab.id)}

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import cn from "classnames";
+import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { DndProvider, HTML5Backend, Tabs } from "../src";
 import { getThemeProp } from "../src/utils";
 import themes from "../src/styles/themes";
@@ -22,6 +23,22 @@ const View = styled.div`
     background-color: ${p => getThemeProp(p, "colors.uiBackground")};
 `;
 
+function TabsMenu(props) {
+    const { id } = props;
+    return (
+        <Menu>
+            <MenuItem
+                text="Unlock Vault"
+                icon="unlock"
+                onClick={() => console.log("Unlock item", id)}
+            />
+            <MenuItem text="Lock Vault" icon="lock" disabled />
+            <MenuDivider />
+            <MenuItem text="Remove Vault" icon="remove" />
+        </Menu>
+    );
+}
+
 export function TabsDark() {
     const initialTabs = useMemo(() => JSON.parse(JSON.stringify(INITIAL_TABS)), []);
     const [tabs, setTabs] = useState(initialTabs);
@@ -30,6 +47,7 @@ export function TabsDark() {
         <ThemedView dark>
             <View>
                 <Tabs
+                    menu={TabsMenu}
                     onAdd={() =>
                         setTabs([
                             ...tabs,

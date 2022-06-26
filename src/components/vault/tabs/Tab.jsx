@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { Icon } from "@blueprintjs/core";
+import { ContextMenu2 } from "@blueprintjs/popover2";
 import styled, { useTheme } from "styled-components";
 import { getThemeProp } from "../../../utils";
 
@@ -75,11 +76,28 @@ const TabIcon = styled.img`
     pointer-events: none;
 `;
 
+function OptionalMenu(props) {
+    const { children, id, menu: Menu } = props;
+    if (!Menu) {
+        return (
+            <>
+                {children}
+            </>
+        );
+    }
+    return (
+        <ContextMenu2 content={<Menu id={id} />}>
+            {children}
+        </ContextMenu2>
+    );
+}
+
 export function Tab(props) {
     const {
         content,
         icon,
         id,
+        menu,
         onClose,
         onDraggingChange,
         onSelect,
@@ -146,22 +164,24 @@ export function Tab(props) {
             {tabDragging && (
                 <DropTarget isOver={isOverLeft} ref={dropLeftRef} side="left">&nbsp;</DropTarget>
             )}
-            <TabInner
-                onClick={handleClick}
-                ref={isDragging ? dragPreviewRef : dragRef}
-                role="button"
-                selected={selected}
-                style={{ opacity: isDragging ? 0.5 : 1 }}
-            >
-                <TabIcon src={icon} />
-                <TabContent>{content}</TabContent>
-                <Close
-                    color={getThemeProp({ theme }, "tab.close")}
-                    icon="small-cross"
-                    onClick={handleClose}
+            <OptionalMenu id={id} menu={menu}>
+                <TabInner
+                    onClick={handleClick}
+                    ref={isDragging ? dragPreviewRef : dragRef}
                     role="button"
-                />
-            </TabInner>
+                    selected={selected}
+                    style={{ opacity: isDragging ? 0.5 : 1 }}
+                >
+                    <TabIcon src={icon} />
+                    <TabContent>{content}</TabContent>
+                    <Close
+                        color={getThemeProp({ theme }, "tab.close")}
+                        icon="small-cross"
+                        onClick={handleClose}
+                        role="button"
+                    />
+                </TabInner>
+            </OptionalMenu>
             {tabDragging && (
                 <DropTarget isOver={isOverRight} ref={dropRightRef} side="right">&nbsp;</DropTarget>
             )}
