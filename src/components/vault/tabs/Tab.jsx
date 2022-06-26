@@ -1,16 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { Icon } from "@blueprintjs/core";
+import { Colors, Icon } from "@blueprintjs/core";
+import { ContextMenu2 } from "@blueprintjs/popover2";
 import styled, { useTheme } from "styled-components";
 import { getThemeProp } from "../../../utils";
 
-export const TAB_HEIGHT_NORMAL = 42;
-export const TAB_HEIGHT_SELECTED = 45;
+export const TAB_HEIGHT_NORMAL = 38;
+export const TAB_HEIGHT_SELECTED = 41;
+
+const TAB_ICON_OFFSET = 2;
+const TAB_ICON_SIZE = 20;
+const TAB_INDICATOR_SIZE = 5;
 
 const Close = styled(Icon)`
     margin-left: 8px;
     padding: 3px;
     border-radius: 50%;
+    flex: 0 0 auto;
 
     &:hover {
         background-color: ${p => getThemeProp(p, "tab.closeBackgroundHover")};
@@ -69,17 +75,58 @@ const TabContent = styled.span`
 `;
 
 const TabIcon = styled.img`
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
+    width: ${TAB_ICON_SIZE}px;
+    height: ${TAB_ICON_SIZE}px;
     pointer-events: none;
 `;
 
+const TabIconContainer = styled.div`
+    flex: 0 0 auto;
+    width: ${TAB_ICON_SIZE + TAB_ICON_OFFSET + TAB_INDICATOR_SIZE}px;
+    height: ${TAB_ICON_SIZE}px;
+    margin-right: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+`;
+
+const TabIconIndicator = styled.div`
+    position: absolute;
+    width: ${TAB_INDICATOR_SIZE}px;
+    height: ${TAB_INDICATOR_SIZE}px;
+    background-color: ${Colors.GREEN3};
+    border-radius: 50%;
+    overflow: hidden;
+    right: 0px;
+    top: calc(50% - ${TAB_INDICATOR_SIZE / 2}px);
+    opacity: ${p => p.available ? 1 : 0};
+`;
+
+function OptionalMenu(props) {
+    const { children, id, menu: Menu } = props;
+    if (!Menu) {
+        return (
+            <>
+                {children}
+            </>
+        );
+    }
+    return (
+        <ContextMenu2 content={<Menu id={id} />}>
+            {children}
+        </ContextMenu2>
+    );
+}
+
 export function Tab(props) {
     const {
+        available = false,
         content,
         icon,
         id,
+        menu,
         onClose,
         onDraggingChange,
         onSelect,
@@ -119,7 +166,7 @@ export function Tab(props) {
         drop: (item) => {
             onTabReorder(item.id, -1);
         }
-    }));
+    }), [onTabReorder]);
     const [{ isOver: isOverRight }, dropRightRef] = useDrop(() => ({
         accept: "BOX",
         collect: (monitor) => ({
@@ -131,7 +178,7 @@ export function Tab(props) {
             setWasDragging(false);
             onDraggingChange(id, false);
         }
-    }));
+    }), [onDraggingChange, onTabReorder]);
     useEffect(() => {
         if (isDragging && !wasDragging) {
             setWasDragging(true);
@@ -146,22 +193,27 @@ export function Tab(props) {
             {tabDragging && (
                 <DropTarget isOver={isOverLeft} ref={dropLeftRef} side="left">&nbsp;</DropTarget>
             )}
-            <TabInner
-                onClick={handleClick}
-                ref={isDragging ? dragPreviewRef : dragRef}
-                role="button"
-                selected={selected}
-                style={{ opacity: isDragging ? 0.5 : 1 }}
-            >
-                <TabIcon src={icon} />
-                <TabContent>{content}</TabContent>
-                <Close
-                    color={getThemeProp({ theme }, "tab.close")}
-                    icon="small-cross"
-                    onClick={handleClose}
+            <OptionalMenu id={id} menu={menu}>
+                <TabInner
+                    onClick={handleClick}
+                    ref={isDragging ? dragPreviewRef : dragRef}
                     role="button"
-                />
-            </TabInner>
+                    selected={selected}
+                    style={{ opacity: isDragging ? 0.5 : 1 }}
+                >
+                    <TabIconContainer>
+                        <TabIcon src={icon} />
+                        <TabIconIndicator available={available} />
+                    </TabIconContainer>
+                    <TabContent>{content}</TabContent>
+                    <Close
+                        color={getThemeProp({ theme }, "tab.close")}
+                        icon="small-cross"
+                        onClick={handleClose}
+                        role="button"
+                    />
+                </TabInner>
+            </OptionalMenu>
             {tabDragging && (
                 <DropTarget isOver={isOverRight} ref={dropRightRef} side="right">&nbsp;</DropTarget>
             )}

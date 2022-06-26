@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import cn from "classnames";
+import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { DndProvider, HTML5Backend, Tabs } from "../src";
 import { getThemeProp } from "../src/utils";
 import themes from "../src/styles/themes";
@@ -11,7 +12,7 @@ import ICON_GOOGLEDRIVE from "./resources/googledrive-256.png";
 import ICON_WEBDAV_WHITE from "./resources/webdav-white-256.png";
 
 const INITIAL_TABS = [
-    { id: "abc", content: "Tab 1", icon: ICON_BUTTERCUP },
+    { id: "abc", content: "Tab 1", icon: ICON_BUTTERCUP, available: true },
     { id: "def", content: "Tab 2", icon: ICON_DROPBOX },
     { id: "ghi", content: "Tab 3", icon: ICON_GOOGLEDRIVE },
     { id: "jkl", content: "Tab 4", icon: ICON_WEBDAV_WHITE }
@@ -22,6 +23,18 @@ const View = styled.div`
     background-color: ${p => getThemeProp(p, "colors.uiBackground")};
 `;
 
+function TabsMenu(props) {
+    const { id } = props;
+    return (
+        <Menu>
+            <MenuItem text="Unlock Vault" icon="unlock" />
+            <MenuItem text="Lock Vault" icon="lock" disabled />
+            <MenuDivider />
+            <MenuItem text="Remove Vault" icon="remove" />
+        </Menu>
+    );
+}
+
 export function TabsDark() {
     const initialTabs = useMemo(() => JSON.parse(JSON.stringify(INITIAL_TABS)), []);
     const [tabs, setTabs] = useState(initialTabs);
@@ -30,6 +43,7 @@ export function TabsDark() {
         <ThemedView dark>
             <View>
                 <Tabs
+                    menu={TabsMenu}
                     onAdd={() =>
                         setTabs([
                             ...tabs,

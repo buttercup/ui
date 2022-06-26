@@ -117,6 +117,7 @@
   "dependencies": {
     "@blueprintjs/core": "^4.5.1",
     "@blueprintjs/icons": "^4.3.0",
+    "@blueprintjs/popover2": "^1.4.1",
     "@buttercup/generator": "^2.0.0",
     "@buttercup/react-formatted-input": "^1.4.0",
     "@fontsource/inter": "^4.1.0",
