@@ -15,6 +15,8 @@ const TabContainer = styled.div`
     align-items: flex-end;
     background-color: ${p => getThemeProp(p, "tab.barBackground")};
     height: ${TAB_HEIGHT_SELECTED + TOP_PADDING}px;
+    overflow-y: hidden;
+    overflow-x: scroll;
 `;
 
 export function Tabs(props) {
