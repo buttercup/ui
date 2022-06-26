@@ -12,7 +12,7 @@ import ICON_GOOGLEDRIVE from "./resources/googledrive-256.png";
 import ICON_WEBDAV_WHITE from "./resources/webdav-white-256.png";
 
 const INITIAL_TABS = [
-    { id: "abc", content: "Tab 1", icon: ICON_BUTTERCUP },
+    { id: "abc", content: "Tab 1", icon: ICON_BUTTERCUP, available: true },
     { id: "def", content: "Tab 2", icon: ICON_DROPBOX },
     { id: "ghi", content: "Tab 3", icon: ICON_GOOGLEDRIVE },
     { id: "jkl", content: "Tab 4", icon: ICON_WEBDAV_WHITE }

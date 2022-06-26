@@ -55,6 +55,7 @@ export function Tabs(props) {
             <TabContainer>
                 {tabs.map((tab, i) => (
                     <Tab
+                        available={!!tab.available}
                         content={tab.content}
                         icon={tab.icon}
                         id={tab.id}
