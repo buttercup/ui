@@ -137,7 +137,7 @@ export function Tab(props) {
         drop: (item) => {
             onTabReorder(item.id, -1);
         }
-    }));
+    }), [onTabReorder]);
     const [{ isOver: isOverRight }, dropRightRef] = useDrop(() => ({
         accept: "BOX",
         collect: (monitor) => ({
@@ -149,7 +149,7 @@ export function Tab(props) {
             setWasDragging(false);
             onDraggingChange(id, false);
         }
-    }));
+    }), [onDraggingChange, onTabReorder]);
     useEffect(() => {
         if (isDragging && !wasDragging) {
             setWasDragging(true);
