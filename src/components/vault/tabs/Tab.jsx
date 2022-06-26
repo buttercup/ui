@@ -5,8 +5,8 @@ import { ContextMenu2 } from "@blueprintjs/popover2";
 import styled, { useTheme } from "styled-components";
 import { getThemeProp } from "../../../utils";
 
-export const TAB_HEIGHT_NORMAL = 42;
-export const TAB_HEIGHT_SELECTED = 45;
+export const TAB_HEIGHT_NORMAL = 38;
+export const TAB_HEIGHT_SELECTED = 41;
 
 const Close = styled(Icon)`
     margin-left: 8px;
