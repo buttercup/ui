@@ -33,6 +33,8 @@ const DropTarget = styled.div`
 `;
 
 const TabContainer = styled.div`
+    flex: 0 1 auto;
+    min-width: 0px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -50,9 +52,10 @@ const TabInner = styled.div`
     padding: 0px 10px;
 	border: 1px solid ${p => getThemeProp(p, "tab.border")};
     height: ${TAB_HEIGHT_NORMAL}px;
+    width: 140px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     transition: all .25s;
     cursor: pointer;
@@ -66,12 +69,17 @@ const TabInner = styled.div`
     }
 `;
 
-const TabContent = styled.span`
+const TabContent = styled.div`
     transition: all .25s;
     text-decoration: none;
     user-select: none;
     white-space: nowrap;
     pointer-events: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    flex: 1 1 auto;
+    min-width: 0px;
 `;
 
 const TabIcon = styled.img`
@@ -189,7 +197,11 @@ export function Tab(props) {
         }
     }, [id, isDragging, wasDragging, tabDragging]);
     return (
-        <TabContainer isOverLeft={isOverLeft} isOverRight={isOverRight}>
+        <TabContainer
+            isOverLeft={isOverLeft}
+            isOverRight={isOverRight}
+            title={content}
+        >
             {tabDragging && (
                 <DropTarget isOver={isOverLeft} ref={dropLeftRef} side="left">&nbsp;</DropTarget>
             )}
