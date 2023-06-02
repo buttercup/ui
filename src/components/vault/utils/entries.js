@@ -1,6 +1,6 @@
 import R from "ramda";
 import Fuse from "fuse.js";
-import { getFacadeField } from "../../../utils";
+import { EntryPropertyType } from "buttercup/web";
 
 const options = {
     keys: ["fields.value"],
@@ -16,13 +16,21 @@ export const filterEntries = (entries = [], term = "") => {
     return fuse.search(term).map(hit => ({ ...hit.item, matches: hit.matches }));
 };
 
-export const sortEntries = (entries = [], asc = true) => {
-    const sortByTitleCaseInsensitive = R.sortBy(
-        R.compose(
-            R.toLower,
-            R.compose(R.prop("value"), R.find(R.propEq("property", "title")), R.prop("fields"))
-        )
-    );
-    const sorted = sortByTitleCaseInsensitive(entries);
-    return asc ? sorted : R.reverse(sorted);
-};
+export function sortEntries(entries = [], asc = true) {
+    return entries.sort((a, b) => {
+        const aTitleProp = a.fields.find(
+            f => f.property === "title" && f.propertyType === EntryPropertyType.Property
+        );
+        const bTitleProp = b.fields.find(
+            f => f.property === "title" && f.propertyType === EntryPropertyType.Property
+        );
+        const aTitle = aTitleProp?.value ?? "";
+        const bTitle = bTitleProp?.value ?? "";
+        if (aTitle < bTitle) {
+            return asc ? -1 : 1;
+        } else if (aTitle > bTitle) {
+            return asc ? 1 : -1;
+        }
+        return 0;
+    });
+}
