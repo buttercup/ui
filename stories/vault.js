@@ -388,3 +388,11 @@ export const VaultTranslatedRussian = () => {
     });
     return <VaultRender />;
 };
+
+export const VaultTranslatedFrench= () => {
+    useEffect(() => {
+        changeLanguage("fr");
+        return () => changeLanguage("en");
+    });
+    return <VaultRender />;
+};
