@@ -12,9 +12,20 @@
     "delete-title": "Supprimer la pièce jointe",
     "download": "Télécharger",
     "download-title": "Télécharger la pièce jointe",
-    "drop-files": "Déposer le(s) fichier(s) à ajouter au fichier archive"
+    "drop-files": "Déposer le(s) fichier(s) à ajouter au fichier archive",
+    "drop-instruction": "Faites glisser et déposez pour ajouter des pièces jointes"
   },
   "cancel": "Annuler",
+  "custom-fields": {
+    "change-type": "Changer le type :",
+    "delete-field": "Supprimer le champ",
+    "field-type": {
+      "text": "Texte (par défaut)",
+      "note": "Note",
+      "password": "Mot de passe",
+      "otp": "OTP"
+    }
+  },
   "entries-list": {
     "create-one-cta": "Pourquoi ne pas en créer un nouveau ?",
     "documents": "Documents",
@@ -33,14 +44,25 @@
     "add-custom-field-btn": "Ajouter un champ personnalisé",
     "attachments": "Attachements",
     "cancel-edit": "Annuler",
+    "click-to-edit": "Cliquez pour éditer",
     "custom-fields": "Champs personnalisés",
     "edit": "Éditer",
     "edit-document": "Éditer le document",
+    "field-controls": {
+      "password": {
+        "hide": "Masquer",
+        "reveal": "Révéler"
+      }
+    },
     "none-selected": {
       "message": "Sélectionner ou créer un nouveau document",
       "title": "Aucun document sélectionné"
     },
     "save": "Sauvegarder",
+    "save-disabled-title": {
+      "readonly": "Impossible de modifier actuellement",
+      "untitled": "Certains champs n'ont pas de titre"
+    },
     "trash-move": {
       "message": "Êtes-vous sûr de vouloir déplacer cette entrée dans la corbeille ?",
       "title": "Confirmer la mise à la corbeille",
@@ -85,6 +107,14 @@
     "cta": "Nouvelle entrée"
   },
   "trash": {
+    "close-button": "Fermer",
+    "empty-button-title": "Vider la corbeille",
+    "empty-confirm-dialog": {
+      "cancel-button": "Annuler",
+      "confirm-button": "Vider",
+      "message": "Êtes-vous sûr(e) de vouloir vider la corbeille ?",
+      "title": "Vider la corbeille"
+    },
     "header": "Corbeille"
   }
 }

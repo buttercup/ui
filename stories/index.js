@@ -13,6 +13,7 @@ import {
     BasicDarkVault,
     ControlledVault,
     HeavyVault,
+    VaultTranslatedFrench,
     VaultTranslatedSwedish,
     VaultTranslatedJapanese,
     VaultTranslatedRussian
@@ -134,6 +135,7 @@ storiesOf("Vault", module)
     .add("read-only", () => <BasicVaultReadOnly />)
     .add("dark", () => <BasicDarkVault />)
     .add("heavy", () => <HeavyVault />)
+    .add("translated (FR)", () => <VaultTranslatedFrench />)
     .add("translated (SE)", () => <VaultTranslatedSwedish />)
     .add("translated (JA)", () => <VaultTranslatedJapanese />)
     .add("translated (RU)", () => <VaultTranslatedRussian />);
