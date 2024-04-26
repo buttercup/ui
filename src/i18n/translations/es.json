@@ -68,9 +68,9 @@
     "default-label": "Por defecto",
     "title": {
       "credit_card": "Tarjeta de crédito/débito",
-      "login": "Login",
-      "note": "Note",
-      "ssh_key": "Clasve SSH",
+      "login": "Inicio de sesión",
+      "note": "Nota",
+      "ssh_key": "Clave SSH",
       "website": "Sitio web"
     }
   },
@@ -93,7 +93,7 @@
     "rename-group": "Renombrar"
   },
   "new-entry": {
-    "cta": "NUeva entrada"
+    "cta": "Nueva entrada"
   },
   "trash": {
     "header": "Papelera"
