@@ -3,6 +3,10 @@
 
 React UI Components used in [Buttercup](https://buttercup.pw) product series.
 
+## ⚠️ DEPRECATED ⚠️
+
+This library is deprecated and will soon be archived. UI components have been moved into their respective _parent_ repositories, as have translations.
+
 ## Preview Components
 
 ```shell
